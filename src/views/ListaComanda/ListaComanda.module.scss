@@ -1,0 +1,115 @@
+$green: #6CAD55;
+$white: #FFFFFF;
+$grey:#868686;
+$red: rgba(221, 3, 3, 0.75);
+.screen{
+    height: 100%;
+    padding: 50px;
+    overflow-y: scroll;
+    .container1{
+        height: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .buttonMenu{
+            background: $green;
+            color: $white;
+            border: none;
+            height: 50px;
+            width: 100px;
+            border-radius: 40px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .searchField{
+            background: $white;
+            color: $grey;
+            border: none;
+            height: 50px;
+            width:300px;
+            margin-top: auto;
+            margin-bottom: auto;
+            border-radius: 5px;
+        }
+    }
+    .container2{
+        text-align: start;
+     font-size: 50px;
+     padding: 20px;
+    }
+    .container3{
+        background-color: $white;
+        border-radius: 30px;
+        padding: 20px;
+        .headerContainer{
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        .headerComanda{
+            display: flex;
+            flex-direction: col;
+            .headerComandaChild{
+                color: $grey;
+                flex:1;
+            }
+        }
+        .Comanda{
+            border: black 1px solid;
+            border-radius: 5px;
+            .inchisComanda{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                color: black;
+                margin:5px;
+                .comandaClient{
+                    flex: 1;
+                }
+                .comandaAdresa{
+                    flex: 1;
+                }.comandaId{
+                    flex: 1;
+                }
+                .comandaStatus{
+                    flex: 1;
+                    background-color: $red;
+                    color: $white;
+                    font-weight: bold;
+                    border-radius: 5px;
+                }
+                .comandaProcesare{
+                    flex: 1;
+                    color: $grey;
+                }
+                .removeBtn{
+                    flex:1;
+                    cursor: pointer;
+                    background: $red;
+                    color: $white;
+                    font-weight: bold;
+                    border-radius: 5px;
+                }
+            }
+            .deschisComanda{
+                .table{
+                    width: 100%;
+                    padding:5px;
+                }
+                .tableHead{
+                    background-color: $green;
+                    color: $white;
+                }
+                .tablecell{
+                    border: 1px solid $grey;
+                }
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    
+}

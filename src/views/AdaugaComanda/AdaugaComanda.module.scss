@@ -1,0 +1,113 @@
+$green: #6CAD55;
+$white: #FFFFFF;
+$grey:#868686;
+$border: #ABABB5;
+$red: rgba(221, 3, 3, 0.75);
+$purple: #6C6194;
+.full{
+    height: 100%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    .MenuBtn{
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: $green;
+        color: $white;
+        border: none;
+        height: 50px;
+        width: 100px;
+        border-radius: 40px;
+    }
+    .titlu{
+        flex: 1;
+        font-size: 50px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        font-weight: bold;
+        display: flex;
+    }
+    .container{
+        flex:1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .field{
+            display: flex;
+            flex-direction: column;
+            width: 20%;
+            .label{
+                display: flex;
+                justify-content: flex-start;
+                color: $grey;
+            }
+            .input{
+                border: 2px solid $border;
+                border-radius: 4px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        
+    }
+    .adaugaProdus{
+        flex:1;
+        background-color: $purple;
+        color: $white;
+        width: 200px;
+        height: 50px;
+        border-radius: 8px;
+        margin: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        border: none;
+    }
+    .ListaProduse{
+        flex:9;
+        background-color: $white;
+        overflow-y: scroll;
+        .table{
+            width: 100%;
+            .thead{
+                background-color: $green;
+                .tr{
+                    .th{
+                        padding:10px;
+                        height: 50px;
+                        color: $white;
+                        flex:1;
+                    }
+                }
+            }
+            .tbody{
+                .tr{
+                    .td{
+                        border:1px solid $grey;
+                        .input{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .endArea{
+        flex:1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .savePrintBtn{background-color: $purple;
+            color: $white;
+            width: 200px;
+            height: 50px;
+            border-radius: 8px;
+            margin: 30px;
+            border: none;
+            font-size: 20px;
+        }
+    }
+}
