@@ -1,9 +1,5 @@
-$green: #6CAD55;
-$white: #FFFFFF;
-$grey:#868686;
-$border: #ABABB5;
-$red: rgba(221, 3, 3, 0.75);
-$purple: #6C6194;
+@use 'src/assets/style/globalVariables';
+@use 'src/assets/style/mixinHelper';
 .full{
     height: 100%;
     padding: 50px;
@@ -15,8 +11,8 @@ $purple: #6C6194;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: $green;
-        color: $white;
+        background: globalVariables.$green;
+        color: globalVariables.$white;
         border: none;
         height: 50px;
         width: 100px;
@@ -42,10 +38,10 @@ $purple: #6C6194;
             .label{
                 display: flex;
                 justify-content: flex-start;
-                color: $grey;
+                color: globalVariables.$grey;
             }
             .input{
-                border: 2px solid $border;
+                border: 2px solid globalVariables.$border;
                 border-radius: 4px;
                 height: 50px;
                 font-size: 20px;
@@ -55,8 +51,8 @@ $purple: #6C6194;
     }
     .adaugaProdus{
         flex:1;
-        background-color: $purple;
-        color: $white;
+        background-color: globalVariables.$purple;
+        color: globalVariables.$white;
         width: 200px;
         height: 50px;
         border-radius: 8px;
@@ -67,17 +63,17 @@ $purple: #6C6194;
     }
     .ListaProduse{
         flex:9;
-        background-color: $white;
+        background-color: globalVariables.$white;
         overflow-y: scroll;
         .table{
             width: 100%;
             .thead{
-                background-color: $green;
+                background-color: globalVariables.$green;
                 .tr{
                     .th{
                         padding:10px;
                         height: 50px;
-                        color: $white;
+                        color: globalVariables.$white;
                         flex:1;
                     }
                 }
@@ -85,7 +81,7 @@ $purple: #6C6194;
             .tbody{
                 .tr{
                     .td{
-                        border:1px solid $grey;
+                        border:1px solid globalVariables.$grey;
                         .input{
                             width: 100%;
                             height: 100%;
@@ -100,8 +96,8 @@ $purple: #6C6194;
         display: flex;
         flex-direction: row;
         justify-content: center;
-        .savePrintBtn{background-color: $purple;
-            color: $white;
+        .savePrintBtn{background-color: globalVariables.$purple;
+            color: globalVariables.$white;
             width: 200px;
             height: 50px;
             border-radius: 8px;
