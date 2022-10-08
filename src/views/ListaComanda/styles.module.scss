@@ -2,7 +2,6 @@
 @use 'src/assets/style/mixinHelper';
 .screen{
     height: 100%;
-    padding: 50px;
     overflow-y: scroll;
     .container1{
         height: 200px;

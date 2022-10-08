@@ -1,3 +1,6 @@
+@use 'src/assets/style/globalVariables';
+@use 'src/assets/style/mixinHelper';
+
 .full{
     overflow: hidden;
     background-color: #D9D9D9;

@@ -1,14 +1,18 @@
-import React from "react";
-// import logo from "./logo.svg";
-// import { Counter } from "./features/counter/Counter";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListaComanda from "./views/ListaComanda/ListaComanda";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <ListaComanda />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<ListaComanda />}>
+            <Route path="*" element={<ListaComanda />} />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
