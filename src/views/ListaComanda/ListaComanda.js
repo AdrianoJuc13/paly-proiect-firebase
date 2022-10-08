@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { database } from "../../firebaseConfig";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
-import styles from "./ListaComanda.module.scss";
+import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");

@@ -2,7 +2,7 @@ import Layout from "./components/Layout";
 import { database } from "../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import styles from "AdaugaComanda.module.scss";
+import styles from "styles.module.scss";
 
 export default function NoteOperations() {
   const dbInstance = collection(database, "Comenzi");
