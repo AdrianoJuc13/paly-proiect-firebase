@@ -10,6 +10,7 @@ export default function Layout({ children }) {
           <button className={styles.button}>Comanda</button>
         </a>
       </div>
+
       <main className={styles.screen}>{children}</main>
     </div>
   );

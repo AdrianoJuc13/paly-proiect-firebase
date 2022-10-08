@@ -1,10 +1,10 @@
-import Layout from "./components/Layout";
-import { database } from "../firebaseConfig";
+import { database } from "../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import styles from "styles.module.scss";
+import styles from "./styles.module.scss";
+import Layout from "../../components/Layout/Layout";
 
-export default function NoteOperations() {
+export default function AdaugaComanda() {
   const dbInstance = collection(database, "Comenzi");
   const [adresa, setAdresa] = useState("");
   const [client, setClient] = useState("");
