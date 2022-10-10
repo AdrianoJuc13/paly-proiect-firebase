@@ -9,6 +9,9 @@ export default function Layout({ children }) {
         <a href="/adaugaComanda">
           <button className={styles.button}>Comanda</button>
         </a>
+        <a href="/adaugaComanda">
+          <button className={styles.button}>Comanda</button>
+        </a>
       </div>
 
       <main className={styles.screen}>{children}</main>
