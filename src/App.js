@@ -9,7 +9,6 @@ import "./App.css";
 import AdaugaComanda from "./views/AdaugaComanda/AdaugaComanda.js";
 import { ToastContainer } from "react-toastify";
 import Login from "./views/Login";
-import TopNav from "./components/TopNav/TopNav";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -24,7 +23,6 @@ function App() {
     <>
       <ToastContainer position="top-center" />
       <BrowserRouter>
-        {currentUser && <TopNav />}
         <div className="App">
           <Routes>
             {currentUser ? (

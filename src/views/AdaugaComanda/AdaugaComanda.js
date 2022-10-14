@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { v4 as uuidv4 } from "uuid";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 
 export default function AdaugaComanda() {
   const dbInstance = collection(database, "Comenzi");
@@ -91,10 +92,8 @@ export default function AdaugaComanda() {
 
   const saveComanda = () => {};
   return (
-    //sadasdas
     <Layout>
       <div className={styles.full}>
-        <button className={styles.MenuBtn}>{`<${" "}Menu`}</button>
         <div className={styles.titlu}>Creaza comanda</div>
         <div className={styles.container}>
           <div className={styles.field}>
@@ -128,60 +127,89 @@ export default function AdaugaComanda() {
             />
           </div>
         </div>
-        <button className={styles.adaugaProdus}>Adauga Produs</button>
-        <div>
-          <h1>Add New Member</h1>
-          <form onSubmit={handleSubmit}>
+        <button className={styles.adaugaProdus} onClick={handleAddFields}>
+          Adauga Produs
+        </button>
+        <div className={styles.ListaProduse}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             {inputFields.map((inputField) => (
-              <div key={inputField.id}>
-                <input
-                  name="nume"
-                  placeholder="nume"
-                  value={inputField.nume}
-                  onChange={(event) => handleChangeInput(inputField.id, event)}
-                />
-                <input
-                  name="lungime"
-                  placeholder="lungime"
-                  value={inputField.lungime}
-                  onChange={(event) => handleChangeInput(inputField.id, event)}
-                />
-                <input
-                  name="latime"
-                  placeholder="latime"
-                  value={inputField.latime}
-                  onChange={(event) => handleChangeInput(inputField.id, event)}
-                />
-                <input
-                  name="grosime"
-                  placeholder="grosime"
-                  value={inputField.grosime}
-                  onChange={(event) => handleChangeInput(inputField.id, event)}
-                />
-                <input
-                  name="cantitate"
-                  placeholder="cantitate"
-                  value={inputField.cantitate}
-                  onChange={(event) => handleChangeInput(inputField.id, event)}
-                />
-                <input
-                  name="pret"
-                  placeholder="pret"
-                  value={inputField.pret}
-                  onChange={(event) => handleChangeInput(inputField.id, event)}
-                />
+              <div className={styles.row} key={inputField.id}>
+                <div className={styles.rowData}>
+                  <input
+                    className={styles.input}
+                    name="nume"
+                    placeholder="nume"
+                    value={inputField.nume}
+                    onChange={(event) =>
+                      handleChangeInput(inputField.id, event)
+                    }
+                  />
+                  <input
+                    className={styles.input}
+                    name="lungime"
+                    placeholder="lungime"
+                    value={inputField.lungime}
+                    onChange={(event) =>
+                      handleChangeInput(inputField.id, event)
+                    }
+                  />
+                  <input
+                    className={styles.input}
+                    name="latime"
+                    placeholder="latime"
+                    value={inputField.latime}
+                    onChange={(event) =>
+                      handleChangeInput(inputField.id, event)
+                    }
+                  />
+                  <input
+                    className={styles.input}
+                    name="grosime"
+                    placeholder="grosime"
+                    value={inputField.grosime}
+                    onChange={(event) =>
+                      handleChangeInput(inputField.id, event)
+                    }
+                  />
+                  <input
+                    className={styles.input}
+                    name="cantitate"
+                    placeholder="cantitate"
+                    value={inputField.cantitate}
+                    onChange={(event) =>
+                      handleChangeInput(inputField.id, event)
+                    }
+                  />
+                  <input
+                    className={styles.input}
+                    name="pret"
+                    placeholder="pret"
+                    value={inputField.pret}
+                    onChange={(event) =>
+                      handleChangeInput(inputField.id, event)
+                    }
+                  />
+                </div>
                 <div
+                  className={styles.removeBtn}
                   disabled={inputFields.length === 1}
                   onClick={() => handleRemoveFields(inputField.id)}
                 >
-                  -
+                  <MinusOutlined />
                 </div>
-                <div onClick={handleAddFields}>+</div>
               </div>
             ))}
-            <button type="submit" onClick={handleSubmit}>
-              Send
-            </button>
+
+            <div className={styles.endArea}>
+              <button
+                className={styles.saveBtn}
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Salveaza
+              </button>
+              <button className={styles.printBtn}>Printeaza</button>
+            </div>
           </form>
         </div>
       </div>

@@ -1,19 +1,9 @@
+import TopNav from "../TopNav/TopNav";
 import styles from "./Layout.module.scss";
 export default function Layout({ children }) {
   return (
     <div className={styles.full}>
-      <div className={styles.navbar}>
-        <a href="/">
-          <button className={styles.button}>Dashboard</button>
-        </a>
-        <a href="/adaugaComanda">
-          <button className={styles.button}>Comanda</button>
-        </a>
-        <a href="/adaugaComanda">
-          <button className={styles.button}>Comanda</button>
-        </a>
-      </div>
-
+      <div className={styles.navbar}>{<TopNav />}</div>
       <main className={styles.screen}>{children}</main>
     </div>
   );

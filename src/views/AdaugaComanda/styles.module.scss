@@ -4,21 +4,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    .MenuBtn{
-        flex:1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: globalVariables.$green;
-        color: globalVariables.$white;
-        border: none;
-        height: 50px;
-        width: 100px;
-        border-radius: 40px;
-    }
     .titlu{
-        flex: 1;
         font-size: 50px;
         margin-top: 50px;
         margin-bottom: 50px;
@@ -26,7 +12,7 @@
         display: flex;
     }
     .container{
-        flex:1;
+ 
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -49,64 +35,67 @@
         
     }
     .adaugaProdus{
-        flex:1;
         background-color: globalVariables.$purple;
         color: globalVariables.$white;
         width: 200px;
         height: 50px;
         border-radius: 8px;
-        margin: 50px;
+        margin-top: 40px;
         margin-left: auto;
         margin-right: auto;
         border: none;
     }
     .ListaProduse{
-        flex:9;
-        background-color: globalVariables.$white;
-        overflow-y: scroll;
-        .table{
-            width: 100%;
-            .thead{
-                background-color: globalVariables.$green;
-                .tr{
-                    .th{
-                        padding:10px;
-                        height: 50px;
-                        color: globalVariables.$white;
-                        flex:1;
+        margin: 50px;
+        .form{
+            height: 100%;
+            justify-content: space-between;
+            .row{
+                display: flex;
+                flex-direction: row;
+                .rowData{
+                    flex: 1;
+                    display: flex;
+                    .input{
+                        flex: 1;
                     }
                 }
+                .removeBtn{
+                    cursor: pointer;
+                    background-color: globalVariables.$red;
+                    width: 3vw;
+                    padding: 10px;
+                }
+                
             }
-            .tbody{
-                .tr{
-                    .td{
-                        height:40px;
-                        border:1px solid globalVariables.$grey;
-                        .input{
-                            border: none;
-                            width: 98%;
-                            height: 40px;
-                        }
-
-                        
-                    }
+            .endArea{
+                margin-top: 50px;
+                margin-bottom: 50px;
+                display: flex;
+                flex-direction: row;
+                gap: 20vw;
+                .saveBtn{
+                    width: 100px;   
+                    height: 50px;
+                    font-size: 150%;
+                    background-color: globalVariables.$purple;
+                    color: globalVariables.$white;
+                    border: none;
+                    border-radius: 8px; 
+                }
+                .printBtn{
+                    width: 100px;   
+                    height: 50px;
+                    font-size: 150%;
+                    background-color: globalVariables.$purple;
+                    color: globalVariables.$white;
+                    border: none;
+                    border-radius: 8px;
                 }
             }
+           
         }
+        
     }
-    .endArea{
-        flex:1;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        .savePrintBtn{background-color: globalVariables.$purple;
-            color: globalVariables.$white;
-            width: 200px;
-            height: 50px;
-            border-radius: 8px;
-            margin: 30px;
-            border: none;
-            font-size: 20px;
-        }
-    }
+    
 }
