@@ -37,6 +37,7 @@ export default function AdaugaComanda() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cantiate, grosime, latime, lungime, nume, pret]);
   return (
+    //sadasdas
     <Layout>
       <div className={styles.full}>
         <button className={styles.MenuBtn}>{`<${" "}Menu`}</button>
