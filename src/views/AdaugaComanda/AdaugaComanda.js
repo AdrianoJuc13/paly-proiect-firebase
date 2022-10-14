@@ -1,8 +1,9 @@
 import { database } from "../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AdaugaComanda() {
   const dbInstance = collection(database, "Comenzi");
@@ -10,32 +11,85 @@ export default function AdaugaComanda() {
   const [client, setClient] = useState("");
   const [status] = useState(false);
   const [dataProcess, setDataProcess] = useState("");
+  const [inputFields, setInputFields] = useState([
+    {
+      id: uuidv4(),
+      nume: "",
+      lungime: "",
+      latime: "",
+      grosime: "",
+      cantitate: "",
+      pret: "",
+    },
+  ]);
 
-  const [nume, setNume] = useState("");
-  const [lungime, setLungime] = useState("");
-  const [latime, setLatime] = useState("");
-  const [grosime, setGrosime] = useState("");
-  const [cantiate, setCantitate] = useState("");
-  const [pret, setPret] = useState("");
-  const [produse, setProduse] = useState([]);
-
-  // let arrayProduse = [];
-
-  const saveComanda = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,
       status: status,
       dataProcess: dataProcess,
-      produse: {},
+      produse:
+        inputFields &&
+        inputFields.map((item) => {
+          return JSON.stringify(item);
+        }),
     }).then(() => {});
+    alert(
+      inputFields &&
+        inputFields.map((item) => {
+          return JSON.stringify(item);
+        })
+    );
   };
-  useEffect(() => {
-    // arrayProduse.push();
-    setProduse();
-    console.log(produse);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cantiate, grosime, latime, lungime, nume, pret]);
+
+  const handleChangeInput = (id, event) => {
+    const newInputFields = inputFields.map((i) => {
+      if (id === i.id) {
+        i[event.target.name] = event.target.value;
+      }
+      return i;
+    });
+
+    setInputFields(newInputFields);
+    console.log(
+      `${
+        inputFields &&
+        inputFields.map((item) => {
+          return JSON.stringify(item);
+        })
+      }`
+    );
+  };
+
+  const handleAddFields = () => {
+    setInputFields([
+      ...inputFields,
+      {
+        id: uuidv4(),
+        nume: "",
+        lungime: "",
+        latime: "",
+        grosime: "",
+        cantitate: "",
+        pret: "",
+      },
+    ]);
+  };
+
+  const handleRemoveFields = (id) => {
+    const values = [...inputFields];
+    values.splice(
+      values.findIndex((value) => value.id === id),
+      1
+    );
+    setInputFields(values);
+  };
+
+  // let arrayProduse = [];
+
+  const saveComanda = () => {};
   return (
     //sadasdas
     <Layout>
@@ -75,79 +129,60 @@ export default function AdaugaComanda() {
           </div>
         </div>
         <button className={styles.adaugaProdus}>Adauga Produs</button>
-        <div className={styles.ListaProduse}>
-          <table className={styles.table}>
-            <thead className={styles.thead}>
-              <tr className={styles.tr}>
-                <th className={styles.th}>Nume Produs</th>
-                <th className={styles.th}>Lungime</th>
-                <th className={styles.th}>Latime</th>
-                <th className={styles.th}>Grosime</th>
-                <th className={styles.th}>Cantitate</th>
-                <th className={styles.th}>Pret</th>
-              </tr>
-            </thead>
-            <tbody className={styles.tbody}>
-              {
-                <tr className={styles.tr}>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      placeholder="Piatra"
-                      type="text"
-                      onChange={(e) => setNume(e.target.value)}
-                    ></input>
-                  </td>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      placeholder="120cm"
-                      type="number"
-                      onChange={(e) => setLungime(e.target.value)}
-                    ></input>
-                  </td>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      placeholder="23cm"
-                      type="number"
-                      onChange={(e) => setLatime(e.target.value)}
-                    ></input>
-                  </td>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      placeholder="5cm"
-                      type="number"
-                      onChange={(e) => setGrosime(e.target.value)}
-                    ></input>
-                  </td>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      placeholder="3 buc."
-                      type="number"
-                      onChange={(e) => setCantitate(e.target.value)}
-                    ></input>
-                  </td>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      placeholder="123$"
-                      type="number"
-                      onChange={(e) => setPret(e.target.value)}
-                    ></input>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-        <div className={styles.endArea}>
-          <button className={styles.savePrintBtn} onClick={saveComanda}>
-            Save
-          </button>
-          <button className={styles.savePrintBtn}>Print</button>
+        <div>
+          <h1>Add New Member</h1>
+          <form onSubmit={handleSubmit}>
+            {inputFields.map((inputField) => (
+              <div key={inputField.id}>
+                <input
+                  name="nume"
+                  placeholder="nume"
+                  value={inputField.nume}
+                  onChange={(event) => handleChangeInput(inputField.id, event)}
+                />
+                <input
+                  name="lungime"
+                  placeholder="lungime"
+                  value={inputField.lungime}
+                  onChange={(event) => handleChangeInput(inputField.id, event)}
+                />
+                <input
+                  name="latime"
+                  placeholder="latime"
+                  value={inputField.latime}
+                  onChange={(event) => handleChangeInput(inputField.id, event)}
+                />
+                <input
+                  name="grosime"
+                  placeholder="grosime"
+                  value={inputField.grosime}
+                  onChange={(event) => handleChangeInput(inputField.id, event)}
+                />
+                <input
+                  name="cantitate"
+                  placeholder="cantitate"
+                  value={inputField.cantitate}
+                  onChange={(event) => handleChangeInput(inputField.id, event)}
+                />
+                <input
+                  name="pret"
+                  placeholder="pret"
+                  value={inputField.pret}
+                  onChange={(event) => handleChangeInput(inputField.id, event)}
+                />
+                <div
+                  disabled={inputFields.length === 1}
+                  onClick={() => handleRemoveFields(inputField.id)}
+                >
+                  -
+                </div>
+                <div onClick={handleAddFields}>+</div>
+              </div>
+            ))}
+            <button type="submit" onClick={handleSubmit}>
+              Send
+            </button>
+          </form>
         </div>
       </div>
     </Layout>
