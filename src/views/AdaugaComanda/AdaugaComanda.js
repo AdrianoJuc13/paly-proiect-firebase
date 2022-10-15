@@ -4,7 +4,7 @@ import { useState } from "react";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { v4 as uuidv4 } from "uuid";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { MinusOutlined } from "@ant-design/icons";
 
 export default function AdaugaComanda() {
   const dbInstance = collection(database, "Comenzi");
@@ -91,6 +91,7 @@ export default function AdaugaComanda() {
   // let arrayProduse = [];
 
   const saveComanda = () => {};
+
   return (
     <Layout>
       <div className={styles.full}>

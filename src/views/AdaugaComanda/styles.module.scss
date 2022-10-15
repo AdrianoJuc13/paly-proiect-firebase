@@ -1,40 +1,38 @@
-@use 'src/assets/style/globalVariables';
-@use 'src/assets/style/mixinHelper';
-.full{
+@use "src/assets/style/globalVariables";
+@use "src/assets/style/mixinHelper";
+.full {
     height: 100%;
     display: flex;
     flex-direction: column;
-    .titlu{
+    .titlu {
         font-size: 50px;
         margin-top: 50px;
         margin-bottom: 50px;
         font-weight: bold;
         display: flex;
     }
-    .container{
- 
+    .container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        .field{
+        .field {
             display: flex;
             flex-direction: column;
             width: 20%;
-            .label{
+            .label {
                 display: flex;
                 justify-content: flex-start;
                 color: globalVariables.$grey;
             }
-            .input{
+            .input {
                 border: 2px solid globalVariables.$border;
                 border-radius: 4px;
                 height: 50px;
                 font-size: 20px;
             }
         }
-        
     }
-    .adaugaProdus{
+    .adaugaProdus {
         background-color: globalVariables.$purple;
         color: globalVariables.$white;
         width: 200px;
@@ -45,46 +43,45 @@
         margin-right: auto;
         border: none;
     }
-    .ListaProduse{
+    .ListaProduse {
         margin: 50px;
-        .form{
+        .form {
             height: 100%;
             justify-content: space-between;
-            .row{
+            .row {
                 display: flex;
                 flex-direction: row;
-                .rowData{
-                    flex: 1;
+                .rowData {
+                    width: 100%;
                     display: flex;
-                    .input{
-                        flex: 1;
+                    .input {
+                        width: 100%;
                     }
                 }
-                .removeBtn{
+                .removeBtn {
                     cursor: pointer;
                     background-color: globalVariables.$red;
                     width: 3vw;
                     padding: 10px;
                 }
-                
             }
-            .endArea{
+            .endArea {
                 margin-top: 50px;
                 margin-bottom: 50px;
                 display: flex;
                 flex-direction: row;
                 gap: 20vw;
-                .saveBtn{
-                    width: 100px;   
+                .saveBtn {
+                    width: 100px;
                     height: 50px;
                     font-size: 150%;
                     background-color: globalVariables.$purple;
                     color: globalVariables.$white;
                     border: none;
-                    border-radius: 8px; 
+                    border-radius: 8px;
                 }
-                .printBtn{
-                    width: 100px;   
+                .printBtn {
+                    width: 100px;
                     height: 50px;
                     font-size: 150%;
                     background-color: globalVariables.$purple;
@@ -93,9 +90,6 @@
                     border-radius: 8px;
                 }
             }
-           
         }
-        
     }
-    
 }
