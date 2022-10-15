@@ -91,6 +91,7 @@ export default function AdaugaComanda() {
   // let arrayProduse = [];
 
   const saveComanda = () => {};
+
   return (
     <Layout>
       <div className={styles.full}>
@@ -195,22 +196,21 @@ export default function AdaugaComanda() {
                   disabled={inputFields.length === 1}
                   onClick={() => handleRemoveFields(inputField.id)}
                 >
-                  <MinusOutlined />
+                  <MinusOutlined className={styles.MinusOutlined} />
                 </div>
               </div>
             ))}
-
-            <div className={styles.endArea}>
-              <button
-                className={styles.saveBtn}
-                type="submit"
-                onClick={handleSubmit}
-              >
-                Salveaza
-              </button>
-              <button className={styles.printBtn}>Printeaza</button>
-            </div>
           </form>
+        </div>
+        <div className={styles.endArea}>
+          <button
+            className={styles.saveBtn}
+            type="submit"
+            onClick={handleSubmit}
+          >
+            Salveaza
+          </button>
+          <button className={styles.printBtn}>Printeaza</button>
         </div>
       </div>
     </Layout>
