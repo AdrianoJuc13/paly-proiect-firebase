@@ -101,7 +101,6 @@ export default function AdaugaComanda() {
             <label className={styles.label}> Numele clientului</label>
             <input
               className={styles.input}
-              placeholder="Ex: Victor Lucan"
               onChange={(e) => setClient(e.target.value)}
               type="text"
               value={client}
@@ -111,7 +110,6 @@ export default function AdaugaComanda() {
             <label className={styles.label}> Adresa</label>
             <input
               className={styles.input}
-              placeholder="Ex: Dolhasca, nr. 187"
               onChange={(e) => setAdresa(e.target.value)}
               type="text"
               value={adresa}
@@ -121,7 +119,6 @@ export default function AdaugaComanda() {
             <label className={styles.label}> Date de procesare</label>
             <input
               className={styles.input}
-              placeholder="Ex: se genereaza factura"
               onChange={(e) => setDataProcess(e.target.value)}
               type="text"
               value={dataProcess}

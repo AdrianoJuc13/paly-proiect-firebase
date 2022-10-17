@@ -2,6 +2,9 @@
 @use "src/assets/style/mixinHelper";
 
 .full {
+    height: 100%;
     background-color: #d9d9d9;
-    height: 100vh;
+    .main {
+        height: 100%;
+    }
 }

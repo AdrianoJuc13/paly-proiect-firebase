@@ -36,7 +36,6 @@ export default function ListaComanda() {
     <Layout>
       <div className={styles.screen}>
         <div className={styles.container1}>
-          <button className={styles.buttonMenu}>{`< MENU`}</button>
           <button className={styles.searchField}>Search</button>
         </div>
         <div className={styles.container2}>Lista Comenzi</div>
