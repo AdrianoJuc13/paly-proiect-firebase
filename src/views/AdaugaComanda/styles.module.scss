@@ -1,11 +1,10 @@
 @use "src/assets/style/globalVariables";
 @use "src/assets/style/mixinHelper";
-.full {
+.screen {
     height: 100%;
     display: flex;
     flex-direction: column;
     margin: 2vw;
-
     .titlu {
         font-size: 50px;
         font-weight: bold;

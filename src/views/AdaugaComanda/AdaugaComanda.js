@@ -94,7 +94,7 @@ export default function AdaugaComanda() {
 
   return (
     <Layout>
-      <div className={styles.full}>
+      <div className={styles.screen}>
         <div className={styles.titlu}>Creaza comanda</div>
         <div className={styles.container}>
           <div className={styles.field}>
