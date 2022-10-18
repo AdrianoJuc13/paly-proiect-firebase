@@ -159,6 +159,7 @@
                                 width: 100%;
                                 height: 100%;
                                 .headerValues {
+                                    height: 10%;
                                     display: flex;
                                     justify-content: space-around;
                                     .property {
@@ -177,42 +178,122 @@
                                             height: 50px;
                                             font-size: 20px;
                                         }
+                                        .select {
+                                            //aici
+                                        }
                                     }
                                 }
                                 .table {
+                                    margin: 30px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                    .header {
+                                        width: 100%;
+                                        display: flex;
+                                        flex-direction: row;
+                                        .label {
+                                            width: 20%;
+                                            text-align: center;
+                                            border: 1px solid black;
+                                            background-color: globalVariables.$green;
+                                        }
+                                    }
+                                    .body {
+                                        width: 100%;
+                                        .row {
+                                            display: flex;
+                                            flex-direction: row;
+                                            width: 100%;
+                                            .cell {
+                                                width: 20%;
+                                                border: 1px solid grey;
+                                                text-align: center;
+                                            }
+                                            .deleteBtn {
+                                                background-color: red;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .footer {
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: space-around;
+                                .saveEdit {
                                     background-color: green;
+                                    color: white;
+                                    padding: 10px;
+                                    margin: 10px;
+                                    border-radius: 8px;
+                                    cursor: pointer;
+                                }
+                                .deleteEdit {
+                                    background-color: red;
+                                    color: white;
+                                    padding: 10px;
+                                    margin: 10px;
+                                    border-radius: 8px;
+                                    cursor: pointer;
                                 }
                             }
                         }
                     }
-                    // .editSection {
-                    //     background-color: globalVariables.$purple;
-                    //     width: 15vw;
-                    //     margin-top: 10px;
-                    //     margin-left: auto;
-                    //     margin-right: auto;
-                    //     border-radius: 8px;
-                    //     cursor: pointer;
-                    //     .editPage {
-                    //         position: absolute;
-                    //         left: 0;
-                    //         top: 0;
-                    //         width: 100%;
-                    //         height: 100%;
-                    //         background-color: globalVariables.$grey;
-                    //         .container {
-                    //             position: relative;
-                    //             left: 2.5%;
-                    //             top: 2.5%;
-                    //             width: 95%;
-                    //             height: 95%;
-                    //             background-color: white;
-                    //             cursor: default;
-                    //         }
-                    //     }
-                    // }
                 }
             }
         }
     }
 }
+
+// .ListaProduse {
+//     margin: 50px;
+//     .form {
+//         height: 100%;
+//         justify-content: space-between;
+//         .row {
+//             display: flex;
+//             flex-direction: row;
+//             .rowData {
+//                 width: 100%;
+//                 display: flex;
+//                 .input {
+//                     width: 100%;
+//                 }
+//             }
+//             .removeBtn {
+//                 cursor: pointer;
+//                 background-color: globalVariables.$red;
+//                 width: 30px;
+//                 height: 30px;
+//                 margin-left: 10px;
+//                 border-radius: 999px;
+//             }
+//         }
+//         .endArea {
+//             margin-top: 50px;
+//             margin-bottom: 50px;
+//             display: flex;
+//             flex-direction: row;
+//             gap: 20vw;
+//             .saveBtn {
+//                 width: 100px;
+//                 height: 50px;
+//                 font-size: 150%;
+//                 background-color: globalVariables.$purple;
+//                 color: globalVariables.$white;
+//                 border: none;
+//                 border-radius: 8px;
+//             }
+//             .printBtn {
+//                 width: 100px;
+//                 height: 50px;
+//                 font-size: 150%;
+//                 background-color: globalVariables.$purple;
+//                 color: globalVariables.$white;
+//                 border: none;
+//                 border-radius: 8px;
+//             }
+//         }
+//     }
+// }

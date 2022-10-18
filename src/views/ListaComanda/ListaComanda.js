@@ -54,7 +54,6 @@ export default function ListaComanda() {
             <div className={styles.headerComandaChild}>ID-ul comenzi</div>
             <div className={styles.headerComandaChild}>Numar de telefon</div>
             <div className={styles.headerComandaChild}>Statusul</div>
-            <div className={styles.headerComandaChild}>Remove</div>
           </div>
 
           <div>
@@ -93,18 +92,7 @@ export default function ListaComanda() {
                       >
                         {item.status ? "Livrata" : "In pregatire"}
                       </div>
-                      <div
-                        className={styles.removeBtn}
-                        onClick={() => {
-                          deleteComanda(item.id);
-                        }}
-                      >
-                        Delete Comanda
-                      </div>
                     </div>
-                    {
-                      // start
-                    }
                     <motion.div
                       layout
                       transition={{ duration: 0.15 }}
@@ -184,7 +172,6 @@ export default function ListaComanda() {
                                     <CloseCircleOutlined />
                                   </div>
                                   <div className={styles.form}>
-                                    Editeaza comanda cu id-ul: {editeaza}
                                     <div className={styles.headerValues}>
                                       <div className={styles.property}>
                                         <div className={styles.label}>
@@ -213,8 +200,98 @@ export default function ListaComanda() {
                                           className={styles.input}
                                         />
                                       </div>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Statusul
+                                        </div>
+                                        <select
+                                          className={styles.select}
+                                          defaultValue={item.status}
+                                        >
+                                          <option
+                                            className={styles.false}
+                                            value="false"
+                                          >
+                                            In pregatire
+                                          </option>
+                                          <option
+                                            className={styles.true}
+                                            value="true"
+                                          >
+                                            Livrata
+                                          </option>
+                                        </select>
+                                      </div>
                                     </div>
-                                    <div className={styles.table}>table</div>
+                                    <div className={styles.table}>
+                                      <div className={styles.header}>
+                                        <div className={styles.label}>Nume</div>
+                                        <div className={styles.label}>
+                                          Lungime
+                                        </div>
+                                        <div className={styles.label}>
+                                          Latime
+                                        </div>
+                                        <div className={styles.label}>
+                                          Grosime
+                                        </div>
+                                        <div className={styles.label}>
+                                          Cantitate
+                                        </div>
+                                        <div className={styles.label}>Pret</div>
+                                      </div>
+                                      <div className={styles.body}>
+                                        {item.produse &&
+                                          item.produse.map((produs, index) => {
+                                            return (
+                                              <div
+                                                className={styles.row}
+                                                key={index}
+                                              >
+                                                <input
+                                                  defaultValue={produs.nume}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.lungime}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.latime}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.grosime}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={
+                                                    produs.cantitate
+                                                  }
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.pret}
+                                                  className={styles.cell}
+                                                />
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className={styles.footer}>
+                                    <div className={styles.saveEdit}>
+                                      Salveaza
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        deleteComanda(item.id);
+                                      }}
+                                      className={styles.deleteEdit}
+                                    >
+                                      Sterge Comanda
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -224,7 +301,6 @@ export default function ListaComanda() {
                       </div>
                     </motion.div>
                   </div>
-                  //end
                 );
               })}
           </div>
