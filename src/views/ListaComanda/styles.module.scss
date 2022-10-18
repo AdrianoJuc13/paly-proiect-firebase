@@ -2,7 +2,6 @@
 @use "src/assets/style/mixinHelper";
 .screen {
     height: 100%;
-    overflow-y: hidden;
     margin: 2vw;
     .container1 {
         display: flex;
@@ -33,7 +32,10 @@
         font-size: 50px;
         margin-left: 40px;
     }
+
     .container3 {
+        height: 70vh;
+        overflow-y: scroll;
         background-color: globalVariables.$white;
         border-radius: 30px;
         padding: 20px;

@@ -26,6 +26,8 @@ export default function AdaugaComanda() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (client && adresa) console.log("ii ok ");
+    else console.log("nu i ok");
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,
@@ -37,12 +39,12 @@ export default function AdaugaComanda() {
           return JSON.stringify(item);
         }),
     }).then(() => {});
-    alert(
-      inputFields &&
-        inputFields.map((item) => {
-          return JSON.stringify(item);
-        })
-    );
+    // alert(
+    //   inputFields &&
+    //     inputFields.map((item) => {
+    //       return JSON.stringify(item);
+    //     })
+    // );
   };
 
   const handleChangeInput = (id, event) => {
