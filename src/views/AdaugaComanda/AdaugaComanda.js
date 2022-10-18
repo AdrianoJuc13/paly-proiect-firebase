@@ -90,7 +90,7 @@ export default function AdaugaComanda() {
 
   // let arrayProduse = [];
 
-  const saveComanda = () => {};
+  // const saveComanda = () => {};
 
   return (
     <Layout>
