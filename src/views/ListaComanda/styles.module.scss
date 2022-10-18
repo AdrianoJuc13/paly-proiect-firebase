@@ -56,103 +56,68 @@
         .Comanda {
             border: black 1px solid;
             border-radius: 5px;
-            .inchisComanda {
-                color: black;
-                margin: 5px;
-                .headerField {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-around;
-                    .comandaClient {
-                        flex: 1;
-                    }
-                    .comandaAdresa {
-                        flex: 1;
-                    }
-                    .comandaId {
-                        flex: 1;
-                    }
-
-                    .telefon {
-                        flex: 1;
-                        color: globalVariables.$grey;
-                    }
-                    .comandaStatus {
-                        flex: 1;
-                        background-color: globalVariables.$red;
-                        color: globalVariables.$white;
-                        font-weight: bold;
-                        border-radius: 5px;
-                    }
-                    .removeBtn {
-                        flex: 1;
-                        cursor: pointer;
-                        background: globalVariables.$red;
-                        color: globalVariables.$white;
-                        font-weight: bold;
-                        border-radius: 5px;
-                    }
+            .headerField {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                .comandaClient {
+                    flex: 1;
+                }
+                .comandaAdresa {
+                    flex: 1;
+                }
+                .comandaId {
+                    flex: 1;
+                }
+                .telefon {
+                    flex: 1;
+                    color: globalVariables.$grey;
+                }
+                .comandaStatus {
+                    flex: 1;
+                    background-color: globalVariables.$red;
+                    color: globalVariables.$white;
+                    font-weight: bold;
+                    border-radius: 5px;
+                }
+                .removeBtn {
+                    flex: 1;
+                    cursor: pointer;
+                    background: globalVariables.$red;
+                    color: globalVariables.$white;
+                    font-weight: bold;
+                    border-radius: 5px;
                 }
             }
-            .deschisComanda {
-                color: black;
-                margin: 5px;
-                .headerField {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-around;
-                    .comandaClient {
-                        flex: 1;
-                    }
-                    .comandaAdresa {
-                        flex: 1;
-                    }
-                    .comandaId {
-                        flex: 1;
-                    }
-                    .telefon {
-                        flex: 1;
-                        color: globalVariables.$grey;
-                    }
-                    .comandaStatus {
-                        flex: 1;
-                        background-color: globalVariables.$red;
-                        color: globalVariables.$white;
-                        font-weight: bold;
-                        border-radius: 5px;
-                    }
-                    .removeBtn {
-                        flex: 1;
-                        cursor: pointer;
-                        background: globalVariables.$red;
-                        color: globalVariables.$white;
-                        font-weight: bold;
-                        border-radius: 5px;
+            .bodyField {
+                background-color: globalVariables.$white;
+                .deschisComanda {
+                    margin: 1vw;
+                    .tabel {
+                        .randProdusTitlu {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: row;
+                            color: white;
+                            .produsTitlu {
+                                background-color: globalVariables.$green;
+                                border: 1px solid white;
+                                width: 20%;
+                            }
+                        }
+                        .randProdus {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: row;
+                            .produs {
+                                border: 1px solid black;
+                                width: 20%;
+                            }
+                        }
                     }
                 }
-                .bodyField {
-                    padding: 1vw;
-                    background-color: globalVariables.$white;
-                    .randProdusTitlu {
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        color: white;
-                        .produsTitlu {
-                            background-color: globalVariables.$green;
-                            border: 1px solid white;
-                            width: 20%;
-                        }
-                    }
-                    .randProdus {
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        .produs {
-                            border: 1px solid black;
-                            width: 20%;
-                        }
-                    }
+                .inchisComanda {
+                    color: red;
                 }
             }
         }

@@ -4,10 +4,12 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
+import { motion } from "framer-motion";
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
+  const [deschis, setDeschis] = useState([false]);
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
@@ -58,55 +60,62 @@ export default function ListaComanda() {
               comanda.map((item) => {
                 return (
                   <div key={item.id} className={styles.Comanda}>
-                    {
+                    <div
+                      className={styles.headerField}
+                      onClick={() => {
+                        setDeschis(!deschis);
+                      }}
+                    >
+                      <div className={styles.comandaClient}>{item.client}</div>
+                      <div className={styles.comandaAdresa}>{item.adresa}</div>
+                      <div className={styles.comandaId}>{item.id}</div>
+                      <div className={styles.telefon}>{item.telefon}</div>
                       <div
-                        className={
-                          item.deschidere
-                            ? styles.inchisComanda
-                            : styles.deschisComanda
+                        className={styles.comandaStatus}
+                        style={
+                          item.status
+                            ? {
+                                background: "#6CAD55",
+                                cursor: "pointer",
+                                borderRadius: "5px",
+                              }
+                            : {
+                                background: "rgba(221, 3, 3, 0.75)",
+                                cursor: "pointer",
+                                borderRadius: "5px",
+                                padding: "5px",
+                              }
                         }
                       >
-                        <div className={styles.headerField}>
-                          <div className={styles.comandaClient}>
-                            {item.client}
-                          </div>
-                          <div className={styles.comandaAdresa}>
-                            {item.adresa}
-                          </div>
-                          <div className={styles.comandaId}>{item.id}</div>
-                          <div className={styles.telefon}>{item.telefon}</div>
-                          <div
-                            className={styles.comandaStatus}
-                            style={
-                              item.status
-                                ? {
-                                    background: "#6CAD55",
-                                    cursor: "pointer",
-                                    borderRadius: "5px",
-                                  }
-                                : {
-                                    background: "rgba(221, 3, 3, 0.75)",
-                                    cursor: "pointer",
-                                    borderRadius: "5px",
-                                    padding: "5px",
-                                  }
-                            }
-                          >
-                            {item.status ? "Livrata" : "In pregatire"}
-                          </div>
-                          <div
-                            className={styles.removeBtn}
-                            onClick={() => {
-                              deleteComanda(item.id);
-                            }}
-                          >
-                            Delete Comanda
-                          </div>
-                        </div>
-                        {!item.deschidere ? (
-                          <div className={styles.bodyField}>
-                            <div className={styles.randProdusTitlu}>
-                              <div className={styles.produsTitlu}>
+                        {item.status ? "Livrata" : "In pregatire"}
+                      </div>
+                      <div
+                        className={styles.removeBtn}
+                        onClick={() => {
+                          deleteComanda(item.id);
+                        }}
+                      >
+                        Delete Comanda
+                      </div>
+                    </div>
+                    {
+                      // start
+                    }
+                    <motion.div
+                      layout
+                      transition={{ duration: 0.2 }}
+                      className={styles.bodyField}
+                    >
+                      <div
+                        layout
+                        className={
+                          deschis ? styles.deschisComanda : styles.inchisComanda
+                        }
+                      >
+                        {deschis ? (
+                          <div className={styles.tabel}>
+                            <div layout className={styles.randProdusTitlu}>
+                              <div layout className={styles.produsTitlu}>
                                 Nume Produs
                               </div>
                               <div className={styles.produsTitlu}>
@@ -148,12 +157,11 @@ export default function ListaComanda() {
                               );
                             })}
                           </div>
-                        ) : (
-                          <div />
-                        )}
+                        ) : null}
                       </div>
-                    }
+                    </motion.div>
                   </div>
+                  //end
                 );
               })}
           </div>
