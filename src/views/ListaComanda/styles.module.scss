@@ -115,9 +115,102 @@
                             }
                         }
                     }
-                }
-                .inchisComanda {
-                    color: red;
+                    .editBtn {
+                        background-color: globalVariables.$purple;
+                        width: 15vw;
+                        margin-top: 10px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        border-radius: 8px;
+                        cursor: pointer;
+                    }
+                    .editPage {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(1, 1, 1, 0.438);
+                        .editScreen {
+                            position: relative;
+                            left: 2.5%;
+                            top: 2.5%;
+                            width: 95%;
+                            height: 95%;
+                            background-color: white;
+                            display: flex;
+                            flex-direction: column;
+                            .closeBtn {
+                                background-color: black;
+                                color: white;
+                                width: 7vh;
+                                height: 6vh;
+                                font-size: 2.7vh;
+                                border-radius: 5px;
+                                border: 1px solid grey;
+                                margin-left: auto;
+                                cursor: pointer;
+                            }
+
+                            .closeBtn:hover {
+                                scale: 1.05;
+                            }
+                            .form {
+                                width: 100%;
+                                height: 100%;
+                                .headerValues {
+                                    display: flex;
+                                    justify-content: space-around;
+                                    .property {
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: space-between;
+                                        width: 20%;
+                                        .label {
+                                            display: flex;
+                                            justify-content: flex-start;
+                                            color: globalVariables.$grey;
+                                        }
+                                        .input {
+                                            border: 2px solid globalVariables.$border;
+                                            border-radius: 4px;
+                                            height: 50px;
+                                            font-size: 20px;
+                                        }
+                                    }
+                                }
+                                .table {
+                                    background-color: green;
+                                }
+                            }
+                        }
+                    }
+                    // .editSection {
+                    //     background-color: globalVariables.$purple;
+                    //     width: 15vw;
+                    //     margin-top: 10px;
+                    //     margin-left: auto;
+                    //     margin-right: auto;
+                    //     border-radius: 8px;
+                    //     cursor: pointer;
+                    //     .editPage {
+                    //         position: absolute;
+                    //         left: 0;
+                    //         top: 0;
+                    //         width: 100%;
+                    //         height: 100%;
+                    //         background-color: globalVariables.$grey;
+                    //         .container {
+                    //             position: relative;
+                    //             left: 2.5%;
+                    //             top: 2.5%;
+                    //             width: 95%;
+                    //             height: 95%;
+                    //             background-color: white;
+                    //             cursor: default;
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }

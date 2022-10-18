@@ -5,11 +5,13 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { motion } from "framer-motion";
+import { CloseCircleOutlined } from "@ant-design/icons";
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
-  const [deschis, setDeschis] = useState([false]);
+  const [deschis, setDeschis] = useState(0);
+  const [editeaza, setEditeaza] = useState(false);
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
@@ -63,7 +65,9 @@ export default function ListaComanda() {
                     <div
                       className={styles.headerField}
                       onClick={() => {
-                        setDeschis(!deschis);
+                        deschis === item.id
+                          ? setDeschis(0)
+                          : setDeschis(item.id);
                       }}
                     >
                       <div className={styles.comandaClient}>{item.client}</div>
@@ -103,19 +107,18 @@ export default function ListaComanda() {
                     }
                     <motion.div
                       layout
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.15 }}
                       className={styles.bodyField}
                     >
                       <div
-                        layout
                         className={
-                          deschis ? styles.deschisComanda : styles.inchisComanda
+                          deschis === item.id ? styles.deschisComanda : null
                         }
                       >
-                        {deschis ? (
+                        {item.id === deschis ? (
                           <div className={styles.tabel}>
-                            <div layout className={styles.randProdusTitlu}>
-                              <div layout className={styles.produsTitlu}>
+                            <div className={styles.randProdusTitlu}>
+                              <div className={styles.produsTitlu}>
                                 Nume Produs
                               </div>
                               <div className={styles.produsTitlu}>
@@ -156,6 +159,66 @@ export default function ListaComanda() {
                                 </div>
                               );
                             })}
+
+                            <motion.div
+                              whileHover={{ scale: 1.03 }}
+                              transition={{ duration: 0.1 }}
+                              className={styles.editBtn}
+                              onClick={() => {
+                                setEditeaza(item.id);
+                                console.log(item);
+                              }}
+                            >
+                              Editeaza Comanda
+                            </motion.div>
+
+                            {editeaza ? (
+                              <div className={styles.editPage}>
+                                <div className={styles.editScreen}>
+                                  <div
+                                    className={styles.closeBtn}
+                                    onClick={() => {
+                                      setEditeaza(0);
+                                    }}
+                                  >
+                                    <CloseCircleOutlined />
+                                  </div>
+                                  <div className={styles.form}>
+                                    Editeaza comanda cu id-ul: {editeaza}
+                                    <div className={styles.headerValues}>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Numele Clientului
+                                        </div>
+                                        <input
+                                          defaultValue={item.client}
+                                          className={styles.input}
+                                        />
+                                      </div>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Adresa
+                                        </div>
+                                        <input
+                                          defaultValue={item.adresa}
+                                          className={styles.input}
+                                        />
+                                      </div>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Numar de telefon
+                                        </div>
+                                        <input
+                                          defaultValue={item.telefon}
+                                          className={styles.input}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className={styles.table}>table</div>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null}
                           </div>
                         ) : null}
                       </div>

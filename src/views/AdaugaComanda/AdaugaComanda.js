@@ -23,7 +23,6 @@ export default function AdaugaComanda() {
       grosime: "",
       cantitate: "",
       pret: "",
-      deschidere: false,
     },
   ]);
 
@@ -36,7 +35,6 @@ export default function AdaugaComanda() {
       adresa: adresa,
       status: status,
       telefon: telefon,
-      deschidere: false,
       produse: inputFields,
       // &&
       // inputFields.map((item) => {
