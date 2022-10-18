@@ -5,13 +5,15 @@ import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { v4 as uuidv4 } from "uuid";
 import { MinusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 export default function AdaugaComanda() {
+  const navigate = useNavigate();
   const dbInstance = collection(database, "Comenzi");
   const [adresa, setAdresa] = useState("");
   const [client, setClient] = useState("");
   const [status] = useState(false);
-  const [dataProcess, setDataProcess] = useState("");
+  const [telefon, setTelefon] = useState("");
   const [inputFields, setInputFields] = useState([
     {
       id: uuidv4(),
@@ -21,6 +23,7 @@ export default function AdaugaComanda() {
       grosime: "",
       cantitate: "",
       pret: "",
+      deschidere: false,
     },
   ]);
 
@@ -32,13 +35,16 @@ export default function AdaugaComanda() {
       client: client,
       adresa: adresa,
       status: status,
-      dataProcess: dataProcess,
-      produse:
-        inputFields &&
-        inputFields.map((item) => {
-          return JSON.stringify(item);
-        }),
-    }).then(() => {});
+      telefon: telefon,
+      deschidere: false,
+      produse: inputFields,
+      // &&
+      // inputFields.map((item) => {
+      //   return JSON.stringify(item);
+      // }),
+    }).then(() => {
+      navigate("/");
+    });
     // alert(
     //   inputFields &&
     //     inputFields.map((item) => {
@@ -56,14 +62,6 @@ export default function AdaugaComanda() {
     });
 
     setInputFields(newInputFields);
-    console.log(
-      `${
-        inputFields &&
-        inputFields.map((item) => {
-          return JSON.stringify(item);
-        })
-      }`
-    );
   };
 
   const handleAddFields = () => {
@@ -118,12 +116,12 @@ export default function AdaugaComanda() {
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label}> Date de procesare</label>
+            <label className={styles.label}>Numar de telefon</label>
             <input
               className={styles.input}
-              onChange={(e) => setDataProcess(e.target.value)}
-              type="text"
-              value={dataProcess}
+              onChange={(e) => setTelefon(e.target.value)}
+              type="number"
+              value={telefon}
             />
           </div>
         </div>

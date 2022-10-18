@@ -48,50 +48,111 @@ export default function ListaComanda() {
             <div className={styles.headerComandaChild}>Clientul</div>
             <div className={styles.headerComandaChild}>Adresa</div>
             <div className={styles.headerComandaChild}>ID-ul comenzi</div>
+            <div className={styles.headerComandaChild}>Numar de telefon</div>
             <div className={styles.headerComandaChild}>Statusul</div>
-            <div className={styles.headerComandaChild}>Date de procesare</div>
             <div className={styles.headerComandaChild}>Remove</div>
           </div>
+
           <div>
             {comanda &&
               comanda.map((item) => {
                 return (
                   <div key={item.id} className={styles.Comanda}>
-                    <div className={styles.inchisComanda}>
-                      <div className={styles.comandaClient}>{item.client}</div>
-                      <div className={styles.comandaAdresa}>{item.adresa}</div>
-                      <div className={styles.comandaId}>{item.id}</div>
+                    {
                       <div
-                        className={styles.comandaStatus}
-                        style={
-                          item.status
-                            ? {
-                                background: "#6CAD55",
-                                cursor: "pointer",
-                                borderRadius: "5px",
-                              }
-                            : {
-                                background: "rgba(221, 3, 3, 0.75)",
-                                cursor: "pointer",
-                                borderRadius: "5px",
-                                padding: "5px",
-                              }
+                        className={
+                          item.deschidere
+                            ? styles.inchisComanda
+                            : styles.deschisComanda
                         }
                       >
-                        {item.status ? "Livrata" : "In pregatire"}
+                        <div className={styles.headerField}>
+                          <div className={styles.comandaClient}>
+                            {item.client}
+                          </div>
+                          <div className={styles.comandaAdresa}>
+                            {item.adresa}
+                          </div>
+                          <div className={styles.comandaId}>{item.id}</div>
+                          <div className={styles.telefon}>{item.telefon}</div>
+                          <div
+                            className={styles.comandaStatus}
+                            style={
+                              item.status
+                                ? {
+                                    background: "#6CAD55",
+                                    cursor: "pointer",
+                                    borderRadius: "5px",
+                                  }
+                                : {
+                                    background: "rgba(221, 3, 3, 0.75)",
+                                    cursor: "pointer",
+                                    borderRadius: "5px",
+                                    padding: "5px",
+                                  }
+                            }
+                          >
+                            {item.status ? "Livrata" : "In pregatire"}
+                          </div>
+                          <div
+                            className={styles.removeBtn}
+                            onClick={() => {
+                              deleteComanda(item.id);
+                            }}
+                          >
+                            Delete Comanda
+                          </div>
+                        </div>
+                        {!item.deschidere ? (
+                          <div className={styles.bodyField}>
+                            <div className={styles.randProdusTitlu}>
+                              <div className={styles.produsTitlu}>
+                                Nume Produs
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Lungime cm
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Latime cm
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Grosime cm
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Cantitate
+                              </div>
+                              <div className={styles.produsTitlu}>Pret</div>
+                            </div>
+                            {item.produse.map((produs, index) => {
+                              return (
+                                <div key={index} className={styles.randProdus}>
+                                  <div className={styles.produs}>
+                                    {produs.nume}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.lungime}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.latime}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.grosime}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.cantitate}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.pret}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <div />
+                        )}
                       </div>
-                      <div className={styles.comandaProcesare}>
-                        {item.dataProcess}
-                      </div>
-                      <div
-                        className={styles.removeBtn}
-                        onClick={() => {
-                          deleteComanda(item.id);
-                        }}
-                      >
-                        Delete Comanda
-                      </div>
-                    </div>
+                    }
                   </div>
                 );
               })}
@@ -101,53 +162,3 @@ export default function ListaComanda() {
     </Layout>
   );
 }
-
-// {deschidereComanda ? (
-//   <div className={styles.deschisComanda}>
-//     <table className={styles.table}>
-//       <thead className={styles.tableHead}>
-//         <tr>
-//           <th className={styles.tablecell}>Clientul</th>
-//           <th className={styles.tablecell}>Adresa</th>
-//           <th className={styles.tablecell}>ID-ul comenzi</th>
-//           <th className={styles.tablecell}>Status</th>
-//           <th className={styles.tablecell}>Date procesare</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {comanda &&
-//           comanda.map((item) => {
-//             return (
-//               <tr key={item.id}>
-//                 <td className={styles.tablecell}>{item.client}</td>
-//                 <td className={styles.tablecell}>{item.adresa}</td>
-//                 <td className={styles.tablecell}>{item.id}</td>
-//                 <td
-//                   className={styles.tablecell}
-//                   style={
-//                     item.status
-//                       ? {
-//                           background: "#6CAD55",
-//                           cursor: "pointer",
-//                           borderRadius: "5px",
-//                         }
-//                       : {
-//                           background: "rgba(221, 3, 3, 0.75)",
-//                           cursor: "pointer",
-//                           borderRadius: "5px",
-//                           padding: "5px",
-//                         }
-//                   }
-//                 >
-//                   {item.status ? "Livrata" : "In pregatire"}
-//                 </td>
-//                 <td className={styles.tablecell}>
-//                   {item.dataProcess}
-//                 </td>
-//               </tr>
-//             );
-//           })}
-//       </tbody>
-//     </table>
-//   </div>
-// ) : null}
