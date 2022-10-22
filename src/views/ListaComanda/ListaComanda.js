@@ -4,10 +4,14 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
+import { motion } from "framer-motion";
+import { CloseCircleOutlined } from "@ant-design/icons";
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
+  const [deschis, setDeschis] = useState(0);
+  const [editeaza, setEditeaza] = useState(false);
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
@@ -35,11 +39,10 @@ export default function ListaComanda() {
   return (
     <Layout>
       <div className={styles.screen}>
+        <div className={styles.container2}>Lista Comenzi</div>
         <div className={styles.container1}>
-          <button className={styles.buttonMenu}>{`< MENU`}</button>
           <button className={styles.searchField}>Search</button>
         </div>
-        <div className={styles.container2}>Lista Comenzi</div>
         <div className={styles.container3}>
           <div className={styles.headerContainer}>
             <div>Comenzi</div>
@@ -49,50 +52,250 @@ export default function ListaComanda() {
             <div className={styles.headerComandaChild}>Clientul</div>
             <div className={styles.headerComandaChild}>Adresa</div>
             <div className={styles.headerComandaChild}>ID-ul comenzi</div>
+            <div className={styles.headerComandaChild}>Numar de telefon</div>
             <div className={styles.headerComandaChild}>Statusul</div>
-            <div className={styles.headerComandaChild}>Date de procesare</div>
-            <div className={styles.headerComandaChild}>Remove</div>
           </div>
+
           <div>
             {comanda &&
               comanda.map((item) => {
                 return (
                   <div key={item.id} className={styles.Comanda}>
-                    <div className={styles.inchisComanda}>
-                      <div className={styles.comandaClient}>{item.client}</div>
-                      <div className={styles.comandaAdresa}>{item.adresa}</div>
-                      <div className={styles.comandaId}>{item.id}</div>
+                    <div
+                      className={styles.headerField}
+                      onClick={() => {
+                        deschis === item.id
+                          ? setDeschis(0)
+                          : setDeschis(item.id);
+                      }}
+                    >
+                      <div className={`${styles.comandaItem} ${styles.comandaClient}`}>{item.client}</div>
+                      <div className={`${styles.comandaItem}`}>{item.adresa}</div>
+                      <div className={`${styles.comandaItem} ${styles.comandaId}`}>{item.id}</div>
+                      <div className={styles.telefon}>{item.telefon}</div>
                       <div
                         className={styles.comandaStatus}
                         style={
                           item.status
                             ? {
                                 background: "#6CAD55",
-                                cursor: "pointer",
-                                borderRadius: "5px",
                               }
                             : {
                                 background: "rgba(221, 3, 3, 0.75)",
-                                cursor: "pointer",
-                                borderRadius: "5px",
-                                padding: "5px",
                               }
                         }
                       >
                         {item.status ? "Livrata" : "In pregatire"}
                       </div>
-                      <div className={styles.comandaProcesare}>
-                        {item.dataProcess}
-                      </div>
-                      <div
-                        className={styles.removeBtn}
-                        onClick={() => {
-                          deleteComanda(item.id);
-                        }}
-                      >
-                        Delete Comanda
-                      </div>
                     </div>
+                    <motion.div
+                      layout
+                      transition={{ duration: 0.15 }}
+                      className={styles.bodyField}
+                    >
+                      <div
+                        className={
+                          deschis === item.id ? styles.deschisComanda : null
+                        }
+                      >
+                        {item.id === deschis ? (
+                          <div className={styles.tabel}>
+                            <div className={styles.randProdusTitlu}>
+                              <div className={styles.produsTitlu}>
+                                Nume Produs
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Lungime cm
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Latime cm
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Grosime cm
+                              </div>
+                              <div className={styles.produsTitlu}>
+                                Cantitate
+                              </div>
+                              <div className={styles.produsTitlu}>Pret</div>
+                            </div>
+                            {item.produse.map((produs, index) => {
+                              return (
+                                <div key={index} className={styles.randProdus}>
+                                  <div className={styles.produs}>
+                                    {produs.nume}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.lungime}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.latime}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.grosime}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.cantitate}
+                                  </div>
+                                  <div className={styles.produs}>
+                                    {produs.pret}
+                                  </div>
+                                </div>
+                              );
+                            })}
+
+                            <motion.div
+                              whileHover={{ scale: 1.03 }}
+                              transition={{ duration: 0.1 }}
+                              className={styles.editBtn}
+                              onClick={() => {
+                                setEditeaza(item.id);
+                                console.log(item);
+                              }}
+                            >
+                              Editeaza Comanda
+                            </motion.div>
+
+                            {editeaza ? (
+                              <div className={styles.editPage}>
+                                <div className={styles.editScreen}>
+                                  <div
+                                    className={styles.closeBtn}
+                                    onClick={() => {
+                                      setEditeaza(0);
+                                    }}
+                                  >
+                                    <CloseCircleOutlined />
+                                  </div>
+                                  <div className={styles.form}>
+                                    <div className={styles.headerValues}>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Numele Clientului
+                                        </div>
+                                        <input
+                                          defaultValue={item.client}
+                                          className={styles.input}
+                                        />
+                                      </div>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Adresa
+                                        </div>
+                                        <input
+                                          defaultValue={item.adresa}
+                                          className={styles.input}
+                                        />
+                                      </div>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Numar de telefon
+                                        </div>
+                                        <input
+                                          defaultValue={item.telefon}
+                                          className={styles.input}
+                                        />
+                                      </div>
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Statusul
+                                        </div>
+                                        <select
+                                          className={styles.select}
+                                          defaultValue={item.status}
+                                        >
+                                          <option
+                                            className={styles.false}
+                                            value="false"
+                                          >
+                                            In pregatire
+                                          </option>
+                                          <option
+                                            className={styles.true}
+                                            value="true"
+                                          >
+                                            Livrata
+                                          </option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className={styles.table}>
+                                      <div className={styles.header}>
+                                        <div className={styles.label}>Nume</div>
+                                        <div className={styles.label}>
+                                          Lungime
+                                        </div>
+                                        <div className={styles.label}>
+                                          Latime
+                                        </div>
+                                        <div className={styles.label}>
+                                          Grosime
+                                        </div>
+                                        <div className={styles.label}>
+                                          Cantitate
+                                        </div>
+                                        <div className={styles.label}>Pret</div>
+                                      </div>
+                                      <div className={styles.body}>
+                                        {item.produse &&
+                                          item.produse.map((produs, index) => {
+                                            return (
+                                              <div
+                                                className={styles.row}
+                                                key={index}
+                                              >
+                                                <input
+                                                  defaultValue={produs.nume}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.lungime}
+                                                  className={styles.cell}
+                                                  
+                                                />
+                                                <input
+                                                  defaultValue={produs.latime}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.grosime}
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={
+                                                    produs.cantitate
+                                                  }
+                                                  className={styles.cell}
+                                                />
+                                                <input
+                                                  defaultValue={produs.pret}
+                                                  className={styles.cell}
+                                                />
+                                              </div>
+                                            );
+                                          })}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className={styles.footer}>
+                                    <div className={styles.saveEdit}>
+                                      Salveaza
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        deleteComanda(item.id);
+                                      }}
+                                      className={styles.deleteEdit}
+                                    >
+                                      Sterge Comanda
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        ) : null}
+                      </div>
+                    </motion.div>
                   </div>
                 );
               })}
@@ -102,53 +305,3 @@ export default function ListaComanda() {
     </Layout>
   );
 }
-
-// {deschidereComanda ? (
-//   <div className={styles.deschisComanda}>
-//     <table className={styles.table}>
-//       <thead className={styles.tableHead}>
-//         <tr>
-//           <th className={styles.tablecell}>Clientul</th>
-//           <th className={styles.tablecell}>Adresa</th>
-//           <th className={styles.tablecell}>ID-ul comenzi</th>
-//           <th className={styles.tablecell}>Status</th>
-//           <th className={styles.tablecell}>Date procesare</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {comanda &&
-//           comanda.map((item) => {
-//             return (
-//               <tr key={item.id}>
-//                 <td className={styles.tablecell}>{item.client}</td>
-//                 <td className={styles.tablecell}>{item.adresa}</td>
-//                 <td className={styles.tablecell}>{item.id}</td>
-//                 <td
-//                   className={styles.tablecell}
-//                   style={
-//                     item.status
-//                       ? {
-//                           background: "#6CAD55",
-//                           cursor: "pointer",
-//                           borderRadius: "5px",
-//                         }
-//                       : {
-//                           background: "rgba(221, 3, 3, 0.75)",
-//                           cursor: "pointer",
-//                           borderRadius: "5px",
-//                           padding: "5px",
-//                         }
-//                   }
-//                 >
-//                   {item.status ? "Livrata" : "In pregatire"}
-//                 </td>
-//                 <td className={styles.tablecell}>
-//                   {item.dataProcess}
-//                 </td>
-//               </tr>
-//             );
-//           })}
-//       </tbody>
-//     </table>
-//   </div>
-// ) : null}

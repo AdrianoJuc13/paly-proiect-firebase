@@ -2,34 +2,6 @@
 @use "src/assets/style/mixinHelper";
 
 .full {
-    overflow: hidden;
-    background-color: #d9d9d9;
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-}
-.navbar {
-    flex: 1;
-    background-color: #f7f7f7;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    margin: 20px;
-    border-radius: 10px;
-}
-.screen {
-    flex: 8;
-}
-.button {
-    color: white;
-    cursor: pointer;
-    background: #6cad55;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.22);
-    border-radius: 5px;
-    border: none;
-}
-.button:hover {
-    scale: 0.95;
+  background-color: #d9d9d9;
+  height: 100vh;
 }

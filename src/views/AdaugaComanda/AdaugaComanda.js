@@ -4,14 +4,16 @@ import { useState } from "react";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { v4 as uuidv4 } from "uuid";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { MinusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 export default function AdaugaComanda() {
+  const navigate = useNavigate();
   const dbInstance = collection(database, "Comenzi");
   const [adresa, setAdresa] = useState("");
   const [client, setClient] = useState("");
   const [status] = useState(false);
-  const [dataProcess, setDataProcess] = useState("");
+  const [telefon, setTelefon] = useState("");
   const [inputFields, setInputFields] = useState([
     {
       id: uuidv4(),
@@ -26,23 +28,27 @@ export default function AdaugaComanda() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (client && adresa) console.log("ii ok ");
+    else console.log("nu i ok");
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,
       status: status,
-      dataProcess: dataProcess,
-      produse:
-        inputFields &&
-        inputFields.map((item) => {
-          return JSON.stringify(item);
-        }),
-    }).then(() => {});
-    alert(
-      inputFields &&
-        inputFields.map((item) => {
-          return JSON.stringify(item);
-        })
-    );
+      telefon: telefon,
+      produse: inputFields,
+      // &&
+      // inputFields.map((item) => {
+      //   return JSON.stringify(item);
+      // }),
+    }).then(() => {
+      navigate("/");
+    });
+    // alert(
+    //   inputFields &&
+    //     inputFields.map((item) => {
+    //       return JSON.stringify(item);
+    //     })
+    // );
   };
 
   const handleChangeInput = (id, event) => {
@@ -54,14 +60,6 @@ export default function AdaugaComanda() {
     });
 
     setInputFields(newInputFields);
-    console.log(
-      `${
-        inputFields &&
-        inputFields.map((item) => {
-          return JSON.stringify(item);
-        })
-      }`
-    );
   };
 
   const handleAddFields = () => {
@@ -90,18 +88,17 @@ export default function AdaugaComanda() {
 
   // let arrayProduse = [];
 
-  const saveComanda = () => {};
+  // const saveComanda = () => {};
 
   return (
     <Layout>
-      <div className={styles.full}>
+      <div className={styles.screen}>
         <div className={styles.titlu}>Creaza comanda</div>
         <div className={styles.container}>
           <div className={styles.field}>
             <label className={styles.label}> Numele clientului</label>
             <input
               className={styles.input}
-              placeholder="Ex: Victor Lucan"
               onChange={(e) => setClient(e.target.value)}
               type="text"
               value={client}
@@ -111,20 +108,18 @@ export default function AdaugaComanda() {
             <label className={styles.label}> Adresa</label>
             <input
               className={styles.input}
-              placeholder="Ex: Dolhasca, nr. 187"
               onChange={(e) => setAdresa(e.target.value)}
               type="text"
               value={adresa}
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label}> Date de procesare</label>
+            <label className={styles.label}>Numar de telefon</label>
             <input
               className={styles.input}
-              placeholder="Ex: se genereaza factura"
-              onChange={(e) => setDataProcess(e.target.value)}
-              type="text"
-              value={dataProcess}
+              onChange={(e) => setTelefon(e.target.value)}
+              type="number"
+              value={telefon}
             />
           </div>
         </div>
@@ -196,21 +191,22 @@ export default function AdaugaComanda() {
                   disabled={inputFields.length === 1}
                   onClick={() => handleRemoveFields(inputField.id)}
                 >
-                  <MinusOutlined className={styles.MinusOutlined} />
+                  <MinusOutlined />
                 </div>
               </div>
             ))}
+
+            <div className={styles.endArea}>
+              <button
+                className={styles.saveBtn}
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Salveaza
+              </button>
+              <button className={styles.printBtn}>Printeaza</button>
+            </div>
           </form>
-        </div>
-        <div className={styles.endArea}>
-          <button
-            className={styles.saveBtn}
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Salveaza
-          </button>
-          <button className={styles.printBtn}>Printeaza</button>
         </div>
       </div>
     </Layout>

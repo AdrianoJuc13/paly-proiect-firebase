@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "antd/dist/antd.css";
+import 'antd/dist/antd.min.css';
 import "../../assets/style/styles.css";
 
 const { Item } = Menu;
@@ -34,7 +34,7 @@ const TopNav = () => {
   }, [location.pathname]);
 
   return (
-    <Menu mode="vertical" selectedKeys={[current]}>
+    <Menu mode="horizontal" selectedKeys={[current]}>
       <Item
         key="/"
         onClick={(e) => setCurrent(e.key)}
