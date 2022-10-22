@@ -1,299 +1,308 @@
 @use "src/assets/style/globalVariables";
 @use "src/assets/style/mixinHelper";
 .screen {
-    height: 100%;
-    margin: 2vw;
-    font-size: 1.2vw;
-    .container1 {
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  .container1 {
+    //button menu is deleted
+    .buttonMenu {
+      background: globalVariables.$green;
+      color: globalVariables.$white;
+      border: none;
+      height: 50px;
+      width: 100px;
+      border-radius: 40px;
+    }
+    .searchField {
+      background: globalVariables.$white;
+      color: globalVariables.$grey;
+      border: none;
+      height: 50px;
+      border-radius: 5px;
+      width: 100%;
+      padding: 0 20px;
+      margin: 20px auto;
+    }
+  }
+  .container2 {
+    text-align: center;
+    font-size: 50px;
+  }
+
+  .container3 {
+    background-color: globalVariables.$white;
+    border-radius: 30px;
+    padding: 20px;
+
+    .headerContainer {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .headerComanda {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 30px;
+      
+      @include mixinHelper.dynamicBreakpoint(800px) {
+        flex-direction: column;
+      }
+      margin-bottom: 10px;
+      .headerComandaChild {
+        color: globalVariables.$grey;
+        word-wrap: break-word;
+      }
+    }
+    .Comanda {
+      border: black 1px solid;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      
+      .headerField {
         display: flex;
         flex-direction: row;
-        justify-content: center;
-        //button menu is deleted
-        .buttonMenu {
-            background: globalVariables.$green;
-            color: globalVariables.$white;
-            border: none;
-            height: 50px;
-            width: 100px;
-            border-radius: 40px;
-        }
-        .searchField {
-            background: globalVariables.$white;
-            color: globalVariables.$grey;
-            border: none;
-            height: 50px;
-            width: 50%;
-            // margin-top: 2vh;
-            // margin-bottom: 2vh;
-            border-radius: 5px;
-        }
-    }
-    .container2 {
-        text-align: start;
-        font-size: 50px;
-        margin-left: 40px;
-    }
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
 
-    .container3 {
-        height: 70vh;
-        overflow-y: scroll;
+        @include mixinHelper.dynamicBreakpoint(800px) {
+          flex-direction: column;
+          gap: 5px;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+        }
+
+        .comandaClient{
+          
+          padding-left: 5px;
+        }
+
+        .comandaItem {
+          align-items: center;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          width: 120px;
+        }
+
+        .comandaId{
+          margin-right:35px;
+          width: 200px;
+
+          @include mixinHelper.dynamicBreakpoint(800px){
+            margin-right: 0;
+          }
+        }
+
+        .telefon {
+          margin-right:90px;
+          color: globalVariables.$grey;
+
+          @include mixinHelper.dynamicBreakpoint(800px){
+            margin-right: 0;
+          }
+        }
+
+        .comandaStatus {
+          cursor: pointer;
+          background-color: globalVariables.$red;
+          color: globalVariables.$white;
+          font-weight: bold;
+          padding:10px;
+          border-radius: 10px 0;         
+
+          @include mixinHelper.dynamicBreakpoint(800px) {
+            padding: 0 5px;
+            width: 100%;
+            border-radius: 0;      
+          }
+        }
+        .removeBtn {
+          cursor: pointer;
+          background: globalVariables.$red;
+          color: globalVariables.$white;
+          font-weight: bold;
+          border-radius: 5px;
+        }
+      }
+      .bodyField {
         background-color: globalVariables.$white;
-        border-radius: 30px;
-        padding: 20px;
-        .headerContainer {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-        }
-        .headerComanda {
-            display: flex;
-            flex-direction: col;
-            .headerComandaChild {
-                color: globalVariables.$grey;
-                flex: 1;
+        .deschisComanda {
+          margin: 1vw;
+          .tabel {
+            .randProdusTitlu {
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              color: white;
+              .produsTitlu {
+                background-color: globalVariables.$green;
+                border: 1px solid white;
+                width: 100%;
+
+                
+                @include mixinHelper.dynamicBreakpoint(500px){
+                  width: 13vw;
+                }
+              }
             }
-        }
-        .Comanda {
-            border: black 1px solid;
-            border-radius: 5px;
-            .headerField {
+            .randProdus {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+
+              .produs {
+                width: 100%;
+                border: 1px solid black;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+
+                @include mixinHelper.onMobile{
+                  width: 14vw;
+                }
+
+                @include mixinHelper.dynamicBreakpoint(500px){
+                  width: 13vw;
+                }
+              }
+            }
+          }
+          .editBtn {
+            background-color: globalVariables.$purple;
+            font-size: 20px;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: auto;
+          }
+          .editPage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(1, 1, 1, 0.438);
+            .editScreen {
+              position: relative;
+              left: 2.5%;
+              top: 2.5%;
+              width: 95%;
+              height: 95%;
+              background-color: white;
+              display: flex;
+              flex-direction: column;
+              .closeBtn {
+                background-color: black;
+                color: white;
+                width: 7vh;
+                height: 6vh;
+                font-size: 2.7vh;
+                border-radius: 5px;
+                border: 1px solid grey;
+                margin-left: auto;
+                cursor: pointer;
+              }
+
+              .closeBtn:hover {
+                scale: 1.05;
+              }
+              .form {
+                width: 100%;
+                height: 100%;
+                .headerValues {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-around;
+                  flex-wrap: wrap;
+                  gap: 10px;
+                  @include mixinHelper.dynamicBreakpoint(900px){
+                    flex-direction: column;
+                    align-items: center;
+                  }
+                  .property {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    padding: 0 10px;
+                    .label {
+                      display: flex;
+                      justify-content: flex-start;
+                      color: globalVariables.$grey;
+                    }
+                    .input {
+                      border: 2px solid globalVariables.$border;
+                      border-radius: 4px;
+                      height: 50px;
+                      font-size: 20px;
+                      width: 100%;
+                      padding: 0 10px;
+                    }
+                    .select {
+                      //aici
+                    }
+                  }
+                }
+                .table {
+                  margin: 30px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  .header {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    .label {
+                      width: 20%;
+                      text-align: center;
+                      border: 1px solid black;
+                      background-color: globalVariables.$green;
+                    }
+                  }
+                  .body {
+                    width: 100%;
+                    .row {
+                      display: flex;
+                      flex-direction: row;
+                      width: 100%;
+                      .cell {
+                        width: 20%;
+                        border: 1px solid grey;
+                        text-align: center;
+                      }
+                      .deleteBtn {
+                        background-color: red;
+                      }
+                    }
+                  }
+                }
+              }
+              .footer {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
-                .comandaClient {
-                    flex: 1;
+                .saveEdit {
+                  background-color: green;
+                  color: white;
+                  padding: 10px;
+                  margin: 10px;
+                  border-radius: 8px;
+                  cursor: pointer;
                 }
-                .comandaAdresa {
-                    flex: 1;
+                .deleteEdit {
+                  background-color: red;
+                  color: white;
+                  padding: 10px;
+                  margin: 10px;
+                  border-radius: 8px;
+                  cursor: pointer;
                 }
-                .comandaId {
-                    flex: 1;
-                }
-                .telefon {
-                    flex: 1;
-                    color: globalVariables.$grey;
-                }
-                .comandaStatus {
-                    flex: 1;
-                    background-color: globalVariables.$red;
-                    color: globalVariables.$white;
-                    font-weight: bold;
-                    border-radius: 5px;
-                }
-                .removeBtn {
-                    flex: 1;
-                    cursor: pointer;
-                    background: globalVariables.$red;
-                    color: globalVariables.$white;
-                    font-weight: bold;
-                    border-radius: 5px;
-                }
+              }
             }
-            .bodyField {
-                background-color: globalVariables.$white;
-                .deschisComanda {
-                    margin: 1vw;
-                    .tabel {
-                        .randProdusTitlu {
-                            width: 100%;
-                            display: flex;
-                            flex-direction: row;
-                            color: white;
-                            .produsTitlu {
-                                background-color: globalVariables.$green;
-                                border: 1px solid white;
-                                width: 20%;
-                            }
-                        }
-                        .randProdus {
-                            width: 100%;
-                            display: flex;
-                            flex-direction: row;
-                            .produs {
-                                border: 1px solid black;
-                                width: 20%;
-                            }
-                        }
-                    }
-                    .editBtn {
-                        background-color: globalVariables.$purple;
-                        width: 15vw;
-                        margin-top: 10px;
-                        margin-left: auto;
-                        margin-right: auto;
-                        border-radius: 8px;
-                        cursor: pointer;
-                    }
-                    .editPage {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 100%;
-                        height: 100%;
-                        background-color: rgba(1, 1, 1, 0.438);
-                        .editScreen {
-                            position: relative;
-                            left: 2.5%;
-                            top: 2.5%;
-                            width: 95%;
-                            height: 95%;
-                            background-color: white;
-                            display: flex;
-                            flex-direction: column;
-                            .closeBtn {
-                                background-color: black;
-                                color: white;
-                                width: 7vh;
-                                height: 6vh;
-                                font-size: 2.7vh;
-                                border-radius: 5px;
-                                border: 1px solid grey;
-                                margin-left: auto;
-                                cursor: pointer;
-                            }
-
-                            .closeBtn:hover {
-                                scale: 1.05;
-                            }
-                            .form {
-                                width: 100%;
-                                height: 100%;
-                                .headerValues {
-                                    height: 10%;
-                                    display: flex;
-                                    justify-content: space-around;
-                                    .property {
-                                        display: flex;
-                                        flex-direction: column;
-                                        justify-content: space-between;
-                                        width: 20%;
-                                        .label {
-                                            display: flex;
-                                            justify-content: flex-start;
-                                            color: globalVariables.$grey;
-                                        }
-                                        .input {
-                                            border: 2px solid globalVariables.$border;
-                                            border-radius: 4px;
-                                            height: 50px;
-                                            font-size: 20px;
-                                        }
-                                        .select {
-                                            //aici
-                                        }
-                                    }
-                                }
-                                .table {
-                                    margin: 30px;
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: space-between;
-                                    .header {
-                                        width: 100%;
-                                        display: flex;
-                                        flex-direction: row;
-                                        .label {
-                                            width: 20%;
-                                            text-align: center;
-                                            border: 1px solid black;
-                                            background-color: globalVariables.$green;
-                                        }
-                                    }
-                                    .body {
-                                        width: 100%;
-                                        .row {
-                                            display: flex;
-                                            flex-direction: row;
-                                            width: 100%;
-                                            .cell {
-                                                width: 20%;
-                                                border: 1px solid grey;
-                                                text-align: center;
-                                            }
-                                            .deleteBtn {
-                                                background-color: red;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            .footer {
-                                display: flex;
-                                flex-direction: row;
-                                justify-content: space-around;
-                                .saveEdit {
-                                    background-color: green;
-                                    color: white;
-                                    padding: 10px;
-                                    margin: 10px;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                }
-                                .deleteEdit {
-                                    background-color: red;
-                                    color: white;
-                                    padding: 10px;
-                                    margin: 10px;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     }
+  }
 }
-
-// .ListaProduse {
-//     margin: 50px;
-//     .form {
-//         height: 100%;
-//         justify-content: space-between;
-//         .row {
-//             display: flex;
-//             flex-direction: row;
-//             .rowData {
-//                 width: 100%;
-//                 display: flex;
-//                 .input {
-//                     width: 100%;
-//                 }
-//             }
-//             .removeBtn {
-//                 cursor: pointer;
-//                 background-color: globalVariables.$red;
-//                 width: 30px;
-//                 height: 30px;
-//                 margin-left: 10px;
-//                 border-radius: 999px;
-//             }
-//         }
-//         .endArea {
-//             margin-top: 50px;
-//             margin-bottom: 50px;
-//             display: flex;
-//             flex-direction: row;
-//             gap: 20vw;
-//             .saveBtn {
-//                 width: 100px;
-//                 height: 50px;
-//                 font-size: 150%;
-//                 background-color: globalVariables.$purple;
-//                 color: globalVariables.$white;
-//                 border: none;
-//                 border-radius: 8px;
-//             }
-//             .printBtn {
-//                 width: 100px;
-//                 height: 50px;
-//                 font-size: 150%;
-//                 background-color: globalVariables.$purple;
-//                 color: globalVariables.$white;
-//                 border: none;
-//                 border-radius: 8px;
-//             }
-//         }
-//     }
-// }

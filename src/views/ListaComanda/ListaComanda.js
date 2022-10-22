@@ -39,10 +39,10 @@ export default function ListaComanda() {
   return (
     <Layout>
       <div className={styles.screen}>
+        <div className={styles.container2}>Lista Comenzi</div>
         <div className={styles.container1}>
           <button className={styles.searchField}>Search</button>
         </div>
-        <div className={styles.container2}>Lista Comenzi</div>
         <div className={styles.container3}>
           <div className={styles.headerContainer}>
             <div>Comenzi</div>
@@ -69,9 +69,9 @@ export default function ListaComanda() {
                           : setDeschis(item.id);
                       }}
                     >
-                      <div className={styles.comandaClient}>{item.client}</div>
-                      <div className={styles.comandaAdresa}>{item.adresa}</div>
-                      <div className={styles.comandaId}>{item.id}</div>
+                      <div className={`${styles.comandaItem} ${styles.comandaClient}`}>{item.client}</div>
+                      <div className={`${styles.comandaItem}`}>{item.adresa}</div>
+                      <div className={`${styles.comandaItem} ${styles.comandaId}`}>{item.id}</div>
                       <div className={styles.telefon}>{item.telefon}</div>
                       <div
                         className={styles.comandaStatus}
@@ -79,14 +79,9 @@ export default function ListaComanda() {
                           item.status
                             ? {
                                 background: "#6CAD55",
-                                cursor: "pointer",
-                                borderRadius: "5px",
                               }
                             : {
                                 background: "rgba(221, 3, 3, 0.75)",
-                                cursor: "pointer",
-                                borderRadius: "5px",
-                                padding: "5px",
                               }
                         }
                       >
@@ -255,6 +250,7 @@ export default function ListaComanda() {
                                                 <input
                                                   defaultValue={produs.lungime}
                                                   className={styles.cell}
+                                                  
                                                 />
                                                 <input
                                                   defaultValue={produs.latime}
