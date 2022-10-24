@@ -128,8 +128,10 @@ export default function AdaugaComanda() {
         </button>
         <div className={styles.ListaProduse}>
           <form className={styles.form} onSubmit={handleSubmit}>
-            {inputFields.map((inputField) => (
-              <div className={styles.row} key={inputField.id}>
+            {inputFields.map((inputField, index) => (
+              <div>
+                <h3 className={styles.textHeaderInput}>Produs numar {index+1}</h3>
+                <div className={styles.row} key={inputField.id}>
                 <div className={styles.rowData}>
                   <input
                     className={styles.input}
@@ -194,6 +196,8 @@ export default function AdaugaComanda() {
                   <MinusOutlined />
                 </div>
               </div>
+              </div>
+
             ))}
 
             <div className={styles.endArea}>

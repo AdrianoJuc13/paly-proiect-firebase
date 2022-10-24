@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import 'antd/dist/antd.min.css';
+import "antd/dist/antd.min.css";
 import "../../assets/style/styles.css";
 
 import { firebase } from "../../firebaseConfig.js";
@@ -21,6 +21,7 @@ const Login = () => {
     try {
       setLoading(true);
       await firebase.auth().signInWithEmailAndPassword(email, password);
+      window.localStorage.setItem("user", "true");
       navigate("/");
       setLoading(false);
     } catch (err) {

@@ -4,30 +4,29 @@
   height: 100%;
   margin: 0 auto;
   padding: 0 20px;
-  .container1 {
-    //button menu is deleted
-    .buttonMenu {
-      background: globalVariables.$green;
-      color: globalVariables.$white;
-      border: none;
-      height: 50px;
-      width: 100px;
-      border-radius: 40px;
-    }
-    .searchField {
-      background: globalVariables.$white;
-      color: globalVariables.$grey;
-      border: none;
-      height: 50px;
-      border-radius: 5px;
-      width: 100%;
-      padding: 0 20px;
-      margin: 20px auto;
-    }
+
+  .buttonMenu {
+    background: globalVariables.$green;
+    color: globalVariables.$white;
+    border: none;
+    height: 50px;
+    width: 100px;
+    border-radius: 40px;
   }
+
+  .searchField {
+    color: globalVariables.$grey;
+    border: none;
+    width: 100%;
+    padding: 0 20px;
+    margin: 20px auto;
+  }
+
   .container2 {
+    margin: 50px auto;
     text-align: center;
     font-size: 50px;
+    font-weight: 700;
   }
 
   .container3 {
@@ -37,15 +36,22 @@
 
     .headerContainer {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
       padding: 10px;
+
+      .textHeaderContainer {
+        color: black;
+        font-size: 30px;
+        display: flex;
+      }
     }
     .headerComanda {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       padding: 0 30px;
-      
+
       @include mixinHelper.dynamicBreakpoint(800px) {
         flex-direction: column;
       }
@@ -53,13 +59,15 @@
       .headerComandaChild {
         color: globalVariables.$grey;
         word-wrap: break-word;
+        font-size: 20px;
+        color: black;
       }
     }
     .Comanda {
       border: black 1px solid;
       border-radius: 5px;
       margin-bottom: 10px;
-      
+
       .headerField {
         display: flex;
         flex-direction: row;
@@ -74,8 +82,7 @@
           word-wrap: break-word;
         }
 
-        .comandaClient{
-          
+        .comandaClient {
           padding-left: 5px;
         }
 
@@ -84,22 +91,27 @@
           word-wrap: break-word;
           overflow-wrap: break-word;
           width: 120px;
+          color: black;
+          font-size: 15px;
+          font-weight: bold;
         }
 
-        .comandaId{
-          margin-right:35px;
+        .comandaId {
+          margin-right: 35px;
           width: 200px;
 
-          @include mixinHelper.dynamicBreakpoint(800px){
+          @include mixinHelper.dynamicBreakpoint(800px) {
             margin-right: 0;
           }
         }
 
         .telefon {
-          margin-right:90px;
-          color: globalVariables.$grey;
+          margin-right: 90px;
+          color: black;
+          font-size: 15px;
+          font-weight: bold;
 
-          @include mixinHelper.dynamicBreakpoint(800px){
+          @include mixinHelper.dynamicBreakpoint(800px) {
             margin-right: 0;
           }
         }
@@ -109,13 +121,13 @@
           background-color: globalVariables.$red;
           color: globalVariables.$white;
           font-weight: bold;
-          padding:10px;
-          border-radius: 10px 0;         
+          padding: 10px;
+          border-radius: 10px 0;
 
           @include mixinHelper.dynamicBreakpoint(800px) {
             padding: 0 5px;
             width: 100%;
-            border-radius: 0;      
+            border-radius: 0;
           }
         }
         .removeBtn {
@@ -142,8 +154,7 @@
                 border: 1px solid white;
                 width: 100%;
 
-                
-                @include mixinHelper.dynamicBreakpoint(500px){
+                @include mixinHelper.dynamicBreakpoint(500px) {
                   width: 13vw;
                 }
               }
@@ -159,11 +170,11 @@
                 word-wrap: break-word;
                 overflow-wrap: break-word;
 
-                @include mixinHelper.onMobile{
+                @include mixinHelper.onMobile {
                   width: 14vw;
                 }
 
-                @include mixinHelper.dynamicBreakpoint(500px){
+                @include mixinHelper.dynamicBreakpoint(500px) {
                   width: 13vw;
                 }
               }
@@ -176,6 +187,7 @@
             border-radius: 8px;
             cursor: pointer;
             padding: auto;
+            color: white;
           }
           .editPage {
             position: absolute;
@@ -217,7 +229,7 @@
                   justify-content: space-around;
                   flex-wrap: wrap;
                   gap: 10px;
-                  @include mixinHelper.dynamicBreakpoint(900px){
+                  @include mixinHelper.dynamicBreakpoint(900px) {
                     flex-direction: column;
                     align-items: center;
                   }
