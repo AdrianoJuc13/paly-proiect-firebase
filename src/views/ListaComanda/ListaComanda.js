@@ -40,13 +40,27 @@ export default function ListaComanda() {
     <Layout>
       <div className={styles.screen}>
         <div className={styles.container2}>Lista Comenzi</div>
-        <div className={styles.container1}>
-          <button className={styles.searchField}>Search</button>
+        <div className={styles.searchField}>
+          <div class="form-outline">
+            <input
+              type="search"
+              id="form1"
+              class="form-control text-black"
+              placeholder="Cauta comanda"
+              aria-label="Search"
+            />
+          </div>
         </div>
         <div className={styles.container3}>
           <div className={styles.headerContainer}>
-            <div>Comenzi</div>
-            <div>Listare dupa</div>
+            <div className={styles.textHeaderContainer}>Comenzi : {comanda.length}</div>
+            <select
+              class="form-select form-select-sm w-20"
+              aria-label=".form-select-sm example"
+            >
+              <option selected>Crescator</option>
+              <option value="1">Descrescator</option>
+            </select>
           </div>
           <div className={styles.headerComanda}>
             <div className={styles.headerComandaChild}>Clientul</div>
@@ -69,9 +83,19 @@ export default function ListaComanda() {
                           : setDeschis(item.id);
                       }}
                     >
-                      <div className={`${styles.comandaItem} ${styles.comandaClient}`}>{item.client}</div>
-                      <div className={`${styles.comandaItem}`}>{item.adresa}</div>
-                      <div className={`${styles.comandaItem} ${styles.comandaId}`}>{item.id}</div>
+                      <div
+                        className={`${styles.comandaItem} ${styles.comandaClient}`}
+                      >
+                        {item.client}
+                      </div>
+                      <div className={`${styles.comandaItem}`}>
+                        {item.adresa}
+                      </div>
+                      <div
+                        className={`${styles.comandaItem} ${styles.comandaId}`}
+                      >
+                        {item.id}
+                      </div>
                       <div className={styles.telefon}>{item.telefon}</div>
                       <div
                         className={styles.comandaStatus}
@@ -250,7 +274,6 @@ export default function ListaComanda() {
                                                 <input
                                                   defaultValue={produs.lungime}
                                                   className={styles.cell}
-                                                  
                                                 />
                                                 <input
                                                   defaultValue={produs.latime}

@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import 'antd/dist/antd.min.css';
+import "antd/dist/antd.min.css";
 import "../../assets/style/styles.css";
 
 const { Item } = Menu;
@@ -23,6 +23,7 @@ const TopNav = () => {
 
   const handleSignout = async () => {
     try {
+      window.localStorage.removeItem("user");
       await firebase.auth().signOut();
     } catch (error) {
       toast.error(error.response.data);
