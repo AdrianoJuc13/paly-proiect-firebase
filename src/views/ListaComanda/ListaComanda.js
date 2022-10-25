@@ -12,6 +12,8 @@ export default function ListaComanda() {
   const [comanda, setComanda] = useState([]);
   const [deschis, setDeschis] = useState(0);
   const [editeaza, setEditeaza] = useState(false);
+  const [comandaFiltrata, setComandaFiltrata] = useState(comanda);
+  const [comandaFiltrataInit, setComandaFiltrataInit] = useState(false);
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
@@ -48,12 +50,27 @@ export default function ListaComanda() {
               class="form-control text-black"
               placeholder="Cauta comanda"
               aria-label="Search"
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  setComandaFiltrataInit(false);
+                }
+                let results = comanda.filter((data) =>
+                  data.client
+                    .toUpperCase()
+                    .includes(e.target.value.toUpperCase())
+                );
+                setComandaFiltrata(results);
+                setComandaFiltrataInit(true);
+                console.log(comandaFiltrata);
+              }}
             />
           </div>
         </div>
         <div className={styles.container3}>
           <div className={styles.headerContainer}>
-            <div className={styles.textHeaderContainer}>Comenzi : {comanda.length}</div>
+            <div className={styles.textHeaderContainer}>
+              Comenzi : {comanda.length}
+            </div>
             <select
               class="form-select form-select-sm w-20"
               aria-label=".form-select-sm example"
@@ -72,7 +89,7 @@ export default function ListaComanda() {
 
           <div>
             {comanda &&
-              comanda.map((item) => {
+              (comandaFiltrataInit ? comandaFiltrata : comanda).map((item) => {
                 return (
                   <div key={item.id} className={styles.Comanda}>
                     <div
