@@ -6,6 +6,7 @@ import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { motion } from "framer-motion";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
@@ -37,6 +38,8 @@ export default function ListaComanda() {
     getComanda();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const { width } = useWindowDimensions();
 
   return (
     <Layout>
@@ -141,44 +144,60 @@ export default function ListaComanda() {
                       >
                         {item.id === deschis ? (
                           <div className={styles.tabel}>
-                            <div className={styles.randProdusTitlu}>
-                              <div className={styles.produsTitlu}>
-                                Nume Produs
+                            {width >= 850 && (
+                              <div className={styles.randProdusTitlu}>
+                                <div className={styles.produsTitlu}>
+                                  Nume Produs
+                                </div>
+                                <div className={styles.produsTitlu}>
+                                  Lungime cm
+                                </div>
+                                <div className={styles.produsTitlu}>
+                                  Latime cm
+                                </div>
+                                <div className={styles.produsTitlu}>
+                                  Grosime cm
+                                </div>
+                                <div className={styles.produsTitlu}>
+                                  Cantitate
+                                </div>
+                                <div className={styles.produsTitlu}>Pret</div>
                               </div>
-                              <div className={styles.produsTitlu}>
-                                Lungime cm
-                              </div>
-                              <div className={styles.produsTitlu}>
-                                Latime cm
-                              </div>
-                              <div className={styles.produsTitlu}>
-                                Grosime cm
-                              </div>
-                              <div className={styles.produsTitlu}>
-                                Cantitate
-                              </div>
-                              <div className={styles.produsTitlu}>Pret</div>
-                            </div>
+                            )}
+
                             {item.produse.map((produs, index) => {
                               return (
-                                <div key={index} className={styles.randProdus}>
-                                  <div className={styles.produs}>
-                                    {produs.nume}
-                                  </div>
-                                  <div className={styles.produs}>
-                                    {produs.lungime}
-                                  </div>
-                                  <div className={styles.produs}>
-                                    {produs.latime}
-                                  </div>
-                                  <div className={styles.produs}>
-                                    {produs.grosime}
-                                  </div>
-                                  <div className={styles.produs}>
-                                    {produs.cantitate}
-                                  </div>
-                                  <div className={styles.produs}>
-                                    {produs.pret}
+                                <div>
+                                  <div>
+                                    <div
+                                      key={index}
+                                      className={styles.randProdus}
+                                    >
+                                      <div className={styles.produs}>
+                                        {width <= 850 && <div>Nume:</div>}
+                                        <div>{produs.nume}</div>
+                                      </div>
+                                      <div className={styles.produs}>
+                                      {width <= 850 && <div>Lungime:</div>}
+                                        {produs.lungime}
+                                      </div>
+                                      <div className={styles.produs}>
+                                      {width <= 850 && <div>Latime:</div>}
+                                        {produs.latime}
+                                      </div>
+                                      <div className={styles.produs}>
+                                      {width <= 850 && <div>Grosime:</div>}
+                                        {produs.grosime}
+                                      </div>
+                                      <div className={styles.produs}>
+                                      {width <= 850 && <div>Cantitate:</div>}
+                                        {produs.cantitate}
+                                      </div>
+                                      <div className={styles.produs}>
+                                      {width <= 850 && <div>Pret:</div>}
+                                        {produs.pret}
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -280,36 +299,51 @@ export default function ListaComanda() {
                                         {item.produse &&
                                           item.produse.map((produs, index) => {
                                             return (
-                                              <div
-                                                className={styles.row}
-                                                key={index}
-                                              >
-                                                <input
-                                                  defaultValue={produs.nume}
-                                                  className={styles.cell}
-                                                />
-                                                <input
-                                                  defaultValue={produs.lungime}
-                                                  className={styles.cell}
-                                                />
-                                                <input
-                                                  defaultValue={produs.latime}
-                                                  className={styles.cell}
-                                                />
-                                                <input
-                                                  defaultValue={produs.grosime}
-                                                  className={styles.cell}
-                                                />
-                                                <input
-                                                  defaultValue={
-                                                    produs.cantitate
-                                                  }
-                                                  className={styles.cell}
-                                                />
-                                                <input
-                                                  defaultValue={produs.pret}
-                                                  className={styles.cell}
-                                                />
+                                              <div>
+                                                {width <= 850 && (
+                                                  <h3
+                                                    className={
+                                                      styles.showNumberProduct
+                                                    }
+                                                  >
+                                                    Produs {index + 1}
+                                                  </h3>
+                                                )}
+                                                <div
+                                                  className={styles.row}
+                                                  key={index}
+                                                >
+                                                  <input
+                                                    defaultValue={produs.nume}
+                                                    className={styles.cell}
+                                                  />
+                                                  <input
+                                                    defaultValue={
+                                                      produs.lungime
+                                                    }
+                                                    className={styles.cell}
+                                                  />
+                                                  <input
+                                                    defaultValue={produs.latime}
+                                                    className={styles.cell}
+                                                  />
+                                                  <input
+                                                    defaultValue={
+                                                      produs.grosime
+                                                    }
+                                                    className={styles.cell}
+                                                  />
+                                                  <input
+                                                    defaultValue={
+                                                      produs.cantitate
+                                                    }
+                                                    className={styles.cell}
+                                                  />
+                                                  <input
+                                                    defaultValue={produs.pret}
+                                                    className={styles.cell}
+                                                  />
+                                                </div>
                                               </div>
                                             );
                                           })}

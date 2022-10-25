@@ -1,5 +1,6 @@
 @use "src/assets/style/globalVariables";
 @use "src/assets/style/mixinHelper";
+
 .screen {
   height: 100%;
   margin: 0 auto;
@@ -153,6 +154,7 @@
                 background-color: globalVariables.$green;
                 border: 1px solid white;
                 width: 100%;
+                font-weight: bold;
 
                 @include mixinHelper.dynamicBreakpoint(500px) {
                   width: 13vw;
@@ -160,22 +162,53 @@
               }
             }
             .randProdus {
+              height: auto;
               display: flex;
               flex-direction: row;
               justify-content: space-between;
+
+              @include mixinHelper.onMobile {
+                flex-direction: column;
+                margin-bottom: 10px;
+                width: 100%;
+              }
 
               .produs {
                 width: 100%;
                 border: 1px solid black;
                 word-wrap: break-word;
                 overflow-wrap: break-word;
+                font-weight: bold;
 
                 @include mixinHelper.onMobile {
-                  width: 14vw;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding: 0 20px;
                 }
+              }
+            }
 
-                @include mixinHelper.dynamicBreakpoint(500px) {
-                  width: 13vw;
+            .produsRowDeschis {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              height: auto;
+              align-items: stretch;
+
+              .randProdusTitluRow {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                color: white;
+                .produsTitlu {
+                  background-color: globalVariables.$green;
+                  border: 1px solid white;
+
+                  font-weight: bold;
                 }
               }
             }
@@ -192,19 +225,22 @@
           .editPage {
             position: fixed;
             left: 0;
+            top: 0;
             bottom: 0;
             width: 100%;
-            height: 100%;
+            height: auto;
+            overflow: auto;
             background-color: rgba(1, 1, 1, 0.438);
             .editScreen {
-              position: relative;
-              left: 2.5%;
-              top: 2.5%;
-              width: 95%;
-              height: 95%;
+              height: auto;
               background-color: white;
               display: flex;
               flex-direction: column;
+              margin: 26px;
+
+              @include mixinHelper.onMobile {
+                margin: 16px;
+              }
               .closeBtn {
                 background-color: black;
                 color: white;
@@ -265,6 +301,10 @@
                     width: 100%;
                     display: flex;
                     flex-direction: row;
+
+                    @include mixinHelper.onMobile {
+                      visibility: hidden;
+                    }
                     .label {
                       width: 20%;
                       text-align: center;
@@ -274,14 +314,34 @@
                   }
                   .body {
                     width: 100%;
+
+                    .showNumberProduct {
+                      visibility: hidden;
+                      @include mixinHelper.onMobile {
+                        visibility: visible;
+                      }
+                    }
                     .row {
                       display: flex;
                       flex-direction: row;
                       width: 100%;
+
+                      @include mixinHelper.onMobile {
+                        margin-bottom: 10px;
+                      }
+
+                      @include mixinHelper.onMobile {
+                        flex-direction: column;
+                      }
                       .cell {
                         width: 20%;
                         border: 1px solid grey;
                         text-align: center;
+                        font-weight: bold;
+
+                        @include mixinHelper.onMobile {
+                          width: 100%;
+                        }
                       }
                       .deleteBtn {
                         background-color: red;
