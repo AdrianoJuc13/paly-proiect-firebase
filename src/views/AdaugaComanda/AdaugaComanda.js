@@ -31,7 +31,6 @@ export default function AdaugaComanda() {
   const handleSubmit = async (e) => {
     // e.preventDefault();
     let time = await Timestamp.now();
-    console.log(time);
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,

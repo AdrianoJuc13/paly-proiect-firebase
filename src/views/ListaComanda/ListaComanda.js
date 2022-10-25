@@ -5,7 +5,7 @@ import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { motion } from "framer-motion";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
 export default function ListaComanda() {
 
@@ -21,6 +21,22 @@ export default function ListaComanda() {
   const handleChange = (event) => {
     setSorted(event.target.value);
 
+  const submitEdit = async (id) => {
+    try {
+      const todoRef = doc(dbInstance, id);
+      await getDoc(todoRef).then((data) => {
+        // console.log(data._document.data.value.mapValue.fields);
+      });
+
+      // .then(() => {
+      //   setEditeaza(0);
+      //   setDeschis(0);
+      //   this.forceUpdate();
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   function formatDateTime(input) {
     var epoch = new Date(0);
     epoch.setSeconds(parseInt(input));
@@ -99,7 +115,7 @@ export default function ListaComanda() {
                 );
                 setComandaFiltrata(results);
                 setComandaFiltrataInit(true);
-                console.log(comandaFiltrata);
+                // console.log(comandaFiltrata);
               }}
             />
           </div>
@@ -120,13 +136,15 @@ export default function ListaComanda() {
               <option value="desc">Descrescator</option>
             </select>
           </div>
-          <div className={styles.headerComanda}>
-            <div className={styles.headerComandaChild}>Clientul</div>
-            <div className={styles.headerComandaChild}>Adresa</div>
-            <div className={styles.headerComandaChild}>Data crearii</div>
-            <div className={styles.headerComandaChild}>Numar de telefon</div>
-            <div className={styles.headerComandaChild}>Statusul</div>
-          </div>
+          {width >= 800 && (
+            <div className={styles.headerComanda}>
+              <div className={styles.headerComandaChild}>Clientul</div>
+              <div className={styles.headerComandaChild}>Adresa</div>
+              <div className={styles.headerComandaChild}>Data crearii</div>
+              <div className={styles.headerComandaChild}>Numar de telefon</div>
+              <div className={styles.headerComandaChild}>Statusul</div>
+            </div>
+          )}
 
           <div>
             {comanda &&
@@ -144,10 +162,16 @@ export default function ListaComanda() {
                       <div
                         className={`${styles.comandaItem} ${styles.comandaClient}`}
                       >
-                        {item.client}
+                        {width <= 850 && (
+                          <div className={styles.firstC}>Client:</div>
+                        )}
+                        <div className={styles.secondC}>{item.client}</div>
                       </div>
                       <div className={`${styles.comandaItem}`}>
-                        {item.adresa}
+                        {width <= 850 && (
+                          <div className={styles.firstC}>Adresa:</div>
+                        )}
+                        <div className={styles.secondC}>{item.adresa}</div>
                       </div>
                       {
                         // <div
@@ -156,12 +180,20 @@ export default function ListaComanda() {
                         //   {item.id}
                         // </div>
                       }
-                      <div
-                        className={`${styles.comandaItem} ${styles.comandaId}`}
-                      >
-                        {item.createdAt && formatDateTime(item.createdAt)}
+                      <div className={`${styles.comandaItem}`}>
+                        {width <= 850 && (
+                          <div className={styles.firstC}>Data crearii:</div>
+                        )}
+                        <div className={styles.secondC}>
+                          {item.createdAt && formatDateTime(item.createdAt)}
+                        </div>
                       </div>
-                      <div className={styles.telefon}>{item.telefon}</div>
+                      <div className={`${styles.comandaItem}`}>
+                        {width <= 850 && (
+                          <div className={styles.firstC}>Client:</div>
+                        )}
+                        <div className={styles.secondC}>{item.telefon}</div>
+                      </div>
                       <div
                         className={styles.comandaStatus}
                         style={
@@ -218,29 +250,68 @@ export default function ListaComanda() {
                                       key={index}
                                       className={styles.randProdus}
                                     >
+                                      {width <= 850 && (
+                                        <h5>{`Produs ${index}`}</h5>
+                                      )}
                                       <div className={styles.produs}>
-                                        {width <= 850 && <div>Nume:</div>}
-                                        <div>{produs.nume}</div>
+                                        {width <= 850 && (
+                                          <div className={styles.firstC}>
+                                            Nume:
+                                          </div>
+                                        )}
+                                        <div className={styles.secondC}>
+                                          {produs.nume}
+                                        </div>
                                       </div>
                                       <div className={styles.produs}>
-                                        {width <= 850 && <div>Lungime:</div>}
-                                        {produs.lungime}
+                                        {width <= 850 && (
+                                          <div className={styles.firstC}>
+                                            Lungime:
+                                          </div>
+                                        )}
+                                        <div className={styles.secondC}>
+                                          {produs.lungime}
+                                        </div>
                                       </div>
                                       <div className={styles.produs}>
-                                        {width <= 850 && <div>Latime:</div>}
-                                        {produs.latime}
+                                        {width <= 850 && (
+                                          <div className={styles.firstC}>
+                                            Latime:
+                                          </div>
+                                        )}
+                                        <div className={styles.secondC}>
+                                          {produs.latime}
+                                        </div>
                                       </div>
                                       <div className={styles.produs}>
-                                        {width <= 850 && <div>Grosime:</div>}
-                                        {produs.grosime}
+                                        {width <= 850 && (
+                                          <div className={styles.firstC}>
+                                            Grosime:
+                                          </div>
+                                        )}
+                                        <div className={styles.secondC}>
+                                          {produs.grosime}
+                                        </div>
                                       </div>
                                       <div className={styles.produs}>
-                                        {width <= 850 && <div>Cantitate:</div>}
-                                        {produs.cantitate}
+                                        {width <= 850 && (
+                                          <div className={styles.firstC}>
+                                            Cantitate:
+                                          </div>
+                                        )}
+                                        <div className={styles.secondC}>
+                                          {produs.cantitate}
+                                        </div>
                                       </div>
                                       <div className={styles.produs}>
-                                        {width <= 850 && <div>Pret:</div>}
-                                        {produs.pret}
+                                        {width <= 850 && (
+                                          <div className={styles.firstC}>
+                                            Pret:
+                                          </div>
+                                        )}
+                                        <div className={styles.secondC}>
+                                          {produs.pret}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -264,12 +335,19 @@ export default function ListaComanda() {
                               <div className={styles.editPage}>
                                 <div className={styles.editScreen}>
                                   <div
-                                    className={styles.closeBtn}
-                                    onClick={() => {
-                                      setEditeaza(0);
-                                    }}
+                                    className={styles.titluEditeaza_closeBtn}
                                   >
-                                    <CloseCircleOutlined />
+                                    <div className={styles.titluEditeaza}>
+                                      {`Editeaza Comanda`}
+                                    </div>
+                                    <div
+                                      className={styles.closeBtn}
+                                      onClick={() => {
+                                        setEditeaza(0);
+                                      }}
+                                    >
+                                      <CloseCircleOutlined />
+                                    </div>
                                   </div>
                                   <div className={styles.form}>
                                     <div className={styles.headerValues}>
@@ -300,6 +378,16 @@ export default function ListaComanda() {
                                           className={styles.input}
                                         />
                                       </div>
+
+                                      <div className={styles.property}>
+                                        <div className={styles.label}>
+                                          Creata la data:
+                                        </div>
+                                        <div className={styles.input}>
+                                          {formatDateTime(item.createdAt)}
+                                        </div>
+                                      </div>
+
                                       <div className={styles.property}>
                                         <div className={styles.label}>
                                           Statusul
@@ -339,6 +427,9 @@ export default function ListaComanda() {
                                           Cantitate
                                         </div>
                                         <div className={styles.label}>Pret</div>
+                                        <div className={styles.labelDelete}>
+                                          Delete
+                                        </div>
                                       </div>
                                       <div className={styles.body}>
                                         {item.produse &&
@@ -358,36 +449,135 @@ export default function ListaComanda() {
                                                   className={styles.row}
                                                   key={index}
                                                 >
-                                                  <input
-                                                    defaultValue={produs.nume}
-                                                    className={styles.cell}
-                                                  />
-                                                  <input
-                                                    defaultValue={
-                                                      produs.lungime
+                                                  <div
+                                                    className={
+                                                      styles.inputTransform
                                                     }
-                                                    className={styles.cell}
-                                                  />
-                                                  <input
-                                                    defaultValue={produs.latime}
-                                                    className={styles.cell}
-                                                  />
-                                                  <input
-                                                    defaultValue={
-                                                      produs.grosime
+                                                  >
+                                                    {width <= 850 && (
+                                                      <div
+                                                        className={
+                                                          styles.titluCell
+                                                        }
+                                                      >
+                                                        Nume
+                                                      </div>
+                                                    )}
+                                                    <input
+                                                      defaultValue={produs.nume}
+                                                      className={styles.cell}
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      styles.inputTransform
                                                     }
-                                                    className={styles.cell}
-                                                  />
-                                                  <input
-                                                    defaultValue={
-                                                      produs.cantitate
+                                                  >
+                                                    {width <= 850 && (
+                                                      <div
+                                                        className={
+                                                          styles.titluCell
+                                                        }
+                                                      >
+                                                        Lungime
+                                                      </div>
+                                                    )}
+                                                    <input
+                                                      defaultValue={
+                                                        produs.lungime
+                                                      }
+                                                      className={styles.cell}
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      styles.inputTransform
                                                     }
-                                                    className={styles.cell}
-                                                  />
-                                                  <input
-                                                    defaultValue={produs.pret}
-                                                    className={styles.cell}
-                                                  />
+                                                  >
+                                                    {width <= 850 && (
+                                                      <div
+                                                        className={
+                                                          styles.titluCell
+                                                        }
+                                                      >
+                                                        Latime
+                                                      </div>
+                                                    )}
+                                                    <input
+                                                      defaultValue={
+                                                        produs.latime
+                                                      }
+                                                      className={styles.cell}
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      styles.inputTransform
+                                                    }
+                                                  >
+                                                    {width <= 850 && (
+                                                      <div
+                                                        className={
+                                                          styles.titluCell
+                                                        }
+                                                      >
+                                                        Grosime
+                                                      </div>
+                                                    )}
+                                                    <input
+                                                      defaultValue={
+                                                        produs.grosime
+                                                      }
+                                                      className={styles.cell}
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      styles.inputTransform
+                                                    }
+                                                  >
+                                                    {width <= 850 && (
+                                                      <div
+                                                        className={
+                                                          styles.titluCell
+                                                        }
+                                                      >
+                                                        Cantitate
+                                                      </div>
+                                                    )}
+                                                    <input
+                                                      defaultValue={
+                                                        produs.cantitate
+                                                      }
+                                                      className={styles.cell}
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      styles.inputTransform
+                                                    }
+                                                  >
+                                                    {width <= 850 && (
+                                                      <div
+                                                        className={
+                                                          styles.titluCell
+                                                        }
+                                                      >
+                                                        Pret
+                                                      </div>
+                                                    )}
+                                                    <input
+                                                      defaultValue={produs.pret}
+                                                      className={styles.cell}
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className={
+                                                      styles.deleteRowBtn
+                                                    }
+                                                  >
+                                                    <DeleteOutlined />
+                                                  </div>
                                                 </div>
                                               </div>
                                             );
@@ -396,8 +586,16 @@ export default function ListaComanda() {
                                     </div>
                                   </div>
                                   <div className={styles.footer}>
-                                    <div className={styles.saveEdit}>
+                                    <div
+                                      onClick={() => {
+                                        submitEdit(item.id);
+                                      }}
+                                      className={styles.saveEdit}
+                                    >
                                       Salveaza
+                                    </div>
+                                    <div className={styles.addEdit}>
+                                      Adauga Produs
                                     </div>
                                     <div
                                       onClick={() => {

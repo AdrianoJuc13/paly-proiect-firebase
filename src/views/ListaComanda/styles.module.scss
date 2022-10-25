@@ -75,14 +75,12 @@
         justify-content: space-between;
         align-items: center;
         gap: 10px;
-
         @include mixinHelper.dynamicBreakpoint(800px) {
           flex-direction: column;
           gap: 5px;
           overflow-wrap: break-word;
           word-wrap: break-word;
         }
-
         .comandaClient {
           padding-left: 5px;
         }
@@ -95,6 +93,26 @@
           color: black;
           font-size: 15px;
           font-weight: bold;
+
+          @include mixinHelper.dynamicBreakpoint(800px) {
+            border-bottom: 1px dotted grey;
+            padding: 0;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            .firstC {
+              // background-color: globalVariables.$green;
+              width: 25%;
+            }
+            .secondC {
+              width: 75%;
+            }
+          }
         }
 
         .comandaId {
@@ -185,7 +203,13 @@
                   flex-direction: row;
                   align-items: center;
                   justify-content: space-between;
-                  padding: 0 20px;
+                  .firstC {
+                    background-color: globalVariables.$green;
+                    width: 25%;
+                  }
+                  .secondC {
+                    width: 75%;
+                  }
                 }
               }
             }
@@ -241,20 +265,31 @@
               @include mixinHelper.onMobile {
                 margin: 16px;
               }
-              .closeBtn {
-                background-color: black;
-                color: white;
-                width: 7vh;
-                height: 6vh;
-                font-size: 2.7vh;
-                border-radius: 5px;
-                border: 1px solid grey;
-                margin-left: auto;
-                cursor: pointer;
+              .titluEditeaza_closeBtn {
+                display: flex;
+                flex-direction: row;
+                .titluEditeaza {
+                  font-size: 3vh;
+                  padding-left: 5%;
+                  @include mixinHelper.onMobile {
+                    padding-left: 20%;
+                  }
+                }
+                .closeBtn {
+                  background-color: black;
+                  color: white;
+                  width: 7vh;
+                  height: 6vh;
+                  font-size: 2.7vh;
+                  border-radius: 5px;
+                  border: 1px solid grey;
+                  margin-left: auto;
+                  cursor: pointer;
+                }
               }
 
               .closeBtn:hover {
-                scale: 1.05;
+                scale: 1.04;
               }
               .form {
                 width: 100%;
@@ -283,12 +318,9 @@
                       border: 2px solid globalVariables.$border;
                       border-radius: 4px;
                       height: 50px;
-                      font-size: 20px;
                       width: 100%;
+                      font-size: 20px;
                       padding: 0 10px;
-                    }
-                    .select {
-                      //aici
                     }
                   }
                 }
@@ -306,10 +338,13 @@
                       visibility: hidden;
                     }
                     .label {
-                      width: 20%;
+                      width: 19%;
                       text-align: center;
                       border: 1px solid black;
                       background-color: globalVariables.$green;
+                    }
+                    .labelDelete {
+                      width: 6%;
                     }
                   }
                   .body {
@@ -333,18 +368,58 @@
                       @include mixinHelper.onMobile {
                         flex-direction: column;
                       }
-                      .cell {
-                        width: 20%;
-                        border: 1px solid grey;
+                      .inputTransform {
+                        width: 19%;
                         text-align: center;
                         font-weight: bold;
 
-                        @include mixinHelper.onMobile {
+                        .titluCell {
+                          font-size: 20px;
+                        }
+                        .cell {
                           width: 100%;
                         }
+                        @include mixinHelper.onMobile {
+                          width: 100%;
+                          display: flex;
+                          border: 1px solid black;
+                          flex-direction: row;
+                          align-items: center;
+                          word-wrap: break-word;
+                          overflow-wrap: break-word;
+                          .titluCell {
+                            background-color: globalVariables.$green;
+                            width: 25%;
+                          }
+                          .cell {
+                            font-size: 18px;
+                            border: none;
+                            width: 75;
+                            text-align: center;
+                          }
+                        }
                       }
-                      .deleteBtn {
+                      .deleteRowBtn {
+                        width: 6%;
+                        color: white;
+                        background-color: globalVariables.$red;
+                        border-bottom: 1px dotted white;
+                        border-top: 1px dotted white;
+                        cursor: pointer;
+                        @include mixinHelper.onMobile {
+                          width: 100%;
+                          align-self: center;
+                          height: 40px;
+                          font-size: 2vh;
+                          border: none;
+                        }
+                      }
+                      .deleteRowBtn:hover {
                         background-color: red;
+                        scale: 1.05;
+                        @include mixinHelper.onMobile {
+                          scale: 1.01;
+                        }
                       }
                     }
                   }
@@ -356,6 +431,14 @@
                 justify-content: space-around;
                 .saveEdit {
                   background-color: green;
+                  color: white;
+                  padding: 10px;
+                  margin: 10px;
+                  border-radius: 8px;
+                  cursor: pointer;
+                }
+                .addEdit {
+                  background-color: globalVariables.$purple;
                   color: white;
                   padding: 10px;
                   margin: 10px;
