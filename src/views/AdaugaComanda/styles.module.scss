@@ -93,30 +93,30 @@
           margin-bottom: 20px;
         }
       }
-      .endArea {
-        margin: 50px auto;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        .saveBtn {
-          width: 100px;
-          height: 50px;
-          font-size: 20px;
-          background-color: globalVariables.$purple;
-          color: globalVariables.$white;
-          border: none;
-          border-radius: 8px;
-        }
-        .printBtn {
-          width: 100px;
-          height: 50px;
-          font-size: 20px;
-          background-color: globalVariables.$purple;
-          color: globalVariables.$white;
-          border: none;
-          border-radius: 8px;
-        }
+    }
+    .endArea {
+      margin: 50px auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      .saveBtn {
+        width: 100px;
+        height: 50px;
+        font-size: 20px;
+        background-color: globalVariables.$purple;
+        color: globalVariables.$white;
+        border: none;
+        border-radius: 8px;
+      }
+      .printBtn {
+        width: 100px;
+        height: 50px;
+        font-size: 20px;
+        background-color: globalVariables.$purple;
+        color: globalVariables.$white;
+        border: none;
+        border-radius: 8px;
       }
     }
   }
