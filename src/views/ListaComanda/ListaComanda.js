@@ -6,12 +6,26 @@ import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { motion } from "framer-motion";
 import { CloseCircleOutlined } from "@ant-design/icons";
+
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
   const [deschis, setDeschis] = useState(0);
   const [editeaza, setEditeaza] = useState(false);
+
+  function formatDateTime(input) {
+    var epoch = new Date(0);
+    epoch.setSeconds(parseInt(input / 2));
+    var date = epoch.toISOString();
+    date = date.replace("T", " ");
+    return (
+      date.split(".")[0].split(" ")[0] +
+      " " +
+      epoch.toLocaleTimeString().split(" ")[0]
+    );
+  }
+
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
@@ -21,11 +35,14 @@ export default function ListaComanda() {
       );
     });
   };
+
   const deleteComanda = async (id) => {
     try {
       const todoRef = doc(dbInstance, id);
       await deleteDoc(todoRef).then(() => {
-        alert("deleted");
+        setEditeaza(0);
+        setDeschis(0);
+        this.forceUpdate();
       });
     } catch (err) {
       console.log(err);
@@ -34,7 +51,7 @@ export default function ListaComanda() {
   useEffect(() => {
     getComanda();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [deschis]);
 
   return (
     <Layout>
@@ -51,7 +68,7 @@ export default function ListaComanda() {
           <div className={styles.headerComanda}>
             <div className={styles.headerComandaChild}>Clientul</div>
             <div className={styles.headerComandaChild}>Adresa</div>
-            <div className={styles.headerComandaChild}>ID-ul comenzi</div>
+            <div className={styles.headerComandaChild}>Data crearii</div>
             <div className={styles.headerComandaChild}>Numar de telefon</div>
             <div className={styles.headerComandaChild}>Statusul</div>
           </div>
@@ -69,9 +86,26 @@ export default function ListaComanda() {
                           : setDeschis(item.id);
                       }}
                     >
-                      <div className={`${styles.comandaItem} ${styles.comandaClient}`}>{item.client}</div>
-                      <div className={`${styles.comandaItem}`}>{item.adresa}</div>
-                      <div className={`${styles.comandaItem} ${styles.comandaId}`}>{item.id}</div>
+                      <div
+                        className={`${styles.comandaItem} ${styles.comandaClient}`}
+                      >
+                        {item.client}
+                      </div>
+                      <div className={`${styles.comandaItem}`}>
+                        {item.adresa}
+                      </div>
+                      {
+                        // <div
+                        //   className={`${styles.comandaItem} ${styles.comandaId}`}
+                        // >
+                        //   {item.id}
+                        // </div>
+                      }
+                      <div
+                        className={`${styles.comandaItem} ${styles.comandaId}`}
+                      >
+                        {item.createdAt && formatDateTime(item.createdAt)}
+                      </div>
                       <div className={styles.telefon}>{item.telefon}</div>
                       <div
                         className={styles.comandaStatus}
@@ -250,7 +284,6 @@ export default function ListaComanda() {
                                                 <input
                                                   defaultValue={produs.lungime}
                                                   className={styles.cell}
-                                                  
                                                 />
                                                 <input
                                                   defaultValue={produs.latime}

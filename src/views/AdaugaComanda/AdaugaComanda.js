@@ -1,5 +1,5 @@
 import { database } from "../../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { useState } from "react";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
@@ -14,6 +14,29 @@ export default function AdaugaComanda() {
   const [client, setClient] = useState("");
   const [status] = useState(false);
   const [telefon, setTelefon] = useState("");
+
+  //Start Time ------------------------------------------------------
+
+  const [curr, setCurr] = useState();
+  // Function to get time and date
+  const getDate = () => {
+    const a = Timestamp.now();
+    setCurr(a.seconds);
+  };
+
+  // function formatDateTime(input) {
+  //   var epoch = new Date(0);
+  //   epoch.setSeconds(parseInt(input / 2));
+  //   var date = epoch.toISOString();
+  //   date = date.replace("T", " ");
+  //   return (
+  //     date.split(".")[0].split(" ")[0] +
+  //     " " +
+  //     epoch.toLocaleTimeString().split(" ")[0]
+  //   );
+  // }
+
+  //End Time ------------------------------------------------------
   const [inputFields, setInputFields] = useState([
     {
       id: uuidv4(),
@@ -36,19 +59,10 @@ export default function AdaugaComanda() {
       status: status,
       telefon: telefon,
       produse: inputFields,
-      // &&
-      // inputFields.map((item) => {
-      //   return JSON.stringify(item);
-      // }),
+      createdAt: curr,
     }).then(() => {
       navigate("/");
     });
-    // alert(
-    //   inputFields &&
-    //     inputFields.map((item) => {
-    //       return JSON.stringify(item);
-    //     })
-    // );
   };
 
   const handleChangeInput = (id, event) => {
@@ -97,6 +111,7 @@ export default function AdaugaComanda() {
         <div className={styles.container}>
           <div className={styles.field}>
             <label className={styles.label}> Numele clientului</label>
+
             <input
               className={styles.input}
               onChange={(e) => setClient(e.target.value)}
@@ -200,7 +215,10 @@ export default function AdaugaComanda() {
               <button
                 className={styles.saveBtn}
                 type="submit"
-                onClick={handleSubmit}
+                onClick={() => {
+                  getDate();
+                  handleSubmit();
+                }}
               >
                 Salveaza
               </button>
