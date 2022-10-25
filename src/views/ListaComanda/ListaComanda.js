@@ -71,6 +71,7 @@ export default function ListaComanda() {
     getComanda();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorted]);
+  }, [deschis]);
 
   const { width } = useWindowDimensions();
   }, [deschis]);
