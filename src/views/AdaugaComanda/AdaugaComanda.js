@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { v4 as uuidv4 } from "uuid";
@@ -28,29 +28,20 @@ export default function AdaugaComanda() {
 
   const pdfRef = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (client && adresa) console.log("ii ok ");
-    else console.log("nu i ok");
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    let time = await Timestamp.now();
+    console.log(time);
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,
       status: status,
       telefon: telefon,
+      createdAt: time.seconds,
       produse: inputFields,
-      // &&
-      // inputFields.map((item) => {
-      //   return JSON.stringify(item);
-      // }),
     }).then(() => {
       navigate("/");
     });
-    // alert(
-    //   inputFields &&
-    //     inputFields.map((item) => {
-    //       return JSON.stringify(item);
-    //     })
-    // );
   };
 
   const handleChangeInput = (id, event) => {
@@ -221,7 +212,9 @@ export default function AdaugaComanda() {
             <button
               className={styles.saveBtn}
               type="submit"
-              onClick={handleSubmit}
+              onClick={() => {
+                handleSubmit();
+              }}
             >
               Salveaza
             </button>
