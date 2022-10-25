@@ -20,6 +20,27 @@ export default function ListaComanda() {
 
   const handleChange = (event) => {
     setSorted(event.target.value);
+
+  function formatDateTime(input) {
+    var epoch = new Date(0);
+    epoch.setSeconds(parseInt(input));
+    var date = epoch.toISOString();
+    date = date.replace("T", " ");
+    return (
+      date.split(".")[0].split(" ")[0] +
+      " " +
+      epoch.toLocaleTimeString().split(" ")[0]
+    );
+  }
+
+  const getComanda = () => {
+    getDocs(dbInstance).then((data) => {
+      setComanda(
+        data.docs.map((item) => {
+          return { ...item.data(), id: item.id };
+        })
+      );
+    });
   };
 
   let timeAngajat = Timestamp.now().seconds - 604800;
@@ -38,7 +59,9 @@ export default function ListaComanda() {
     try {
       const todoRef = doc(dbInstance, id);
       await deleteDoc(todoRef).then(() => {
-        alert("deleted");
+        setEditeaza(0);
+        setDeschis(0);
+        this.forceUpdate();
       });
     } catch (err) {
       console.log(err);
@@ -50,6 +73,7 @@ export default function ListaComanda() {
   }, [sorted]);
 
   const { width } = useWindowDimensions();
+  }, [deschis]);
 
   return (
     <Layout>
@@ -98,7 +122,7 @@ export default function ListaComanda() {
           <div className={styles.headerComanda}>
             <div className={styles.headerComandaChild}>Clientul</div>
             <div className={styles.headerComandaChild}>Adresa</div>
-            <div className={styles.headerComandaChild}>ID-ul comenzi</div>
+            <div className={styles.headerComandaChild}>Data crearii</div>
             <div className={styles.headerComandaChild}>Numar de telefon</div>
             <div className={styles.headerComandaChild}>Statusul</div>
           </div>
@@ -124,10 +148,17 @@ export default function ListaComanda() {
                       <div className={`${styles.comandaItem}`}>
                         {item.adresa}
                       </div>
+                      {
+                        // <div
+                        //   className={`${styles.comandaItem} ${styles.comandaId}`}
+                        // >
+                        //   {item.id}
+                        // </div>
+                      }
                       <div
                         className={`${styles.comandaItem} ${styles.comandaId}`}
                       >
-                        {item.id}
+                        {item.createdAt && formatDateTime(item.createdAt)}
                       </div>
                       <div className={styles.telefon}>{item.telefon}</div>
                       <div
