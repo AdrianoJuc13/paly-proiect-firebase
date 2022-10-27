@@ -21,22 +21,47 @@ export default function ListaComanda() {
   const handleChange = (event) => {
     setSorted(event.target.value);
 
+  const [comandaEdit, setComandaEdit] = useState(comanda);
+
   const submitEdit = async (id) => {
     try {
-      const todoRef = doc(dbInstance, id);
-      await getDoc(todoRef).then((data) => {
-        // console.log(data._document.data.value.mapValue.fields);
+      let itemToSave;
+      comandaEdit.forEach((item) => {
+        if (item.id === id) itemToSave = item;
       });
+      database
+        .collection("Comenzi")
+        .doc(id)
+        .update(itemToSave)
+        .then(() => {
+          setEditeaza(0);
+          setDeschis(0);
+          alert("Comanda salvata");
+        });
 
-      // .then(() => {
-      //   setEditeaza(0);
-      //   setDeschis(0);
-      //   this.forceUpdate();
-      // });
+      // setComandaEdit(data._document.data.value.mapValue.fields);
     } catch (err) {
       console.log(err);
     }
   };
+  function handleDeleteRow(id, index) {
+    let jsonObj = comandaEdit;
+    // let toDelete;
+    // comandaEdit.forEach((item) => {
+    //   if (item.id === id) {
+    //     toDelete = item.produse[index];
+    //   }
+    // });
+    jsonObj.forEach((item, index) => {
+      if (item.id === id) delete item.produse[index];
+      jsonObj[index].produse = jsonObj[index].produse.filter(
+        (item) => item !== null
+      );
+    });
+    setComandaEdit(jsonObj);
+    // console.log(database.collection("Comenzi").doc(id).update({ produse: {} }));
+  }
+
   function formatDateTime(input) {
     var epoch = new Date(0);
     epoch.setSeconds(parseInt(input));
@@ -52,6 +77,11 @@ export default function ListaComanda() {
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
+        data.docs.map((item) => {
+          return { ...item.data(), id: item.id };
+        })
+      );
+      setComandaEdit(
         data.docs.map((item) => {
           return { ...item.data(), id: item.id };
         })
@@ -242,82 +272,83 @@ export default function ListaComanda() {
                               </div>
                             )}
 
-                            {item.produse.map((produs, index) => {
-                              return (
-                                <div>
+                            {item.produse &&
+                              item.produse.map((produs, index) => {
+                                return (
                                   <div>
-                                    <div
-                                      key={index}
-                                      className={styles.randProdus}
-                                    >
-                                      {width <= 850 && (
-                                        <h5>{`Produs ${index}`}</h5>
-                                      )}
-                                      <div className={styles.produs}>
+                                    <div>
+                                      <div
+                                        key={index}
+                                        className={styles.randProdus}
+                                      >
                                         {width <= 850 && (
-                                          <div className={styles.firstC}>
-                                            Nume:
-                                          </div>
+                                          <h5>{`Produs ${index}`}</h5>
                                         )}
-                                        <div className={styles.secondC}>
-                                          {produs.nume}
+                                        <div className={styles.produs}>
+                                          {width <= 850 && (
+                                            <div className={styles.firstC}>
+                                              Nume:
+                                            </div>
+                                          )}
+                                          <div className={styles.secondC}>
+                                            {produs.nume}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className={styles.produs}>
-                                        {width <= 850 && (
-                                          <div className={styles.firstC}>
-                                            Lungime:
+                                        <div className={styles.produs}>
+                                          {width <= 850 && (
+                                            <div className={styles.firstC}>
+                                              Lungime:
+                                            </div>
+                                          )}
+                                          <div className={styles.secondC}>
+                                            {produs.lungime}
                                           </div>
-                                        )}
-                                        <div className={styles.secondC}>
-                                          {produs.lungime}
                                         </div>
-                                      </div>
-                                      <div className={styles.produs}>
-                                        {width <= 850 && (
-                                          <div className={styles.firstC}>
-                                            Latime:
+                                        <div className={styles.produs}>
+                                          {width <= 850 && (
+                                            <div className={styles.firstC}>
+                                              Latime:
+                                            </div>
+                                          )}
+                                          <div className={styles.secondC}>
+                                            {produs.latime}
                                           </div>
-                                        )}
-                                        <div className={styles.secondC}>
-                                          {produs.latime}
                                         </div>
-                                      </div>
-                                      <div className={styles.produs}>
-                                        {width <= 850 && (
-                                          <div className={styles.firstC}>
-                                            Grosime:
+                                        <div className={styles.produs}>
+                                          {width <= 850 && (
+                                            <div className={styles.firstC}>
+                                              Grosime:
+                                            </div>
+                                          )}
+                                          <div className={styles.secondC}>
+                                            {produs.grosime}
                                           </div>
-                                        )}
-                                        <div className={styles.secondC}>
-                                          {produs.grosime}
                                         </div>
-                                      </div>
-                                      <div className={styles.produs}>
-                                        {width <= 850 && (
-                                          <div className={styles.firstC}>
-                                            Cantitate:
+                                        <div className={styles.produs}>
+                                          {width <= 850 && (
+                                            <div className={styles.firstC}>
+                                              Cantitate:
+                                            </div>
+                                          )}
+                                          <div className={styles.secondC}>
+                                            {produs.cantitate}
                                           </div>
-                                        )}
-                                        <div className={styles.secondC}>
-                                          {produs.cantitate}
                                         </div>
-                                      </div>
-                                      <div className={styles.produs}>
-                                        {width <= 850 && (
-                                          <div className={styles.firstC}>
-                                            Pret:
+                                        <div className={styles.produs}>
+                                          {width <= 850 && (
+                                            <div className={styles.firstC}>
+                                              Pret:
+                                            </div>
+                                          )}
+                                          <div className={styles.secondC}>
+                                            {produs.pret}
                                           </div>
-                                        )}
-                                        <div className={styles.secondC}>
-                                          {produs.pret}
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              );
-                            })}
+                                );
+                              })}
 
                             <motion.div
                               whileHover={{ scale: 1.03 }}
@@ -325,7 +356,7 @@ export default function ListaComanda() {
                               className={styles.editBtn}
                               onClick={() => {
                                 setEditeaza(item.id);
-                                console.log(item);
+                                // console.log(item);
                               }}
                             >
                               Editeaza Comanda
@@ -358,8 +389,18 @@ export default function ListaComanda() {
                                         <input
                                           defaultValue={item.client}
                                           className={styles.input}
+                                          onChange={(value) => {
+                                            comandaEdit &&
+                                              // eslint-disable-next-line array-callback-return
+                                              comandaEdit.map((littleitem) => {
+                                                if (littleitem.id === item.id)
+                                                  littleitem.client =
+                                                    value.target.value;
+                                              });
+                                          }}
                                         />
                                       </div>
+
                                       <div className={styles.property}>
                                         <div className={styles.label}>
                                           Adresa
@@ -367,8 +408,18 @@ export default function ListaComanda() {
                                         <input
                                           defaultValue={item.adresa}
                                           className={styles.input}
+                                          onChange={(value) => {
+                                            comandaEdit &&
+                                              // eslint-disable-next-line array-callback-return
+                                              comandaEdit.map((littleitem) => {
+                                                if (littleitem.id === item.id)
+                                                  littleitem.adresa =
+                                                    value.target.value;
+                                              });
+                                          }}
                                         />
                                       </div>
+
                                       <div className={styles.property}>
                                         <div className={styles.label}>
                                           Numar de telefon
@@ -376,6 +427,15 @@ export default function ListaComanda() {
                                         <input
                                           defaultValue={item.telefon}
                                           className={styles.input}
+                                          onChange={(value) => {
+                                            comandaEdit &&
+                                              // eslint-disable-next-line array-callback-return
+                                              comandaEdit.map((littleitem) => {
+                                                if (littleitem.id === item.id)
+                                                  littleitem.telefon =
+                                                    value.target.value;
+                                              });
+                                          }}
                                         />
                                       </div>
 
@@ -384,7 +444,8 @@ export default function ListaComanda() {
                                           Creata la data:
                                         </div>
                                         <div className={styles.input}>
-                                          {formatDateTime(item.createdAt)}
+                                          {item.createdAt &&
+                                            formatDateTime(item.createdAt)}
                                         </div>
                                       </div>
 
@@ -395,6 +456,15 @@ export default function ListaComanda() {
                                         <select
                                           className={styles.select}
                                           defaultValue={item.status}
+                                          onChange={(value) => {
+                                            comandaEdit &&
+                                              // eslint-disable-next-line array-callback-return
+                                              comandaEdit.map((littleitem) => {
+                                                if (littleitem.id === item.id)
+                                                  littleitem.status =
+                                                    value.target.value;
+                                              });
+                                          }}
                                         >
                                           <option
                                             className={styles.false}
@@ -466,6 +536,21 @@ export default function ListaComanda() {
                                                     <input
                                                       defaultValue={produs.nume}
                                                       className={styles.cell}
+                                                      onChange={(value) => {
+                                                        comandaEdit &&
+                                                          comandaEdit.forEach(
+                                                            (littleitem) => {
+                                                              if (
+                                                                littleitem.id ===
+                                                                item.id
+                                                              )
+                                                                littleitem.produse[
+                                                                  index
+                                                                ].nume =
+                                                                  value.target.value;
+                                                            }
+                                                          );
+                                                      }}
                                                     />
                                                   </div>
                                                   <div
@@ -487,6 +572,21 @@ export default function ListaComanda() {
                                                         produs.lungime
                                                       }
                                                       className={styles.cell}
+                                                      onChange={(value) => {
+                                                        comandaEdit &&
+                                                          comandaEdit.forEach(
+                                                            (littleitem) => {
+                                                              if (
+                                                                littleitem.id ===
+                                                                item.id
+                                                              )
+                                                                littleitem.produse[
+                                                                  index
+                                                                ].lungime =
+                                                                  value.target.value;
+                                                            }
+                                                          );
+                                                      }}
                                                     />
                                                   </div>
                                                   <div
@@ -508,6 +608,21 @@ export default function ListaComanda() {
                                                         produs.latime
                                                       }
                                                       className={styles.cell}
+                                                      onChange={(value) => {
+                                                        comandaEdit &&
+                                                          comandaEdit.forEach(
+                                                            (littleitem) => {
+                                                              if (
+                                                                littleitem.id ===
+                                                                item.id
+                                                              )
+                                                                littleitem.produse[
+                                                                  index
+                                                                ].latime =
+                                                                  value.target.value;
+                                                            }
+                                                          );
+                                                      }}
                                                     />
                                                   </div>
                                                   <div
@@ -529,6 +644,21 @@ export default function ListaComanda() {
                                                         produs.grosime
                                                       }
                                                       className={styles.cell}
+                                                      onChange={(value) => {
+                                                        comandaEdit &&
+                                                          comandaEdit.forEach(
+                                                            (littleitem) => {
+                                                              if (
+                                                                littleitem.id ===
+                                                                item.id
+                                                              )
+                                                                littleitem.produse[
+                                                                  index
+                                                                ].grosime =
+                                                                  value.target.value;
+                                                            }
+                                                          );
+                                                      }}
                                                     />
                                                   </div>
                                                   <div
@@ -550,6 +680,21 @@ export default function ListaComanda() {
                                                         produs.cantitate
                                                       }
                                                       className={styles.cell}
+                                                      onChange={(value) => {
+                                                        comandaEdit &&
+                                                          comandaEdit.forEach(
+                                                            (littleitem) => {
+                                                              if (
+                                                                littleitem.id ===
+                                                                item.id
+                                                              )
+                                                                littleitem.produse[
+                                                                  index
+                                                                ].cantitate =
+                                                                  value.target.value;
+                                                            }
+                                                          );
+                                                      }}
                                                     />
                                                   </div>
                                                   <div
@@ -569,12 +714,40 @@ export default function ListaComanda() {
                                                     <input
                                                       defaultValue={produs.pret}
                                                       className={styles.cell}
+                                                      onChange={(value) => {
+                                                        comandaEdit &&
+                                                          comandaEdit.forEach(
+                                                            (littleitem) => {
+                                                              if (
+                                                                littleitem.id ===
+                                                                item.id
+                                                              )
+                                                                littleitem.produse[
+                                                                  index
+                                                                ].pret =
+                                                                  value.target.value;
+                                                            }
+                                                          );
+                                                      }}
                                                     />
                                                   </div>
                                                   <div
                                                     className={
                                                       styles.deleteRowBtn
                                                     }
+                                                    onClick={() => {
+                                                      handleDeleteRow(
+                                                        item.id,
+                                                        index
+                                                      );
+                                                      // console.log(item.id);
+                                                      // console.log(index);
+                                                      // alert(
+                                                      //   `${JSON.stringify(
+                                                      //     item.produse[index]
+                                                      //   )}`
+                                                      // );
+                                                    }}
                                                   >
                                                     <DeleteOutlined />
                                                   </div>
