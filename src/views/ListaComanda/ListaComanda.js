@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { database } from "../../firebaseConfig";
 import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
 
@@ -36,7 +36,6 @@ export default function ListaComanda() {
         .then(() => {
           setEditeaza(0);
           setDeschis(0);
-          alert("Comanda salvata");
         });
 
       // setComandaEdit(data._document.data.value.mapValue.fields);
@@ -46,22 +45,40 @@ export default function ListaComanda() {
   };
   function handleDeleteRow(id, index) {
     let jsonObj = comandaEdit;
-    // let toDelete;
-    // comandaEdit.forEach((item) => {
-    //   if (item.id === id) {
-    //     toDelete = item.produse[index];
-    //   }
-    // });
-    jsonObj.forEach((item, index) => {
-      if (item.id === id) delete item.produse[index];
-      jsonObj[index].produse = jsonObj[index].produse.filter(
-        (item) => item !== null
-      );
+    jsonObj.forEach((item) => {
+      if (item.id === id) {
+        delete item.produse[index];
+        item.produse = item.produse.filter((value) => {
+          return value;
+        });
+      }
     });
+    console.log(jsonObj);
     setComandaEdit(jsonObj);
+    setComanda(comandaEdit);
+    forceUpdate();
     // console.log(database.collection("Comenzi").doc(id).update({ produse: {} }));
   }
-
+  function handleAddRow(id) {
+    comandaEdit &&
+      comandaEdit.forEach((item) => {
+        if (item.id === id) {
+          item.produse.push({
+            cantitate: "",
+            pret: "",
+            nume: "",
+            latime: "",
+            lungime: "",
+            grosime: "",
+          });
+          console.log(item.produse);
+        }
+      });
+    setComanda(comandaEdit);
+    forceUpdate();
+  }
+  const [state, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
   function formatDateTime(input) {
     var epoch = new Date(0);
     epoch.setSeconds(parseInt(input));
@@ -374,6 +391,7 @@ export default function ListaComanda() {
                                     <div
                                       className={styles.closeBtn}
                                       onClick={() => {
+                                        getComanda();
                                         setEditeaza(0);
                                       }}
                                     >
@@ -767,7 +785,12 @@ export default function ListaComanda() {
                                     >
                                       Salveaza
                                     </div>
-                                    <div className={styles.addEdit}>
+                                    <div
+                                      className={styles.addEdit}
+                                      onClick={() => {
+                                        handleAddRow(item.id);
+                                      }}
+                                    >
                                       Adauga Produs
                                     </div>
                                     <div
@@ -777,6 +800,20 @@ export default function ListaComanda() {
                                       className={styles.deleteEdit}
                                     >
                                       Sterge Comanda
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        console.log(comandaEdit[0].produse);
+                                      }}
+                                    >
+                                      ComandaEdit
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        console.log(comanda[0].produse);
+                                      }}
+                                    >
+                                      Comanda
                                     </div>
                                   </div>
                                 </div>
