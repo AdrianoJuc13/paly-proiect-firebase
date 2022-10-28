@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { database } from "../../firebaseConfig";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc } from "firebase/firestore";
 
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
@@ -15,14 +15,18 @@ export default function ListaComanda() {
   const [editeaza, setEditeaza] = useState(false);
   const [comandaFiltrata, setComandaFiltrata] = useState(comanda);
   const [comandaFiltrataInit, setComandaFiltrataInit] = useState(false);
-  const getComanda = () => {
-    getDocs(dbInstance).then((data) => {
-      setComanda(
-        data.docs.map((item) => {
-          return { ...item.data(), id: item.id };
-        })
-      );
-    });
+  const [sorted, setSorted] = useState("asc");
+
+  const handleChange = (event) => {
+    setSorted(event.target.value);
+  };
+
+  const getComanda = async () => {
+    const createdAt = await database
+      .collection("Comenzi")
+      .orderBy("createdAt", sorted)
+      .get();
+    setComanda(createdAt.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
   };
   const deleteComanda = async (id) => {
     try {
@@ -37,7 +41,7 @@ export default function ListaComanda() {
   useEffect(() => {
     getComanda();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sorted]);
 
   const { width } = useWindowDimensions();
 
@@ -77,9 +81,12 @@ export default function ListaComanda() {
             <select
               class="form-select form-select-sm w-20"
               aria-label=".form-select-sm example"
+              onChange={handleChange}
             >
-              <option selected>Crescator</option>
-              <option value="1">Descrescator</option>
+              <option selected value="asc">
+                Crescator
+              </option>
+              <option value="desc">Descrescator</option>
             </select>
           </div>
           <div className={styles.headerComanda}>
@@ -178,23 +185,23 @@ export default function ListaComanda() {
                                         <div>{produs.nume}</div>
                                       </div>
                                       <div className={styles.produs}>
-                                      {width <= 850 && <div>Lungime:</div>}
+                                        {width <= 850 && <div>Lungime:</div>}
                                         {produs.lungime}
                                       </div>
                                       <div className={styles.produs}>
-                                      {width <= 850 && <div>Latime:</div>}
+                                        {width <= 850 && <div>Latime:</div>}
                                         {produs.latime}
                                       </div>
                                       <div className={styles.produs}>
-                                      {width <= 850 && <div>Grosime:</div>}
+                                        {width <= 850 && <div>Grosime:</div>}
                                         {produs.grosime}
                                       </div>
                                       <div className={styles.produs}>
-                                      {width <= 850 && <div>Cantitate:</div>}
+                                        {width <= 850 && <div>Cantitate:</div>}
                                         {produs.cantitate}
                                       </div>
                                       <div className={styles.produs}>
-                                      {width <= 850 && <div>Pret:</div>}
+                                        {width <= 850 && <div>Pret:</div>}
                                         {produs.pret}
                                       </div>
                                     </div>
