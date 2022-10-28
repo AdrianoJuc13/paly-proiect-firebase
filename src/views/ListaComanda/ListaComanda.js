@@ -83,7 +83,9 @@ export default function ListaComanda() {
               aria-label=".form-select-sm example"
               onChange={handleChange}
             >
-              <option selected value="asc">Crescator</option>
+              <option selected value="asc">
+                Crescator
+              </option>
               <option value="desc">Descrescator</option>
             </select>
           </div>
