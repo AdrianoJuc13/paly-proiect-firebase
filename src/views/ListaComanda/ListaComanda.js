@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { database } from "../../firebaseConfig";
 import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
 
@@ -21,64 +21,46 @@ export default function ListaComanda() {
   const handleChange = (event) => {
     setSorted(event.target.value);
 
-  const [comandaEdit, setComandaEdit] = useState(comanda);
+  const { width } = useWindowDimensions();
 
+  // Functiile pentru Editare---------------------------------------------
+  const [comandaEdit, setComandaEdit] = useState([]);
   const submitEdit = async (id) => {
     try {
-      let itemToSave;
-      comandaEdit.forEach((item) => {
-        if (item.id === id) itemToSave = item;
-      });
       database
         .collection("Comenzi")
         .doc(id)
-        .update(itemToSave)
+        .update(comandaEdit)
         .then(() => {
           setEditeaza(0);
           setDeschis(0);
         });
-
-      // setComandaEdit(data._document.data.value.mapValue.fields);
     } catch (err) {
       console.log(err);
     }
   };
-  function handleDeleteRow(id, index) {
+  const handleDeleteRow = (index) => {
     let jsonObj = comandaEdit;
-    jsonObj.forEach((item) => {
-      if (item.id === id) {
-        delete item.produse[index];
-        item.produse = item.produse.filter((value) => {
-          return value;
-        });
-      }
+    delete jsonObj.produse[index];
+    // eslint-disable-next-line array-callback-return
+    jsonObj.produse = jsonObj.produse.filter((value) => {
+      if (value) return value;
     });
-    console.log(jsonObj);
     setComandaEdit(jsonObj);
-    setComanda(comandaEdit);
-    forceUpdate();
-    // console.log(database.collection("Comenzi").doc(id).update({ produse: {} }));
-  }
-  function handleAddRow(id) {
-    comandaEdit &&
-      comandaEdit.forEach((item) => {
-        if (item.id === id) {
-          item.produse.push({
-            cantitate: "",
-            pret: "",
-            nume: "",
-            latime: "",
-            lungime: "",
-            grosime: "",
-          });
-          console.log(item.produse);
-        }
-      });
-    setComanda(comandaEdit);
-    forceUpdate();
-  }
-  const [state, updateState] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
+  };
+  const handleAddRow = () => {
+    comandaEdit.produse.push({
+      nume: "",
+      lungime: "",
+      latime: "",
+      grosime: "",
+      cantitate: "",
+      pret: "",
+    });
+    setComandaEdit(comandaEdit);
+  };
+  // Functiile pentru Editare---------------------------------------------
+
   function formatDateTime(input) {
     var epoch = new Date(0);
     epoch.setSeconds(parseInt(input));
@@ -94,11 +76,6 @@ export default function ListaComanda() {
   const getComanda = () => {
     getDocs(dbInstance).then((data) => {
       setComanda(
-        data.docs.map((item) => {
-          return { ...item.data(), id: item.id };
-        })
-      );
-      setComandaEdit(
         data.docs.map((item) => {
           return { ...item.data(), id: item.id };
         })
@@ -183,6 +160,7 @@ export default function ListaComanda() {
               <option value="desc">Descrescator</option>
             </select>
           </div>
+
           {width >= 800 && (
             <div className={styles.headerComanda}>
               <div className={styles.headerComandaChild}>Clientul</div>
@@ -195,637 +173,607 @@ export default function ListaComanda() {
 
           <div>
             {comanda &&
-              (comandaFiltrataInit ? comandaFiltrata : comanda).map((item) => {
-                return (
-                  <div key={item.id} className={styles.Comanda}>
-                    <div
-                      className={styles.headerField}
-                      onClick={() => {
-                        deschis === item.id
-                          ? setDeschis(0)
-                          : setDeschis(item.id);
-                      }}
-                    >
+              (comandaFiltrataInit ? comandaFiltrata : comanda).map(
+                (item, index) => {
+                  return (
+                    <div key={item.id} className={styles.Comanda}>
                       <div
-                        className={`${styles.comandaItem} ${styles.comandaClient}`}
+                        className={styles.headerField}
+                        onClick={() => {
+                          deschis === item.id
+                            ? setDeschis(0)
+                            : setDeschis(item.id);
+                        }}
                       >
-                        {width <= 850 && (
-                          <div className={styles.firstC}>Client:</div>
-                        )}
-                        <div className={styles.secondC}>{item.client}</div>
-                      </div>
-                      <div className={`${styles.comandaItem}`}>
-                        {width <= 850 && (
-                          <div className={styles.firstC}>Adresa:</div>
-                        )}
-                        <div className={styles.secondC}>{item.adresa}</div>
-                      </div>
-                      {
-                        // <div
-                        //   className={`${styles.comandaItem} ${styles.comandaId}`}
-                        // >
-                        //   {item.id}
-                        // </div>
-                      }
-                      <div className={`${styles.comandaItem}`}>
-                        {width <= 850 && (
-                          <div className={styles.firstC}>Data crearii:</div>
-                        )}
-                        <div className={styles.secondC}>
-                          {item.createdAt && formatDateTime(item.createdAt)}
+                        <div
+                          className={`${styles.comandaItem} ${styles.comandaClient}`}
+                        >
+                          {width <= 850 && (
+                            <div className={styles.firstC}>Client:</div>
+                          )}
+                          <div className={styles.secondC}>{item.client}</div>
+                        </div>
+                        <div className={`${styles.comandaItem}`}>
+                          {width <= 850 && (
+                            <div className={styles.firstC}>Adresa:</div>
+                          )}
+                          <div className={styles.secondC}>{item.adresa}</div>
+                        </div>
+                        <div className={`${styles.comandaItem}`}>
+                          {width <= 850 && (
+                            <div className={styles.firstC}>Data crearii:</div>
+                          )}
+                          <div className={styles.secondC}>
+                            {item.createdAt && formatDateTime(item.createdAt)}
+                          </div>
+                        </div>
+                        <div className={`${styles.comandaItem}`}>
+                          {width <= 850 && (
+                            <div className={styles.firstC}>Client:</div>
+                          )}
+                          <div className={styles.secondC}>{item.telefon}</div>
+                        </div>
+                        <div
+                          className={styles.comandaStatus}
+                          style={
+                            item.status
+                              ? {
+                                  background: "#6CAD55",
+                                }
+                              : {
+                                  background: "rgba(221, 3, 3, 0.75)",
+                                }
+                          }
+                        >
+                          {item.status ? "Livrata" : "In pregatire"}
                         </div>
                       </div>
-                      <div className={`${styles.comandaItem}`}>
-                        {width <= 850 && (
-                          <div className={styles.firstC}>Client:</div>
-                        )}
-                        <div className={styles.secondC}>{item.telefon}</div>
-                      </div>
-                      <div
-                        className={styles.comandaStatus}
-                        style={
-                          item.status
-                            ? {
-                                background: "#6CAD55",
-                              }
-                            : {
-                                background: "rgba(221, 3, 3, 0.75)",
-                              }
-                        }
-                      >
-                        {item.status ? "Livrata" : "In pregatire"}
-                      </div>
-                    </div>
-                    <motion.div
-                      layout
-                      transition={{ duration: 0.15 }}
-                      className={styles.bodyField}
-                    >
-                      <div
-                        className={
-                          deschis === item.id ? styles.deschisComanda : null
-                        }
-                      >
-                        {item.id === deschis ? (
-                          <div className={styles.tabel}>
-                            {width >= 850 && (
-                              <div className={styles.randProdusTitlu}>
-                                <div className={styles.produsTitlu}>
-                                  Nume Produs
-                                </div>
-                                <div className={styles.produsTitlu}>
-                                  Lungime cm
-                                </div>
-                                <div className={styles.produsTitlu}>
-                                  Latime cm
-                                </div>
-                                <div className={styles.produsTitlu}>
-                                  Grosime cm
-                                </div>
-                                <div className={styles.produsTitlu}>
-                                  Cantitate
-                                </div>
-                                <div className={styles.produsTitlu}>Pret</div>
-                              </div>
-                            )}
 
-                            {item.produse &&
-                              item.produse.map((produs, index) => {
-                                return (
-                                  <div>
+                      <motion.div
+                        layout
+                        transition={{ duration: 0.15 }}
+                        className={styles.bodyField}
+                      >
+                        <div
+                          className={
+                            deschis === item.id ? styles.deschisComanda : null
+                          }
+                        >
+                          {item.id === deschis ? (
+                            <div className={styles.tabel}>
+                              {width >= 850 && (
+                                <div className={styles.randProdusTitlu}>
+                                  <div className={styles.produsTitlu}>
+                                    Nume Produs
+                                  </div>
+                                  <div className={styles.produsTitlu}>
+                                    Lungime cm
+                                  </div>
+                                  <div className={styles.produsTitlu}>
+                                    Latime cm
+                                  </div>
+                                  <div className={styles.produsTitlu}>
+                                    Grosime cm
+                                  </div>
+                                  <div className={styles.produsTitlu}>
+                                    Cantitate
+                                  </div>
+                                  <div className={styles.produsTitlu}>Pret</div>
+                                </div>
+                              )}
+
+                              {item.produse &&
+                                item.produse.map((produs, index) => {
+                                  return (
                                     <div>
-                                      <div
-                                        key={index}
-                                        className={styles.randProdus}
-                                      >
-                                        {width <= 850 && (
-                                          <h5>{`Produs ${index}`}</h5>
-                                        )}
-                                        <div className={styles.produs}>
-                                          {width <= 850 && (
-                                            <div className={styles.firstC}>
-                                              Nume:
-                                            </div>
-                                          )}
-                                          <div className={styles.secondC}>
-                                            {produs.nume}
-                                          </div>
-                                        </div>
-                                        <div className={styles.produs}>
-                                          {width <= 850 && (
-                                            <div className={styles.firstC}>
-                                              Lungime:
-                                            </div>
-                                          )}
-                                          <div className={styles.secondC}>
-                                            {produs.lungime}
-                                          </div>
-                                        </div>
-                                        <div className={styles.produs}>
-                                          {width <= 850 && (
-                                            <div className={styles.firstC}>
-                                              Latime:
-                                            </div>
-                                          )}
-                                          <div className={styles.secondC}>
-                                            {produs.latime}
-                                          </div>
-                                        </div>
-                                        <div className={styles.produs}>
-                                          {width <= 850 && (
-                                            <div className={styles.firstC}>
-                                              Grosime:
-                                            </div>
-                                          )}
-                                          <div className={styles.secondC}>
-                                            {produs.grosime}
-                                          </div>
-                                        </div>
-                                        <div className={styles.produs}>
-                                          {width <= 850 && (
-                                            <div className={styles.firstC}>
-                                              Cantitate:
-                                            </div>
-                                          )}
-                                          <div className={styles.secondC}>
-                                            {produs.cantitate}
-                                          </div>
-                                        </div>
-                                        <div className={styles.produs}>
-                                          {width <= 850 && (
-                                            <div className={styles.firstC}>
-                                              Pret:
-                                            </div>
-                                          )}
-                                          <div className={styles.secondC}>
-                                            {produs.pret}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-
-                            <motion.div
-                              whileHover={{ scale: 1.03 }}
-                              transition={{ duration: 0.1 }}
-                              className={styles.editBtn}
-                              onClick={() => {
-                                setEditeaza(item.id);
-                                // console.log(item);
-                              }}
-                            >
-                              Editeaza Comanda
-                            </motion.div>
-
-                            {editeaza ? (
-                              <div className={styles.editPage}>
-                                <div className={styles.editScreen}>
-                                  <div
-                                    className={styles.titluEditeaza_closeBtn}
-                                  >
-                                    <div className={styles.titluEditeaza}>
-                                      {`Editeaza Comanda`}
-                                    </div>
-                                    <div
-                                      className={styles.closeBtn}
-                                      onClick={() => {
-                                        getComanda();
-                                        setEditeaza(0);
-                                      }}
-                                    >
-                                      <CloseCircleOutlined />
-                                    </div>
-                                  </div>
-                                  <div className={styles.form}>
-                                    <div className={styles.headerValues}>
-                                      <div className={styles.property}>
-                                        <div className={styles.label}>
-                                          Numele Clientului
-                                        </div>
-                                        <input
-                                          defaultValue={item.client}
-                                          className={styles.input}
-                                          onChange={(value) => {
-                                            comandaEdit &&
-                                              // eslint-disable-next-line array-callback-return
-                                              comandaEdit.map((littleitem) => {
-                                                if (littleitem.id === item.id)
-                                                  littleitem.client =
-                                                    value.target.value;
-                                              });
-                                          }}
-                                        />
-                                      </div>
-
-                                      <div className={styles.property}>
-                                        <div className={styles.label}>
-                                          Adresa
-                                        </div>
-                                        <input
-                                          defaultValue={item.adresa}
-                                          className={styles.input}
-                                          onChange={(value) => {
-                                            comandaEdit &&
-                                              // eslint-disable-next-line array-callback-return
-                                              comandaEdit.map((littleitem) => {
-                                                if (littleitem.id === item.id)
-                                                  littleitem.adresa =
-                                                    value.target.value;
-                                              });
-                                          }}
-                                        />
-                                      </div>
-
-                                      <div className={styles.property}>
-                                        <div className={styles.label}>
-                                          Numar de telefon
-                                        </div>
-                                        <input
-                                          defaultValue={item.telefon}
-                                          className={styles.input}
-                                          onChange={(value) => {
-                                            comandaEdit &&
-                                              // eslint-disable-next-line array-callback-return
-                                              comandaEdit.map((littleitem) => {
-                                                if (littleitem.id === item.id)
-                                                  littleitem.telefon =
-                                                    value.target.value;
-                                              });
-                                          }}
-                                        />
-                                      </div>
-
-                                      <div className={styles.property}>
-                                        <div className={styles.label}>
-                                          Creata la data:
-                                        </div>
-                                        <div className={styles.input}>
-                                          {item.createdAt &&
-                                            formatDateTime(item.createdAt)}
-                                        </div>
-                                      </div>
-
-                                      <div className={styles.property}>
-                                        <div className={styles.label}>
-                                          Statusul
-                                        </div>
-                                        <select
-                                          className={styles.select}
-                                          defaultValue={item.status}
-                                          onChange={(value) => {
-                                            comandaEdit &&
-                                              // eslint-disable-next-line array-callback-return
-                                              comandaEdit.map((littleitem) => {
-                                                if (littleitem.id === item.id)
-                                                  littleitem.status =
-                                                    value.target.value;
-                                              });
-                                          }}
+                                      <div>
+                                        <div
+                                          key={index}
+                                          className={styles.randProdus}
                                         >
-                                          <option
-                                            className={styles.false}
-                                            value="false"
-                                          >
-                                            In pregatire
-                                          </option>
-                                          <option
-                                            className={styles.true}
-                                            value="true"
-                                          >
-                                            Livrata
-                                          </option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div className={styles.table}>
-                                      <div className={styles.header}>
-                                        <div className={styles.label}>Nume</div>
-                                        <div className={styles.label}>
-                                          Lungime
-                                        </div>
-                                        <div className={styles.label}>
-                                          Latime
-                                        </div>
-                                        <div className={styles.label}>
-                                          Grosime
-                                        </div>
-                                        <div className={styles.label}>
-                                          Cantitate
-                                        </div>
-                                        <div className={styles.label}>Pret</div>
-                                        <div className={styles.labelDelete}>
-                                          Delete
-                                        </div>
-                                      </div>
-                                      <div className={styles.body}>
-                                        {item.produse &&
-                                          item.produse.map((produs, index) => {
-                                            return (
-                                              <div>
-                                                {width <= 850 && (
-                                                  <h3
-                                                    className={
-                                                      styles.showNumberProduct
-                                                    }
-                                                  >
-                                                    Produs {index + 1}
-                                                  </h3>
-                                                )}
-                                                <div
-                                                  className={styles.row}
-                                                  key={index}
-                                                >
-                                                  <div
-                                                    className={
-                                                      styles.inputTransform
-                                                    }
-                                                  >
-                                                    {width <= 850 && (
-                                                      <div
-                                                        className={
-                                                          styles.titluCell
-                                                        }
-                                                      >
-                                                        Nume
-                                                      </div>
-                                                    )}
-                                                    <input
-                                                      defaultValue={produs.nume}
-                                                      className={styles.cell}
-                                                      onChange={(value) => {
-                                                        comandaEdit &&
-                                                          comandaEdit.forEach(
-                                                            (littleitem) => {
-                                                              if (
-                                                                littleitem.id ===
-                                                                item.id
-                                                              )
-                                                                littleitem.produse[
-                                                                  index
-                                                                ].nume =
-                                                                  value.target.value;
-                                                            }
-                                                          );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className={
-                                                      styles.inputTransform
-                                                    }
-                                                  >
-                                                    {width <= 850 && (
-                                                      <div
-                                                        className={
-                                                          styles.titluCell
-                                                        }
-                                                      >
-                                                        Lungime
-                                                      </div>
-                                                    )}
-                                                    <input
-                                                      defaultValue={
-                                                        produs.lungime
-                                                      }
-                                                      className={styles.cell}
-                                                      onChange={(value) => {
-                                                        comandaEdit &&
-                                                          comandaEdit.forEach(
-                                                            (littleitem) => {
-                                                              if (
-                                                                littleitem.id ===
-                                                                item.id
-                                                              )
-                                                                littleitem.produse[
-                                                                  index
-                                                                ].lungime =
-                                                                  value.target.value;
-                                                            }
-                                                          );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className={
-                                                      styles.inputTransform
-                                                    }
-                                                  >
-                                                    {width <= 850 && (
-                                                      <div
-                                                        className={
-                                                          styles.titluCell
-                                                        }
-                                                      >
-                                                        Latime
-                                                      </div>
-                                                    )}
-                                                    <input
-                                                      defaultValue={
-                                                        produs.latime
-                                                      }
-                                                      className={styles.cell}
-                                                      onChange={(value) => {
-                                                        comandaEdit &&
-                                                          comandaEdit.forEach(
-                                                            (littleitem) => {
-                                                              if (
-                                                                littleitem.id ===
-                                                                item.id
-                                                              )
-                                                                littleitem.produse[
-                                                                  index
-                                                                ].latime =
-                                                                  value.target.value;
-                                                            }
-                                                          );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className={
-                                                      styles.inputTransform
-                                                    }
-                                                  >
-                                                    {width <= 850 && (
-                                                      <div
-                                                        className={
-                                                          styles.titluCell
-                                                        }
-                                                      >
-                                                        Grosime
-                                                      </div>
-                                                    )}
-                                                    <input
-                                                      defaultValue={
-                                                        produs.grosime
-                                                      }
-                                                      className={styles.cell}
-                                                      onChange={(value) => {
-                                                        comandaEdit &&
-                                                          comandaEdit.forEach(
-                                                            (littleitem) => {
-                                                              if (
-                                                                littleitem.id ===
-                                                                item.id
-                                                              )
-                                                                littleitem.produse[
-                                                                  index
-                                                                ].grosime =
-                                                                  value.target.value;
-                                                            }
-                                                          );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className={
-                                                      styles.inputTransform
-                                                    }
-                                                  >
-                                                    {width <= 850 && (
-                                                      <div
-                                                        className={
-                                                          styles.titluCell
-                                                        }
-                                                      >
-                                                        Cantitate
-                                                      </div>
-                                                    )}
-                                                    <input
-                                                      defaultValue={
-                                                        produs.cantitate
-                                                      }
-                                                      className={styles.cell}
-                                                      onChange={(value) => {
-                                                        comandaEdit &&
-                                                          comandaEdit.forEach(
-                                                            (littleitem) => {
-                                                              if (
-                                                                littleitem.id ===
-                                                                item.id
-                                                              )
-                                                                littleitem.produse[
-                                                                  index
-                                                                ].cantitate =
-                                                                  value.target.value;
-                                                            }
-                                                          );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className={
-                                                      styles.inputTransform
-                                                    }
-                                                  >
-                                                    {width <= 850 && (
-                                                      <div
-                                                        className={
-                                                          styles.titluCell
-                                                        }
-                                                      >
-                                                        Pret
-                                                      </div>
-                                                    )}
-                                                    <input
-                                                      defaultValue={produs.pret}
-                                                      className={styles.cell}
-                                                      onChange={(value) => {
-                                                        comandaEdit &&
-                                                          comandaEdit.forEach(
-                                                            (littleitem) => {
-                                                              if (
-                                                                littleitem.id ===
-                                                                item.id
-                                                              )
-                                                                littleitem.produse[
-                                                                  index
-                                                                ].pret =
-                                                                  value.target.value;
-                                                            }
-                                                          );
-                                                      }}
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className={
-                                                      styles.deleteRowBtn
-                                                    }
-                                                    onClick={() => {
-                                                      handleDeleteRow(
-                                                        item.id,
-                                                        index
-                                                      );
-                                                      // console.log(item.id);
-                                                      // console.log(index);
-                                                      // alert(
-                                                      //   `${JSON.stringify(
-                                                      //     item.produse[index]
-                                                      //   )}`
-                                                      // );
-                                                    }}
-                                                  >
-                                                    <DeleteOutlined />
-                                                  </div>
-                                                </div>
+                                          {width <= 850 && (
+                                            <h5>{`Produs ${index}`}</h5>
+                                          )}
+                                          <div className={styles.produs}>
+                                            {width <= 850 && (
+                                              <div className={styles.firstC}>
+                                                Nume:
                                               </div>
-                                            );
-                                          })}
+                                            )}
+                                            <div className={styles.secondC}>
+                                              {produs.nume}
+                                            </div>
+                                          </div>
+                                          <div className={styles.produs}>
+                                            {width <= 850 && (
+                                              <div className={styles.firstC}>
+                                                Lungime:
+                                              </div>
+                                            )}
+                                            <div className={styles.secondC}>
+                                              {produs.lungime}
+                                            </div>
+                                          </div>
+                                          <div className={styles.produs}>
+                                            {width <= 850 && (
+                                              <div className={styles.firstC}>
+                                                Latime:
+                                              </div>
+                                            )}
+                                            <div className={styles.secondC}>
+                                              {produs.latime}
+                                            </div>
+                                          </div>
+                                          <div className={styles.produs}>
+                                            {width <= 850 && (
+                                              <div className={styles.firstC}>
+                                                Grosime:
+                                              </div>
+                                            )}
+                                            <div className={styles.secondC}>
+                                              {produs.grosime}
+                                            </div>
+                                          </div>
+                                          <div className={styles.produs}>
+                                            {width <= 850 && (
+                                              <div className={styles.firstC}>
+                                                Cantitate:
+                                              </div>
+                                            )}
+                                            <div className={styles.secondC}>
+                                              {produs.cantitate}
+                                            </div>
+                                          </div>
+                                          <div className={styles.produs}>
+                                            {width <= 850 && (
+                                              <div className={styles.firstC}>
+                                                Pret:
+                                              </div>
+                                            )}
+                                            <div className={styles.secondC}>
+                                              {produs.pret}
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className={styles.footer}>
+                                  );
+                                })}
+
+                              <motion.div
+                                whileHover={{ scale: 1.03 }}
+                                transition={{ duration: 0.1 }}
+                                className={styles.editBtn}
+                                onClick={() => {
+                                  setEditeaza(item.id);
+                                  setComandaEdit(comanda[index]);
+                                }}
+                              >
+                                Editeaza Comanda
+                              </motion.div>
+
+                              {editeaza ? (
+                                <div className={styles.editPage}>
+                                  <div className={styles.editScreen}>
                                     <div
-                                      onClick={() => {
-                                        submitEdit(item.id);
-                                      }}
-                                      className={styles.saveEdit}
+                                      className={styles.titluEditeaza_closeBtn}
                                     >
-                                      Salveaza
+                                      <div className={styles.titluEditeaza}>
+                                        {`Editeaza Comanda`}
+                                      </div>
+                                      <div
+                                        className={styles.closeBtn}
+                                        onClick={() => {
+                                          getComanda();
+                                          setEditeaza(0);
+                                        }}
+                                      >
+                                        <CloseCircleOutlined />
+                                      </div>
                                     </div>
-                                    <div
-                                      className={styles.addEdit}
-                                      onClick={() => {
-                                        handleAddRow(item.id);
-                                      }}
-                                    >
-                                      Adauga Produs
+
+                                    <div className={styles.form}>
+                                      <div className={styles.headerValues}>
+                                        <div className={styles.property}>
+                                          <div className={styles.label}>
+                                            Numele Clientului
+                                          </div>
+                                          <input
+                                            className={styles.input}
+                                            value={comandaEdit.client}
+                                            onChange={(e) => {
+                                              const obj = comandaEdit;
+                                              obj.client = e.target.value;
+                                              setComandaEdit(obj);
+                                              console.log(comandaEdit.client);
+                                            }}
+                                          />
+                                        </div>
+
+                                        <div className={styles.property}>
+                                          <div className={styles.label}>
+                                            Adresa
+                                          </div>
+                                          <input
+                                            defaultValue={comandaEdit.adresa}
+                                            className={styles.input}
+                                            onChange={(value) => {
+                                              comandaEdit.adresa =
+                                                value.target.value;
+                                            }}
+                                          />
+                                        </div>
+
+                                        <div className={styles.property}>
+                                          <div className={styles.label}>
+                                            Numar de telefon
+                                          </div>
+                                          <input
+                                            defaultValue={comandaEdit.telefon}
+                                            className={styles.input}
+                                            onChange={(value) => {
+                                              comandaEdit.telefon =
+                                                value.target.value;
+                                            }}
+                                          />
+                                        </div>
+
+                                        <div className={styles.property}>
+                                          <div className={styles.label}>
+                                            Creata la data:
+                                          </div>
+                                          <div className={styles.input}>
+                                            {item.createdAt &&
+                                              formatDateTime(item.createdAt)}
+                                          </div>
+                                        </div>
+
+                                        <div className={styles.property}>
+                                          <div className={styles.label}>
+                                            Statusul
+                                          </div>
+                                          <select
+                                            className={styles.select}
+                                            defaultValue={comandaEdit.status}
+                                            onChange={(value) => {
+                                              comandaEdit.status =
+                                                value.target.value;
+                                            }}
+                                          >
+                                            <option
+                                              className={styles.false}
+                                              value="false"
+                                            >
+                                              In pregatire
+                                            </option>
+                                            <option
+                                              className={styles.true}
+                                              value="true"
+                                            >
+                                              Livrata
+                                            </option>
+                                          </select>
+                                        </div>
+                                      </div>
+
+                                      <div className={styles.table}>
+                                        <div className={styles.header}>
+                                          <div className={styles.label}>
+                                            Nume
+                                          </div>
+                                          <div className={styles.label}>
+                                            Lungime
+                                          </div>
+                                          <div className={styles.label}>
+                                            Latime
+                                          </div>
+                                          <div className={styles.label}>
+                                            Grosime
+                                          </div>
+                                          <div className={styles.label}>
+                                            Cantitate
+                                          </div>
+                                          <div className={styles.label}>
+                                            Pret
+                                          </div>
+                                          <div className={styles.labelDelete}>
+                                            Delete
+                                          </div>
+                                        </div>
+
+                                        <div className={styles.body}>
+                                          {comandaEdit.produse &&
+                                            comandaEdit.produse.map(
+                                              (produs, index) => {
+                                                return (
+                                                  <div>
+                                                    {width <= 850 && (
+                                                      <h3
+                                                        className={
+                                                          styles.showNumberProduct
+                                                        }
+                                                      >
+                                                        Produs {index + 1}
+                                                      </h3>
+                                                    )}
+                                                    {
+                                                      //Start Products Table---------------------------------------------
+                                                    }
+                                                    <div
+                                                      className={styles.row}
+                                                      key={index}
+                                                    >
+                                                      {
+                                                        //Nume---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.inputTransform
+                                                        }
+                                                      >
+                                                        {width <= 850 && (
+                                                          <div
+                                                            className={
+                                                              styles.titluCell
+                                                            }
+                                                          >
+                                                            Nume
+                                                          </div>
+                                                        )}
+                                                        <input
+                                                          defaultValue={
+                                                            produs.nume
+                                                          }
+                                                          className={
+                                                            styles.cell
+                                                          }
+                                                          onChange={(e) => {
+                                                            comandaEdit.produse[
+                                                              index
+                                                            ].nume =
+                                                              e.target.value;
+                                                            console.log(
+                                                              comandaEdit
+                                                                .produse[0].nume
+                                                            );
+                                                          }}
+                                                        />
+                                                      </div>
+
+                                                      {
+                                                        //Lungime---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.inputTransform
+                                                        }
+                                                      >
+                                                        {width <= 850 && (
+                                                          <div
+                                                            className={
+                                                              styles.titluCell
+                                                            }
+                                                          >
+                                                            Lungime
+                                                          </div>
+                                                        )}
+                                                        <input
+                                                          className={
+                                                            styles.cell
+                                                          }
+                                                          defaultValue={
+                                                            produs.lungime
+                                                          }
+                                                          onChange={(e) => {
+                                                            comandaEdit.produse[
+                                                              index
+                                                            ].lungime =
+                                                              e.target.value;
+                                                          }}
+                                                        />
+                                                      </div>
+
+                                                      {
+                                                        //Latime---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.inputTransform
+                                                        }
+                                                      >
+                                                        {width <= 850 && (
+                                                          <div
+                                                            className={
+                                                              styles.titluCell
+                                                            }
+                                                          >
+                                                            Latime
+                                                          </div>
+                                                        )}
+                                                        <input
+                                                          defaultValue={
+                                                            produs.latime
+                                                          }
+                                                          className={
+                                                            styles.cell
+                                                          }
+                                                          onChange={(e) => {
+                                                            comandaEdit.produse[
+                                                              index
+                                                            ].latime =
+                                                              e.target.value;
+                                                          }}
+                                                        />
+                                                      </div>
+
+                                                      {
+                                                        //Grosime---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.inputTransform
+                                                        }
+                                                      >
+                                                        {width <= 850 && (
+                                                          <div
+                                                            className={
+                                                              styles.titluCell
+                                                            }
+                                                          >
+                                                            Grosime
+                                                          </div>
+                                                        )}
+                                                        <input
+                                                          defaultValue={
+                                                            produs.grosime
+                                                          }
+                                                          className={
+                                                            styles.cell
+                                                          }
+                                                          onChange={(e) => {
+                                                            comandaEdit.produse[
+                                                              index
+                                                            ].grosime =
+                                                              e.target.value;
+                                                          }}
+                                                        />
+                                                      </div>
+
+                                                      {
+                                                        //Cantitate---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.inputTransform
+                                                        }
+                                                      >
+                                                        {width <= 850 && (
+                                                          <div
+                                                            className={
+                                                              styles.titluCell
+                                                            }
+                                                          >
+                                                            Cantitate
+                                                          </div>
+                                                        )}
+                                                        <input
+                                                          defaultValue={
+                                                            produs.cantitate
+                                                          }
+                                                          className={
+                                                            styles.cell
+                                                          }
+                                                          onChange={(e) => {
+                                                            comandaEdit.produse[
+                                                              index
+                                                            ].cantitate =
+                                                              e.target.value;
+                                                          }}
+                                                        />
+                                                      </div>
+
+                                                      {
+                                                        //Pret---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.inputTransform
+                                                        }
+                                                      >
+                                                        {width <= 850 && (
+                                                          <div
+                                                            className={
+                                                              styles.titluCell
+                                                            }
+                                                          >
+                                                            Pret
+                                                          </div>
+                                                        )}
+                                                        <input
+                                                          defaultValue={
+                                                            produs.pret
+                                                          }
+                                                          className={
+                                                            styles.cell
+                                                          }
+                                                          onChange={(e) => {
+                                                            comandaEdit.produse[
+                                                              index
+                                                            ].pret =
+                                                              e.target.value;
+                                                          }}
+                                                        />
+                                                      </div>
+
+                                                      {
+                                                        //Delete Button---------------------------------------------
+                                                      }
+                                                      <div
+                                                        className={
+                                                          styles.deleteRowBtn
+                                                        }
+                                                        onClick={() => {
+                                                          handleDeleteRow(
+                                                            index
+                                                          );
+                                                        }}
+                                                      >
+                                                        <DeleteOutlined />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                );
+                                              }
+                                            )}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div
-                                      onClick={() => {
-                                        deleteComanda(item.id);
-                                      }}
-                                      className={styles.deleteEdit}
-                                    >
-                                      Sterge Comanda
-                                    </div>
-                                    <div
-                                      onClick={() => {
-                                        console.log(comandaEdit[0].produse);
-                                      }}
-                                    >
-                                      ComandaEdit
-                                    </div>
-                                    <div
-                                      onClick={() => {
-                                        console.log(comanda[0].produse);
-                                      }}
-                                    >
-                                      Comanda
+                                    <div className={styles.footer}>
+                                      {
+                                        //Button de salvat editarile---------------------------------------------
+                                      }
+                                      <div
+                                        onClick={() => {
+                                          submitEdit(item.id);
+                                        }}
+                                        className={styles.saveEdit}
+                                      >
+                                        Salveaza
+                                      </div>
+                                      {
+                                        //Button de adaugat randuri la tabel---------------------------------------------
+                                      }
+                                      <div
+                                        className={styles.addEdit}
+                                        onClick={() => {
+                                          handleAddRow(item.id);
+                                        }}
+                                      >
+                                        Adauga Produs
+                                      </div>
+                                      {
+                                        //Buton de stergere a comenzii---------------------------------------------
+                                      }
+                                      <div
+                                        onClick={() => {
+                                          deleteComanda(item.id);
+                                        }}
+                                        className={styles.deleteEdit}
+                                      >
+                                        Sterge Comanda
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            ) : null}
-                          </div>
-                        ) : null}
-                      </div>
-                    </motion.div>
-                  </div>
-                );
-              })}
+                              ) : null}
+                            </div>
+                          ) : null}
+                        </div>
+                      </motion.div>
+                    </div>
+                  );
+                }
+              )}
           </div>
         </div>
       </div>
