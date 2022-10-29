@@ -21,7 +21,6 @@ export default function ListaComanda() {
   const [comandaFiltrataInit, setComandaFiltrataInit] = useState(false);
   const [sorted, setSorted] = useState("asc");
   const [angajat, setAngajat] = useState(false);
-
   useEffect(() => {
     getComanda();
     isAngajat();
@@ -30,7 +29,6 @@ export default function ListaComanda() {
 
   const isAngajat = async () => {
     const userId = await database.collection("Users").get();
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         if (userId.docs[0].id === user.uid) {
