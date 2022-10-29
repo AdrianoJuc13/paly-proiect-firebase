@@ -57,11 +57,21 @@
         flex-direction: column;
       }
       margin-bottom: 10px;
+      //==================================================
       .headerComandaChild {
         color: globalVariables.$grey;
         word-wrap: break-word;
         font-size: 20px;
         color: black;
+      }
+      .paddingLeft {
+        width: 120px;
+        margin-left: 30px;
+        padding-left: 20px;
+      }
+      .paddingData {
+        width: 120px;
+        margin-left: 25px;
       }
     }
     .Comanda {

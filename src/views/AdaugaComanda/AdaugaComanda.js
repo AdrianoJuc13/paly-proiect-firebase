@@ -161,8 +161,8 @@ export default function AdaugaComanda() {
                     />
                     <input
                       className={styles.input}
-                      name="latime"
                       placeholder="latime"
+                      name="latime"
                       value={inputField.latime}
                       onChange={(event) =>
                         handleChangeInput(inputField.id, event)
