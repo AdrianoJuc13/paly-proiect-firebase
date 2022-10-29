@@ -10,7 +10,6 @@ import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
 import { toast } from "react-toastify";
 
 export default function ListaComanda() {
-
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
@@ -23,20 +22,11 @@ export default function ListaComanda() {
 
   const handleChange = (event) => {
     setSorted(event.target.value);
+  };
 
   const { width } = useWindowDimensions();
 
   // Functiile pentru Editare---------------------------------------------
-
-  const getComanda = () => {
-    getDocs(dbInstance).then((data) => {
-      setComanda(
-        data.docs.map((item) => {
-          return { ...item.data(), id: item.id };
-        })
-      );
-    });
-  };
 
   const submitEdit = async (id) => {
     try {
@@ -85,16 +75,6 @@ export default function ListaComanda() {
     );
   }
 
-  const getComanda = () => {
-    getDocs(dbInstance).then((data) => {
-      setComanda(
-        data.docs.map((item) => {
-          return { ...item.data(), id: item.id };
-        })
-      );
-    });
-  };
-
   let timeAngajat = Timestamp.now().seconds - 604800;
   let timeBoss = Timestamp.now().seconds - 2630000;
 
@@ -126,10 +106,6 @@ export default function ListaComanda() {
     getComanda();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorted]);
-  }, [deschis]);
-
-  const { width } = useWindowDimensions();
-  }, [deschis]);
 
   return (
     <Layout>
@@ -288,7 +264,7 @@ export default function ListaComanda() {
                                           className={styles.randProdus}
                                         >
                                           {width <= 850 && (
-                                            <h5>{`Produs ${index}`}</h5>
+                                            <h5>{`Produs ${index + 1}`}</h5>
                                           )}
                                           <div className={styles.produs}>
                                             {width <= 850 && (
