@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { database } from "../../firebaseConfig";
+import { database, firebase } from "../../firebaseConfig";
 import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
 
 import styles from "./styles.module.scss";
@@ -9,6 +9,7 @@ import { CloseCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+
 export default function ListaComanda() {
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
@@ -19,6 +20,27 @@ export default function ListaComanda() {
   const [comandaFiltrata, setComandaFiltrata] = useState(comanda);
   const [comandaFiltrataInit, setComandaFiltrataInit] = useState(false);
   const [sorted, setSorted] = useState("asc");
+  const [angajat, setAngajat] = useState(false);
+
+  useEffect(() => {
+    getComanda();
+    isAngajat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sorted, angajat]);
+
+  const isAngajat = async () => {
+    const userId = await database.collection("Users").get();
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (userId.docs[0].id === user.uid) {
+          setAngajat(true);
+        }
+      } else {
+        isAngajat();
+      }
+    });
+  };
 
   const handleChange = (event) => {
     setSorted(event.target.value);
@@ -99,16 +121,26 @@ export default function ListaComanda() {
     );
   }
 
-  let timeAngajat = Timestamp.now().seconds - 604800;
-  let timeBoss = Timestamp.now().seconds - 2630000;
+  let timeAngajat = Timestamp.now().seconds - 104800;
 
   const getComanda = async () => {
-    const createdAt = await database
+    const createdAtAsc = await database
       .collection("Comenzi")
       .orderBy("createdAt", sorted)
-      .startAt(timeBoss)
+      .startAt(angajat ? timeAngajat : 0)
       .get();
-    setComanda(createdAt.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+
+    const createdAtDesc = await database
+      .collection("Comenzi")
+      .orderBy("createdAt", sorted)
+      .endAt(angajat ? timeAngajat : 0)
+      .get();
+    setComanda(
+      (sorted === "asc" ? createdAtAsc : createdAtDesc).docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+    );
   };
 
   const deleteComanda = async (id) => {
@@ -126,21 +158,16 @@ export default function ListaComanda() {
     }
   };
 
-  useEffect(() => {
-    getComanda();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sorted]);
-
   return (
     <Layout>
       <div className={styles.screen}>
         <div className={styles.container2}>Lista Comenzi</div>
         <div className={styles.searchField}>
-          <div class="form-outline">
+          <div className="form-outline">
             <input
               type="search"
               id="form1"
-              class="form-control text-black"
+              className="form-control text-black"
               placeholder="Cauta comanda"
               aria-label="Search"
               onChange={(e) => {
@@ -154,7 +181,6 @@ export default function ListaComanda() {
                 );
                 setComandaFiltrata(results);
                 setComandaFiltrataInit(true);
-                // console.log(comandaFiltrata);
               }}
             />
           </div>
@@ -162,14 +188,15 @@ export default function ListaComanda() {
         <div className={styles.container3}>
           <div className={styles.headerContainer}>
             <div className={styles.textHeaderContainer}>
-              Comenzi : {comanda.length}
+              {angajat === true ? "Comenzi in ultimele 7 zile:" : "Comenzi"}{" "}
+              {comanda.length}
             </div>
             <select
-              class="form-select form-select-sm w-20"
+              className="form-select form-select-sm w-20"
               aria-label=".form-select-sm example"
               onChange={handleChange}
             >
-              <option selected value="asc">
+              <option select="true" value="asc">
                 Crescator
               </option>
               <option value="desc">Descrescator</option>
