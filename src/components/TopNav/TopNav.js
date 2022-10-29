@@ -3,7 +3,6 @@ import { Menu } from "antd";
 import { useLocation } from "react-router-dom";
 import { firebase } from "../../firebaseConfig.js";
 import { toast } from "react-toastify";
-
 import {
   AppstoreOutlined,
   LoginOutlined,
@@ -13,6 +12,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.min.css";
 import "../../assets/style/styles.css";
+import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
 
 const { Item } = Menu;
 
@@ -32,10 +32,25 @@ const TopNav = () => {
 
   useEffect(() => {
     location.pathname && setCurrent(location.pathname);
+    getUser();
   }, [location.pathname]);
 
+  const [user, setUser] = useState("Loading..");
+  function getUser() {
+    try {
+      firebase.auth().onAuthStateChanged((user) => {
+        setUser(user.email);
+      });
+    } catch (error) {
+      console.log("No User found");
+    }
+  }
+  const { width } = useWindowDimensions();
   return (
     <Menu mode="horizontal" selectedKeys={[current]}>
+      <Item style={{ background: "rgba(0,0,0,0.2)" }}>
+        {width >= 850 ? user : user.split("@")[0]}
+      </Item>
       <Item
         key="/"
         onClick={(e) => setCurrent(e.key)}
