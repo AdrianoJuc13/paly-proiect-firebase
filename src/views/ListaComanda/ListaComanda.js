@@ -7,11 +7,14 @@ import Layout from "../../components/Layout/Layout";
 import { motion } from "framer-motion";
 import { CloseCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
+import { toast } from "react-toastify";
+
 export default function ListaComanda() {
 
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
+  const [comandaEdit, setComandaEdit] = useState([]);
   const [deschis, setDeschis] = useState(0);
   const [editeaza, setEditeaza] = useState(false);
   const [comandaFiltrata, setComandaFiltrata] = useState(comanda);
@@ -24,7 +27,17 @@ export default function ListaComanda() {
   const { width } = useWindowDimensions();
 
   // Functiile pentru Editare---------------------------------------------
-  const [comandaEdit, setComandaEdit] = useState([]);
+
+  const getComanda = () => {
+    getDocs(dbInstance).then((data) => {
+      setComanda(
+        data.docs.map((item) => {
+          return { ...item.data(), id: item.id };
+        })
+      );
+    });
+  };
+
   const submitEdit = async (id) => {
     try {
       database
@@ -32,21 +45,19 @@ export default function ListaComanda() {
         .doc(id)
         .update(comandaEdit)
         .then(() => {
-          setEditeaza(0);
+          setEditeaza(false);
           setDeschis(0);
         });
+      toast.success("A fost actualizata cu success");
     } catch (err) {
       console.log(err);
+      toast.error("Nu a  putut fi actualizata comanda.Incearca din nou");
     }
   };
-  const handleDeleteRow = (index) => {
-    let jsonObj = comandaEdit;
-    delete jsonObj.produse[index];
-    // eslint-disable-next-line array-callback-return
-    jsonObj.produse = jsonObj.produse.filter((value) => {
-      if (value) return value;
-    });
-    setComandaEdit(jsonObj);
+  const handleDeleteRow = async (index) => {
+    comandaEdit.produse.splice(index, 1);
+    setComandaEdit(comandaEdit);
+    getComanda();
   };
   const handleAddRow = () => {
     comandaEdit.produse.push({
@@ -58,6 +69,7 @@ export default function ListaComanda() {
       pret: "",
     });
     setComandaEdit(comandaEdit);
+    getComanda();
   };
   // Functiile pentru Editare---------------------------------------------
 
@@ -101,12 +113,15 @@ export default function ListaComanda() {
       await deleteDoc(todoRef).then(() => {
         setEditeaza(0);
         setDeschis(0);
-        this.forceUpdate();
+        getComanda();
+        toast.success("Comanda a fost stearsa cu success");
       });
     } catch (err) {
       console.log(err);
+      toast.error("Nu s-a putut sterge comanda.Incercati din nou");
     }
   };
+
   useEffect(() => {
     getComanda();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -175,6 +190,7 @@ export default function ListaComanda() {
             {comanda &&
               (comandaFiltrataInit ? comandaFiltrata : comanda).map(
                 (item, index) => {
+                  console.log(item);
                   return (
                     <div key={item.id} className={styles.Comanda}>
                       <div
@@ -216,7 +232,7 @@ export default function ListaComanda() {
                         <div
                           className={styles.comandaStatus}
                           style={
-                            item.status
+                            item.status === "true"
                               ? {
                                   background: "#6CAD55",
                                 }
@@ -225,7 +241,7 @@ export default function ListaComanda() {
                                 }
                           }
                         >
-                          {item.status ? "Livrata" : "In pregatire"}
+                          {item.status === "true" ? "Livrata" : "In pregatire"}
                         </div>
                       </div>
 
@@ -345,14 +361,14 @@ export default function ListaComanda() {
                                 transition={{ duration: 0.1 }}
                                 className={styles.editBtn}
                                 onClick={() => {
-                                  setEditeaza(item.id);
+                                  setEditeaza(true);
                                   setComandaEdit(comanda[index]);
                                 }}
                               >
                                 Editeaza Comanda
                               </motion.div>
 
-                              {editeaza ? (
+                              {editeaza && (
                                 <div className={styles.editPage}>
                                   <div className={styles.editScreen}>
                                     <div
@@ -365,7 +381,7 @@ export default function ListaComanda() {
                                         className={styles.closeBtn}
                                         onClick={() => {
                                           getComanda();
-                                          setEditeaza(0);
+                                          setEditeaza(false);
                                         }}
                                       >
                                         <CloseCircleOutlined />
@@ -765,7 +781,7 @@ export default function ListaComanda() {
                                     </div>
                                   </div>
                                 </div>
-                              ) : null}
+                              )}
                             </div>
                           ) : null}
                         </div>
