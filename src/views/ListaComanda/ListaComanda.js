@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { database } from "../../firebaseConfig";
-import { collection, deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc, Timestamp } from "firebase/firestore";
 
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import useWindowDimensions from "../../assets/hooks/useWindowDimensions";
 export default function ListaComanda() {
+
   const dbInstance = collection(database, "Comenzi");
   // const [deschidereComanda, setDeschidereComanda] = useState(true);
   const [comanda, setComanda] = useState([]);
@@ -21,13 +22,18 @@ export default function ListaComanda() {
     setSorted(event.target.value);
   };
 
+  let timeAngajat = Timestamp.now().seconds - 604800;
+  let timeBoss = Timestamp.now().seconds - 2630000;
+
   const getComanda = async () => {
     const createdAt = await database
       .collection("Comenzi")
       .orderBy("createdAt", sorted)
+      .startAt(timeBoss)
       .get();
     setComanda(createdAt.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
   };
+
   const deleteComanda = async (id) => {
     try {
       const todoRef = doc(dbInstance, id);

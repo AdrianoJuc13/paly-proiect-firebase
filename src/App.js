@@ -15,9 +15,14 @@ function App() {
 
   const userHandler = (user) =>
     user ? setCurrentUser(user) : setCurrentUser(null);
+
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => userHandler(user));
-  }, []);
+    firebase.auth().onAuthStateChanged((user) => {
+      userHandler(user);
+      user && window.localStorage.setItem("user", "true");
+    });
+    currentUser === null && window.localStorage.removeItem("user");
+  }, [currentUser]);
 
   return (
     <>
