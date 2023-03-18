@@ -5,24 +5,24 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 import styles from "./styles.module.scss";
 import Layout from "../../components/Layout/Layout";
 import { v4 as uuidv4 } from "uuid";
-import { MinusOutlined } from "@ant-design/icons";
+import { DeleteTwoTone } from "@ant-design/icons";
 
 export default function AdaugaComanda() {
   const navigate = useNavigate();
   const dbInstance = collection(database, "Comenzi");
   const [adresa, setAdresa] = useState("");
   const [client, setClient] = useState("");
-  const [status] = useState(false);
+  // const [status] = useState(false);
+  const [status2] = useState(false);
   const [telefon, setTelefon] = useState("");
+  const [avans, setAvans] = useState(0);
   const [inputFields, setInputFields] = useState([
     {
       id: uuidv4(),
-      nume: "",
-      lungime: "",
-      latime: "",
-      grosime: "",
-      cantitate: "",
-      pret: "",
+      Material: "",
+      MP: "",
+      ML: "",
+      Calcul: "",
     },
   ]);
 
@@ -34,10 +34,13 @@ export default function AdaugaComanda() {
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,
-      status: status,
+      status: false,
+      status2: status2,
       telefon: telefon,
       createdAt: time.seconds,
       produse: inputFields,
+      transe: [avans],
+      ridicata: 0,
     }).then(() => {
       navigate("/");
     });
@@ -59,12 +62,10 @@ export default function AdaugaComanda() {
       ...inputFields,
       {
         id: uuidv4(),
-        nume: "",
-        lungime: "",
-        latime: "",
-        grosime: "",
-        cantitate: "",
-        pret: "",
+        Material: "",
+        MP: "",
+        ML: "",
+        Calcul: "",
       },
     ]);
   };
@@ -78,28 +79,30 @@ export default function AdaugaComanda() {
     setInputFields(values);
   };
 
-  // let arrayProduse = [];
+  // function getTotal() {
+  //   var total = 0;
 
-  // const saveComanda = () => {};
+  //   inputFields &&
+  //     inputFields.map((item) => {
+  //       total += parseInt(item.Calcul) ? parseInt(item.Calcul) : 0;
+  //       return null;
+  //     });
+  //   return total;
+  // }
 
-  const submitDownload = async () => {
-    const content = pdfRef.current;
-    const opt = {
-      margin: 0,
-      filename: `Comanda client ${client}.pdf`,
-      image: { type: "jpeg", quality: 0.95 },
-      pagebreak: { mode: "avoid-all" },
-      html2canvas: { useCORS: true, allowTaint: true },
-      // jsPDF: { compress: true },
-    };
-    const html2pdf = (await import("html2pdf.js")).default;
-    html2pdf(content, opt);
-  };
+  // useEffect(() => {
+  //   if (getTotal() - (parseInt(avans) ? parseInt(avans) : 0) > 0)
+  //     setRestPlata(getTotal() - (parseInt(avans) ? parseInt(avans) : 0));
+  //   else setRestPlata(0);
+  // }, [avans, getTotal()]);
 
+  // useEffect(() => {
+  //   setTranse([avans]);
+  // }, [avans]);
   return (
     <Layout>
       <div ref={pdfRef} className={styles.screen}>
-        <div className={styles.titlu}>Creaza comanda</div>
+        <div className={styles.titlu}>Adauga comanda</div>
         <div className={styles.container}>
           <div className={styles.field}>
             <label className={styles.label}> Numele clientului</label>
@@ -124,73 +127,66 @@ export default function AdaugaComanda() {
             <input
               className={styles.input}
               onChange={(e) => setTelefon(e.target.value)}
-              type="number"
+              type="text"
               value={telefon}
             />
           </div>
+          <div className={styles.field}>
+            <label className={styles.label}>Avans</label>
+            <input
+              className={styles.input}
+              onChange={(e) => {
+                setAvans(e.target.value);
+              }}
+              type="text"
+              value={avans}
+            />
+          </div>
+          {/* <div className={styles.field}>
+            <label className={styles.label}>Rest de plata</label>
+            <div className={styles.input}>{transe[0] ? transe[0] : 0}</div>
+          </div> */}
         </div>
-        <button className={styles.adaugaProdus} onClick={handleAddFields}>
-          Adauga Produs
-        </button>
+
         <div className={styles.ListaProduse}>
           <form className={styles.form}>
             {inputFields.map((inputField, index) => (
-              <div>
-                <h3 className={styles.textHeaderInput}>
-                  Produs numar {index + 1}
-                </h3>
+              <div id={inputField.id} className={styles.rand} key={index}>
                 <div className={styles.row} key={inputField.id}>
+                  <div className={styles.textHeaderInput}>{index + 1}</div>
                   <div className={styles.rowData}>
                     <input
                       className={styles.input}
-                      name="nume"
-                      placeholder="nume"
-                      value={inputField.nume}
+                      name="Material"
+                      placeholder="Material"
+                      value={inputField.Material}
                       onChange={(event) =>
                         handleChangeInput(inputField.id, event)
                       }
                     />
                     <input
                       className={styles.input}
-                      name="lungime"
-                      placeholder="lungime"
-                      value={inputField.lungime}
+                      name="MP"
+                      placeholder="MP"
+                      value={inputField.MP}
                       onChange={(event) =>
                         handleChangeInput(inputField.id, event)
                       }
                     />
                     <input
                       className={styles.input}
-                      placeholder="latime"
-                      name="latime"
-                      value={inputField.latime}
+                      placeholder="ML"
+                      name="ML"
+                      value={inputField.ML}
                       onChange={(event) =>
                         handleChangeInput(inputField.id, event)
                       }
                     />
                     <input
                       className={styles.input}
-                      name="grosime"
-                      placeholder="grosime"
-                      value={inputField.grosime}
-                      onChange={(event) =>
-                        handleChangeInput(inputField.id, event)
-                      }
-                    />
-                    <input
-                      className={styles.input}
-                      name="cantitate"
-                      placeholder="cantitate"
-                      value={inputField.cantitate}
-                      onChange={(event) =>
-                        handleChangeInput(inputField.id, event)
-                      }
-                    />
-                    <input
-                      className={styles.input}
-                      name="pret"
-                      placeholder="pret"
-                      value={inputField.pret}
+                      name="Calcul"
+                      placeholder="Calcul"
+                      value={inputField.Calcul}
                       onChange={(event) =>
                         handleChangeInput(inputField.id, event)
                       }
@@ -201,7 +197,7 @@ export default function AdaugaComanda() {
                     disabled={inputFields.length === 1}
                     onClick={() => handleRemoveFields(inputField.id)}
                   >
-                    <MinusOutlined />
+                    <DeleteTwoTone />
                   </div>
                 </div>
               </div>
@@ -217,11 +213,8 @@ export default function AdaugaComanda() {
             >
               Salveaza
             </button>
-            <button
-              onClick={() => submitDownload()}
-              className={styles.printBtn}
-            >
-              Printeaza
+            <button className={styles.adaugaProdus} onClick={handleAddFields}>
+              Adauga Produs
             </button>
           </div>
         </div>

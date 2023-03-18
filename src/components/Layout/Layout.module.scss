@@ -4,4 +4,26 @@
 .full {
   background-color: #d9d9d9;
   height: 100vh;
+  padding: 16px;
+  .topNav {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+}
+.time {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  font-weight: 500;
+  color: grey;
+  background: linear-gradient(
+    45deg,
+    rgb(217, 217, 217),
+    rgb(217, 217, 217),
+    rgb(217, 217, 217),
+    rgb(217, 217, 217),
+    rgb(255, 255, 255)
+  );
+  margin: 20px;
+  border-radius: 16px;
 }

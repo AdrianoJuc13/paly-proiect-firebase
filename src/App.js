@@ -9,6 +9,7 @@ import "./App.css";
 import AdaugaComanda from "./views/AdaugaComanda/AdaugaComanda.js";
 import { ToastContainer } from "react-toastify";
 import Login from "./views/Login";
+import PDF from "./views/ListaComanda/PDF.js";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -34,6 +35,7 @@ function App() {
               <>
                 <Route path="/" element={<ListaComanda />} />
                 <Route path="/adaugaComanda" element={<AdaugaComanda />} />
+                <Route path="/pdf" element={<PDF />} />
                 <Route path="*" element={<Navigate to="/" replace={true} />} />
               </>
             ) : (

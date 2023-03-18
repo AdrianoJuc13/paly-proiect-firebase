@@ -1,21 +1,34 @@
 @use "src/assets/style/globalVariables";
 @use "src/assets/style/mixinHelper";
+$blue: rgba(0, 123, 254, 0.8);
 .screen {
-  height: 100%;
+  height: 80vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
   .titlu {
-    padding: 50px 0;
+    background: white;
+    // margin: 20px auto;
+    text-align: center;
+
+    width: 500px;
     font-size: 50px;
-    font-weight: bold;
-    display: flex;
-    margin: auto;
+    font-weight: 600;
+    border-radius: 16px;
+    padding: 10px 0;
+    @include mixinHelper.onMobile {
+      width: 300px;
+      font-size: 35px;
+      font-weight: 500;
+      border-radius: 16px;
+    }
   }
   .container {
+    width: 80%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-
+    margin-top: 30px;
     @include mixinHelper.onMobile {
       flex-direction: column;
       justify-content: center;
@@ -30,6 +43,10 @@
         font-size: 20px;
       }
       .input {
+        display: flex;
+        align-items: center;
+        background: white;
+        padding: 2px;
         border: 2px solid globalVariables.$border;
         border-radius: 4px;
         height: 50px;
@@ -37,86 +54,127 @@
       }
     }
   }
-  .adaugaProdus {
-    background-color: globalVariables.$purple;
-    color: globalVariables.$white;
-    width: 200px;
-    height: 50px;
-    font-size: 20px;
-    border-radius: 8px;
-    margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+
   .ListaProduse {
-    margin: 50px 20px;
+    width: 90%;
+    flex: 1;
+    margin: 30px 0px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .endArea {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      gap: 5px;
+      .saveBtn {
+        width: 200px;
+        height: 50px;
+
+        background-color: $blue;
+        color: globalVariables.$white;
+
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        @include mixinHelper.onMobile {
+          width: 100px;
+          height: 70px;
+        }
+      }
+      .adaugaProdus {
+        width: 200px;
+        height: 50px;
+
+        background-color: $blue;
+        color: globalVariables.$white;
+
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        @include mixinHelper.onMobile {
+          width: 100px;
+          height: 70px;
+        }
+      }
+      .printBtn {
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
+        background-color: $blue;
+        color: globalVariables.$white;
+        border: none;
+        border-radius: 5px;
+        @include mixinHelper.onMobile {
+          width: 100px;
+          height: 70px;
+        }
+      }
+    }
     .form {
       height: 100%;
       display: block;
       justify-content: space-between;
       align-items: center;
       justify-content: center;
-
-      .textHeaderInput {
-        font-size: 30px;
+      .rand {
         display: flex;
-        align-items: flex-start;
 
-        @include mixinHelper.onMobile {
-          align-items: center;
-        }
-      }
-      .row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        .rowData {
-          width: 100%;
+        .row {
+          flex: 1;
           display: flex;
-          margin-bottom: 20px;
-          @include mixinHelper.onMobile {
-            flex-direction: column;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          .textHeaderInput {
+            height: 100%;
+            width: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: white;
+            margin-right: 5px;
+            border: 2px solid globalVariables.$border;
+            border-radius: 10px;
+
+            font-size: 40px;
           }
-          gap: 4px;
-          .input {
+          .rowData {
             width: 100%;
-            height: 50px;
+            display: flex;
+            margin-bottom: 5px;
+            gap: 5px;
+            @include mixinHelper.onMobile {
+              flex-direction: column;
+            }
+            .input {
+              width: 100%;
+              height: 50px;
+              border: 2px solid globalVariables.$border;
+              border-radius: 4px;
+              height: 50px;
+              font-size: 20px;
+            }
+          }
+          .removeBtn {
+            height: 100%;
+            width: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border: 2px solid globalVariables.$border;
+            border-radius: 10px;
+            margin-left: 5px;
+            background: white;
+            cursor: pointer;
           }
         }
-        .removeBtn {
-          cursor: pointer;
-          background-color: globalVariables.$red;
-          width: 30px;
-          height: 30px;
-          margin-left: 10px;
-          border-radius: 100%;
-          margin-bottom: 20px;
-        }
-      }
-    }
-    .endArea {
-      margin: 50px auto;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-      .saveBtn {
-        width: 100px;
-        height: 50px;
-        font-size: 20px;
-        background-color: globalVariables.$purple;
-        color: globalVariables.$white;
-        border: none;
-        border-radius: 8px;
-      }
-      .printBtn {
-        width: 100px;
-        height: 50px;
-        font-size: 20px;
-        background-color: globalVariables.$purple;
-        color: globalVariables.$white;
-        border: none;
-        border-radius: 8px;
       }
     }
   }
