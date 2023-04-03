@@ -31,10 +31,16 @@ export default function AdaugaComanda() {
   const handleSubmit = async (e) => {
     // e.preventDefault();
     let time = await Timestamp.now();
+    let i,
+      sum = 0;
+    for (i = 0; i < inputFields.length; i++) {
+      if (parseInt(inputFields[i].Calcul) > 0)
+        sum += parseInt(inputFields[i].Calcul);
+    }
     addDoc(dbInstance, {
       client: client,
       adresa: adresa,
-      status: false,
+      status: avans >= sum ? true : false,
       status2: status2,
       telefon: telefon,
       createdAt: time.seconds,

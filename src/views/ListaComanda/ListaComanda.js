@@ -92,7 +92,6 @@ export default function ListaComanda() {
     if (transa) {
       newComandaEdit.transe[newComandaEdit.transe.length] = transa;
       if (achitataa(newComandaEdit) <= 0) newComandaEdit.status = true;
-
       setTransa(0);
     }
     setComandaEdit(newComandaEdit);
@@ -144,7 +143,7 @@ export default function ListaComanda() {
 
   function formatDateTime(input) {
     var epoch = new Date(0);
-    epoch.setSeconds(parseInt(input + 3600));
+    epoch.setSeconds(parseInt(input));
     var date = epoch.toISOString();
     date = date.replace("T", " ");
     return (
@@ -262,6 +261,7 @@ export default function ListaComanda() {
       });
     return total > 0 ? total : 0;
   }
+
   return (
     <Layout>
       <div className={styles.screen}>
